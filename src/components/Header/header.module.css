@@ -1,0 +1,48 @@
+.headerDiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color:#4D3326;
+    border: none ;
+    color: #EED9C8;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+    height: 80px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 22em;
+}
+
+.navBar {
+    font-size: 1.4em;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-right: 5px;
+}
+
+.navElem {
+    list-style: none;     
+    padding: 0;
+    display: flex;            
+    justify-content: center; 
+    align-items: center;      
+}
+
+a {
+    color: #EED9C8;
+    text-decoration: none;
+    padding: 5px 0px;
+    min-width: 80px;
+    display: inline-block;
+    transition: font-weight 0.2s ease-in-out;
+}
+
+.active {
+    font-weight: bold;
+    color: #ff6600; /* Optional: Change color when active */
+    transition: font-weight 0.2s ease-in-out;
+}
