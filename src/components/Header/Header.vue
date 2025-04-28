@@ -22,18 +22,24 @@
         checkAuth()
     })
     async function logoutFunc() {
-    try {
-      await fetch(`${import.meta.env.VITE_BACKEND_URL}/login/logout`, {
-        method: 'POST',
-        credentials: 'include',
-      })
-      isAuthenticated.value = false
-      responseMessage.value = 'Logged out successfully'
-      setTimeout(() => { window.location.href = '/home'; }, 1000)
-    } catch (error) {
-      responseMessage.value = `Logout Failed: ${error}`
+        try {
+            // Clear the 'authToken' cookie by setting its expiry to a past date
+            document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+
+            // Update authentication state
+            isAuthenticated.value = false;
+            responseMessage.value = 'Logged out successfully';
+
+            // Redirect after a brief delay
+            setTimeout(() => {
+                window.location.href = '/home';
+            }, 1000);
+
+        } catch (error) {
+            responseMessage.value = `Logout Failed: ${error}`;
+        }
     }
-  }
+
 
 </script>
 
