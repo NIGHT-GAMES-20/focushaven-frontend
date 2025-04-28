@@ -36,6 +36,9 @@
                         <li>
                             <a href="/" >Home</a>
                         </li>
+                        <li>
+                            <a href="./notes" >Notes</a>
+                        </li>
                         <li v-if="isAuthenticated" style="margin-right: 30px;">
                             <a href="./dashboard" >Dashboard</a>
                         </li>

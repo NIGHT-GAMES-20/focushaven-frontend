@@ -21,7 +21,7 @@
         <li
           v-for="topic in notes"
           :key="topic"
-          @click="fetchFile(topic)" <!-- Placeholder function for future file handling -->
+          @click="fetchFile(topic)"
           class="cursor-pointer text-blue-500 underline hover:text-blue-700"
         >
           {{ topic }}
@@ -34,6 +34,9 @@
       <p>No notes found for Class {{ selectedClass }}.</p>
     </div>
   </div>
+
+  <!-- Debugging: Show response data -->
+  <p> Debug - {{ responces }}</p>
 </template>
 
 <script setup>
@@ -43,6 +46,7 @@ import axios from 'axios'
 const selectedClass = ref('') // Track selected class
 const classList = [8, 9, 10] // Static classes
 const notes = ref([]) // List of topic names (array)
+const responces = ref('')
 
 // Fetch topics based on selected class
 const fetchNotes = async () => {
@@ -52,6 +56,7 @@ const fetchNotes = async () => {
     // Fetch topics for the selected class from the backend
     const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/notes/${selectedClass.value}`)
     notes.value = response.data.topics || []
+    responces.value = response.data // Store the response for debugging or future use
   } catch (error) {
     console.error('Failed to fetch notes:', error)
     notes.value = []
