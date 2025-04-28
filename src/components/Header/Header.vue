@@ -52,14 +52,14 @@
                         <li>
                             <a href="./notes" >Notes</a>
                         </li>
-                        <li v-if="isAuthenticated" style="margin-right: 30px;">
+                        <li v-if="isAuthenticated" >
                             <a href="./dashboard" >Dashboard</a>
                         </li>
                         <li v-else>
                             <a href="./login" >Login</a>
                         </li>
-                        <li v-if="isAuthenticated" style="margin-right: 30px;">
-                            <span @click="logoutFunc" style="cursor: pointer;" >Logout</span>
+                        <li v-if="isAuthenticated" >
+                            <a @click="logoutFunc" href="javascript:void(0)" style="cursor: pointer;" >Logout</a>
                         </li>
                     </ul>
                 </nav>
