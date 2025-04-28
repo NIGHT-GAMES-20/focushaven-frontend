@@ -2,6 +2,7 @@
     "rewrites": [
       { "source": "/login", "destination": "/login.html" },
       { "source": "/dashboard", "destination": "/dashboard.html" },
+      { "source": "/notes", "destination": "/notes.html" },
       { "source": "/(.*)", "destination": "/index.html" }
     ]
   }
