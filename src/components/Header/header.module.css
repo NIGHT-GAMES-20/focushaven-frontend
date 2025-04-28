@@ -35,10 +35,9 @@
 a {
     color: #EED9C8;
     text-decoration: none;
-    padding: 5px 0px;
-    min-width: 80px;
-    display: inline-block;
-    position: relative; /* Required for positioning the underline */
+    padding: 5px 0;
+    display: inline-block; /* Ensures width only fits the text */
+    position: relative;
     transition: font-weight 0.2s ease-in-out;
 }
 
@@ -49,16 +48,16 @@ a::after {
     left: 0;
     width: 0;
     height: 2px; /* Thickness of the underline */
-    background-color: #4CAF50; /* Color of the underline */
+    background-color: #EED9C8; /* Color of the underline */
     transition: width 0.3s ease-in-out; /* Animation for the underline */
 }
 
 a:hover::after {
-    width: 100%; /* Full width of the link when hovered */
+    width: 100%; /* Full width of the text when hovered */
 }
 
 .active {
     font-weight: bold;
-    color: #ff6600; /* Optional: Change color when active */
+    color: #eed9c85d; /* Optional: Change color when active */
     transition: font-weight 0.2s ease-in-out;
 }
