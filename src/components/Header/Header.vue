@@ -29,7 +29,7 @@
       })
       isAuthenticated.value = false
       responseMessage.value = 'Logged out successfully'
-      setTimeout(() => window.location.reload(), 1000)
+      setTimeout(() => { window.location.href = '/home'; }, 1000)
     } catch (error) {
       responseMessage.value = `Logout Failed: ${error}`
     }

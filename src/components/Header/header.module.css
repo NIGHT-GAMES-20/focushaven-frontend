@@ -3,8 +3,8 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    background-color:#4D3326;
-    border: none ;
+    background-color: #4D3326;
+    border: none;
     color: #EED9C8;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 0.8em;
@@ -25,11 +25,11 @@
 }
 
 .navElem {
-    list-style: none;     
+    list-style: none;
     padding: 0;
-    display: flex;            
-    justify-content: center; 
-    align-items: center;      
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 a {
@@ -38,7 +38,23 @@ a {
     padding: 5px 0px;
     min-width: 80px;
     display: inline-block;
+    position: relative; /* Required for positioning the underline */
     transition: font-weight 0.2s ease-in-out;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px; /* Thickness of the underline */
+    background-color: #4CAF50; /* Color of the underline */
+    transition: width 0.3s ease-in-out; /* Animation for the underline */
+}
+
+a:hover::after {
+    width: 100%; /* Full width of the link when hovered */
 }
 
 .active {
