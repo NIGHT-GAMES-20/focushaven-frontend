@@ -33,10 +33,10 @@
             // Redirect after a brief delay
             setTimeout(() => {
                 window.location.href = '/home';
-            }, 1000);
+            }, 1);
 
         } catch (error) {
-            responseMessage.value = `Logout Failed: ${error}`;
+            console.error('Logout failed:', error);
         }
     }
 
