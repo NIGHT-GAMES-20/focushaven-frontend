@@ -28,7 +28,7 @@
 
             // Update authentication state
             isAuthenticated.value = false;
-            responseMessage.value = 'Logged out successfully';
+            console.log ('Logged out successfully');
 
             // Redirect after a brief delay
             setTimeout(() => {
