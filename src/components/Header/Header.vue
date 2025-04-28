@@ -59,7 +59,7 @@
                             <a href="./login" >Login</a>
                         </li>
                         <li v-if="isAuthenticated" style="margin-right: 30px;">
-                            <span @click="loginFunc" >Logout</span>
+                            <span @click="logoutFunc" style="cursor: pointer;" >Logout</span>
                         </li>
                     </ul>
                 </nav>
