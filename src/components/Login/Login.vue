@@ -115,18 +115,6 @@
     }
   }
   
-  async function logoutFunc() {
-    try {
-      await fetch(`${import.meta.env.VITE_BACKEND_URL}/login/logout`, {
-        method: 'POST',
-        credentials: 'include',
-      })
-      isAuthenticated.value = false
-      responseMessage.value = 'Logged out successfully'
-      setTimeout(() => window.location.reload(), 1000)
-    } catch (error) {
-      responseMessage.value = `Logout Failed: ${error}`
-    }
-  }
+  
   </script>
   

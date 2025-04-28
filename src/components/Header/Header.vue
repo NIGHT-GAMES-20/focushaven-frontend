@@ -21,6 +21,19 @@
     onMounted(() => {
         checkAuth()
     })
+    async function logoutFunc() {
+    try {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/login/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      })
+      isAuthenticated.value = false
+      responseMessage.value = 'Logged out successfully'
+      setTimeout(() => window.location.reload(), 1000)
+    } catch (error) {
+      responseMessage.value = `Logout Failed: ${error}`
+    }
+  }
 
 </script>
 
@@ -45,8 +58,8 @@
                         <li v-else>
                             <a href="./login" >Login</a>
                         </li>
-                        <li>
-                            <a href="./about" >About</a>
+                        <li v-if="isAuthenticated" style="margin-right: 30px;">
+                            <span @click="loginFunc" >Logout</span>
                         </li>
                     </ul>
                 </nav>
