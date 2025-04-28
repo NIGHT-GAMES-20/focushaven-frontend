@@ -56,10 +56,10 @@
                             <a href="./dashboard" >Dashboard</a>
                         </li>
                         <li v-else>
-                            <a href="./login" >Login</a>
+                            <a href="./login" style="margin-right: 10px;" >Login</a>
                         </li>
                         <li v-if="isAuthenticated" >
-                            <a @click="logoutFunc" href="javascript:void(0)" style="cursor: pointer;" >Logout</a>
+                            <a @click="logoutFunc" href="javascript:void(0)" style="margin-right: 10px;" >Logout</a>
                         </li>
                     </ul>
                 </nav>
