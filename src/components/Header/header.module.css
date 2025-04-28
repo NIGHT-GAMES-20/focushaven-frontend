@@ -30,15 +30,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 15px; /* Adds space between nav elements */
 }
 
 a {
     color: #EED9C8;
     text-decoration: none;
     padding: 5px 0;
-    display: inline-block; /* Ensures width only fits the text */
     position: relative;
     transition: font-weight 0.2s ease-in-out;
+    display: inline-block; /* Makes the width fit the text */
 }
 
 a::after {
