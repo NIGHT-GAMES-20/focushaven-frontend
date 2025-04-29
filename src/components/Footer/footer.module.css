@@ -7,4 +7,5 @@
     font-family: Georgia, 'Times New Roman', Times, serif, Helvetica, sans-serif;
     font-size: 0.9em;
     flex-shrink: 0; /* Footer stays at the bottom without shrinking */
+    bottom: 0; /* Stick to the bottom of the page */
 }
