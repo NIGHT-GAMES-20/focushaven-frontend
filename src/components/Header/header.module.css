@@ -1,15 +1,13 @@
 .headerDiv {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     padding: 10px 20px;
-    height: auto; /* ✅ allow it to size based on content */
-    max-height: 100px;
     background-color: #4D3326;
     color: #EED9C8;
-    box-sizing: border-box;
     flex-wrap: wrap;
   }
+  
   
   .logo img {
     height: 60px;
