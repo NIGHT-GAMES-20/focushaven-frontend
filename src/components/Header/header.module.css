@@ -2,26 +2,33 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap; /* 🔑 allows wrapping on small screens */
-    width: 100%;
+    padding: 10px 20px;
+    height: auto; /* ✅ allow it to size based on content */
+    max-height: 100px;
     background-color: #4D3326;
-    border: none;
     color: #EED9C8;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 0.8em;
-    height: auto; /* allow height to adjust */
-    padding: 10px;
     box-sizing: border-box;
+    flex-wrap: wrap;
   }
   
-
-.logo {
+  .logo img {
+    height: 60px; /* or max-height: 60px; */
+    width: auto;
+  }
+  
+  .logo h1 {
+    font-size: 2em;
+    margin: 0 10px;
+  }
+  
+  .logo {
     display: flex;
     align-items: center;
-    gap: 5px;
-    max-width: 100%;
+    gap: 10px;
     flex: 1;
+    max-width: 100%;
   }
+  
   
 
 .navBar {
