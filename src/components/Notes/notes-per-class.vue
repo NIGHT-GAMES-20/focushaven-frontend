@@ -35,8 +35,6 @@
     </div>
   </div>
 
-  <!-- Debugging: Show response data -->
-  <p> Debug - {{ responces }}</p>
 </template>
 
 <script setup>
