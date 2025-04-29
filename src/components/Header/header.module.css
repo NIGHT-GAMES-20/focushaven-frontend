@@ -90,14 +90,14 @@ a:hover::after {
     }
 
     .logo h1 {
-    font-size: 1.2em;
+    font-size: 3em;
     }
 
     .logo img {
-    height: 30px;
+    height: 120px;
     }
 
     a {
-        font-size: 1.2em;
+      font-size: 1.2em;
     }
 }
