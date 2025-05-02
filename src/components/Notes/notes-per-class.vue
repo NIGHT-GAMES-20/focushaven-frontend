@@ -23,8 +23,8 @@
         class="border p-2 rounded"
       >
         <option disabled value="">Please select</option>
-        <option v-for="subName in subList" :key="subName" :value="subName">
-          Subject {{ subName }}
+        <option v-for="subName in subList" :key="subName.name" :value="subName.code">
+          Subject {{ subName.name }}
         </option>
       </select>
     </div>
@@ -63,7 +63,18 @@ import styles from './notes-per-class.module.css'
 const selectedClass = ref('')
 const selectedSub = ref('')
 const classList = [8, 9, 10]
-const subList = ['Math', 'Science', 'English', 'test'] // Example subjects
+const subList = [
+  { name: 'English', code: 'eng' },
+  { name: 'Physics', code: 'phy' },
+  { name: 'Chemistry', code: 'chem' },
+  { name: 'Biology', code: 'bio' },
+  { name: 'Computer Science', code: 'cs' },
+  { name: 'History', code: 'hist' },
+  { name: 'Geography', code: 'geo' },
+  { name: 'Mathematics', code: 'math' },
+ 
+];
+
 const notes = ref([])
 const responces = ref('')
 
