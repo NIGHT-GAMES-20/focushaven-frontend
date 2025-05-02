@@ -12,7 +12,7 @@ const isAdmin = ref(false)
 
 async function checkAuth() {
     try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login/protected/admin-status`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login/protected`, {
         method: 'GET',
         credentials: 'include'
         });
