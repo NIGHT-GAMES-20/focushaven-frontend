@@ -49,7 +49,7 @@
   const username = ref('')
   const password = ref('')
   const showPassword = ref(false)
-  const responseMessage = ref('Testing...')
+  const responseMessage = ref('')
   const isAuthenticated = ref(false)
   const router = useRouter()
   

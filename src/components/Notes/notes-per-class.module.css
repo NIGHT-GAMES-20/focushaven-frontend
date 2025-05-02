@@ -1,0 +1,67 @@
+.selectDiv {
+    align-items: center;
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 15px 30px;
+    border: 5px solid #4D3326;
+    border-radius: 20px;
+    background-color: #EED9C8;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2em;
+    color: #4D3326;
+    box-sizing: border-box; /* ✅ Makes padding not overflow width */
+}
+
+.mainSelectDiv{
+    display: flex;
+    flex-direction: row;
+}
+
+.notesListDiv {
+    margin-top: 30px;
+    padding: 20px;
+    width: 90%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid #4D3326;
+    border-radius: 15px;
+    background-color: #FCF6F0;
+    font-family:Arial, Helvetica, sans-serif;
+    color: #4D3326;
+}
+
+.noteItem {
+    cursor: pointer;
+    margin: 10px 0;
+    padding: 10px 15px;
+    border: 2px solid #4D3326;
+    border-radius: 10px;
+    background-color: #FFF7ED;
+    color: #4D3326;
+    font-size: 1.1em;
+    transition: background-color 0.2s ease;
+}
+
+.noteItem:hover {
+    background-color: #EED9C8;
+    color: #2C1B12;
+}
+
+.emptyState {
+    text-align: center;
+    margin-top: 40px;
+    font-style: italic;
+    color: #4D3326;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.notesHeading {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #4D3326;
+    font-family: Arial, Helvetica, sans-serif;
+}

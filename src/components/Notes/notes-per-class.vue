@@ -1,7 +1,8 @@
 <template>
-  <div class="p-4">
+  <div :class="styles.mainSelectDiv">
     <!-- Class Select Dropdown -->
-    <label for="class-select">Select your class:</label>
+    <div :class="styles.selectDiv">
+      <label for="class-select">Select your class:</label>
       <select
         id="class-select"
         v-model="selectedClass"
@@ -12,27 +13,32 @@
           Class {{ className }}
         </option>
       </select>
+    </div>
 
-    <label for="subject-select">Select Subject:</label>
-    <select
-      id="subject-select"
-      v-model="selectedSub"
-      class="border p-2 rounded"
-    >
-      <option disabled value="">Please select</option>
-      <option v-for="subName in subList" :key="subName" :value="subName">
-        Subject {{ subName }}
-      </option>
-    </select>
-
-
+    <div :class="styles.selectDiv">
+      <label for="subject-select">Select Subject:</label>
+      <select
+        id="subject-select"
+        v-model="selectedSub"
+        class="border p-2 rounded"
+      >
+        <option disabled value="">Please select</option>
+        <option v-for="subName in subList" :key="subName" :value="subName">
+          Subject {{ subName }}
+        </option>
+      </select>
+    </div>
+  </div>
+    
+  <div>
     <!-- Topic Selection based on Class -->
-    <div v-if="notes.length > 0" class="mt-4">
-      <h2 class="text-lg font-bold mb-2">Notes for Class {{ selectedClass }}</h2>
+    <div v-if="notes.length > 0" :class="styles.notesListDiv">
+      <div :class="styles.notesHeading" >Notes for Class {{ selectedClass }}</div>
       <ul class="list-disc list-inside">
         <li
           v-for="topic in notes"
           :key="topic"
+          :class="styles.noteItem"
           @click="fetchFile(topic)"
           class="cursor-pointer text-blue-500 underline hover:text-blue-700"
         >
@@ -42,7 +48,7 @@
     </div>
 
     <!-- No notes available -->
-    <div v-else-if="(selectedClass && selectedSub)" class="mt-4">
+    <div v-else-if="(selectedClass && selectedSub)" :class="styles.emptyState">
       <p>No notes found for Class {{ selectedClass }} and {{ selectedSub }}.</p>
     </div>
   </div>
@@ -52,6 +58,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import axios from 'axios'
+import styles from './notes-per-class.module.css'
 
 const selectedClass = ref('')
 const selectedSub = ref('')
