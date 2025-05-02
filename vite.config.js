@@ -13,6 +13,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         login: resolve(__dirname, 'login.html'),
         notes: resolve(__dirname, 'notes.html'),
+        dashboard: resolve(__dirname, 'dashboard.html'),
       }
     }
   }
