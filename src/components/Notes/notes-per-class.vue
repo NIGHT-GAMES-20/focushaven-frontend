@@ -92,4 +92,12 @@ watch([selectedClass, selectedSub], async ([newClass, newSub]) => {
   }
 })
 
+async function fetchFile(topic) {
+  try {
+    window.open(`${import.meta.env.VITE_BACKEND_URL}/downloads/notes/download/${topic}`, '_blank')
+  }
+  catch(err){
+    console.error('Failed to fetch file:', err);
+  }
+}
 </script>
