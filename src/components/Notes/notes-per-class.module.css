@@ -67,10 +67,10 @@
 }
 
 @media (max-width: 600px){
-    .selectDiv{
+    .mainSelectDiv{
         display: flex;
         flex-direction: column;
         align-items: center;
-        
+
     }
 }
