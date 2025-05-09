@@ -1,6 +1,6 @@
 <template>
   <div v-if="isAuthenticated && isAdmin" >
-    <button @click="updateDB" >Update Notes From DB</button>
+    <button @click="updateDB" >Update Notes DB</button>
   </div>
 </template>
 
