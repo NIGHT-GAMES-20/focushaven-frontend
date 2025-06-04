@@ -51,7 +51,6 @@
   const showPassword = ref(false)
   const responseMessage = ref('')
   const isAuthenticated = ref(false)
-  const router = useRouter()
   
   function togglePassword() {
     showPassword.value = !showPassword.value

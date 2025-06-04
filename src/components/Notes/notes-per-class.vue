@@ -68,7 +68,7 @@ const subList = [
   { name: 'Physics', code: 'phy' },
   { name: 'Chemistry', code: 'chem' },
   { name: 'Biology', code: 'bio' },
-  { name: 'Computer Science', code: 'cs' },
+  { name: 'Computer Application', code: 'cs' },
   { name: 'History', code: 'hist' },
   { name: 'Geography', code: 'geo' },
   { name: 'Mathematics', code: 'math' },

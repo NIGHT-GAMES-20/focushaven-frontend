@@ -1,0 +1,38 @@
+.pageNumberContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+  
+}
+
+
+.pageList {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+}
+
+.pageNumber {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #EED9C8;
+  transition: background-color 0.3s;
+  transition: color 0.2s;
+}
+
+.pageNumber:hover {
+  background-color: #4d3326;
+  color: #EED9C8;
+}
+
+.selectedPage{
+    background-color: #4d3326;
+    color: #EED9C8;
+    font-weight: bold;
+    border: 1px solid #ccc;
+}
