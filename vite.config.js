@@ -15,6 +15,7 @@ export default defineConfig({
         notes: resolve(__dirname, 'notes.html'),
         forum: resolve(__dirname, 'forum.html'),
         dashboard: resolve(__dirname, 'dashboard.html'),
+        question: resolve(__dirname, 'forum/question.html'),
       }
     }
   }
