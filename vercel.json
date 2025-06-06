@@ -5,7 +5,7 @@
       { "source": "/notes", "destination": "/notes.html" },
       { "source": "/forum", "destination": "/forum.html" },
       { "source": "/(.*)", "destination": "/index.html" },
-      { "source": "/forum/question/(.*)", "destination": "/forum/question.html"}
+      { "source": "/forum/question/:id", "destination": "/forum/question.html"}
     ]
   }
   
