@@ -1,5 +1,6 @@
 # Focus Haven Website Frontend
 
-This is the Frontend of the website Focushaven being Develop By Me <NIGHT_GAMES_20>
+This is the Frontend of the website Focushaven being Develop By Me `NIGHT_GAMES_20`
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+Focushaven is a Study Website made for the students of Class 9,10 of the Indian Education Board `ICSE`
+Visit The Website At [Focus Haven](https://focushaven.vercel.app/).
