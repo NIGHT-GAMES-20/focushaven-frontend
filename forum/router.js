@@ -1,11 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import QuestionView from './views/QuestionView.vue';
+import QuestionView from './QuestionView.vue';
 
 const routes = [
   {
     path: '/forum/question/:id',
-    component: QuestionView,
-    props: true
+    component: QuestionView
   }
 ];
 
