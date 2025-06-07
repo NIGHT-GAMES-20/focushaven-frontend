@@ -9,5 +9,5 @@
     import { useRoute } from 'vue-router';
 
     const route = useRoute()
-    const routeId = route.params.id
+    const routeId = 1234
 </script>
