@@ -4,7 +4,7 @@
       { "source": "/dashboard", "destination": "/dashboard.html" },
       { "source": "/notes", "destination": "/notes.html" },
       { "source": "/forum", "destination": "/forum.html" },
-      { "source": "/forum/question/:id", "destination": "/forum/question.html"},
+      { "source": "/forum/question/:id", "destination": "/question.html"},
       { "source": "/(.*)", "destination": "/index.html" }
     ]
   }
