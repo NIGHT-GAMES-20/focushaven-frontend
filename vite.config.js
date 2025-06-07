@@ -16,6 +16,13 @@ export default defineConfig({
         forum: resolve(__dirname, 'forum.html'),
         dashboard: resolve(__dirname, 'dashboard.html'),
         question: resolve(__dirname, 'forum/question.html'),
+      },
+      output: {
+        entryFileNames: chunk => {
+          // Put question.js next to question.html
+          if (chunk.name === 'question') return 'forum/question.js';
+          return 'assets/[name].js';
+        }
       }
     }
   }
