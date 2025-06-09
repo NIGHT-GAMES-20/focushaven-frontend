@@ -15,8 +15,10 @@
         </div>
         <div v-else :class="Styles.forumQuestionsContainer">
             <ul class="list-disc list-inside">
-                <li v-for="(question,index) in questions" :key="index" :class="Styles.questionItem">
-                    <h5 :class="Styles.question">{{ question.question }}</h5>
+                <li v-for="(text, index) in questions" :key="questionIDs[index]" :class="Styles.questionItem" >
+                    <a :href="`/forum/question/${questionIDs[index]}`" :class="Styles.question" >
+                        {{ text }}
+                    </a>
                 </li>
                 <li v-if="questions.length === 0" :class="Styles.noQuestions">No questions found.</li>
             </ul>
@@ -38,6 +40,7 @@ import Styles from './Forum.module.css';
 const searchQuery = ref('');
 const searchQuestions = ref([]);
 const questions = ref([]);
+const questionIDs = ref([]);
 const searchTriggered = ref(false);
 const pages = ref([1]);
 const currentPage = ref(1);
@@ -63,7 +66,9 @@ async function fetchQuestions(page) {
             credentials: 'include',
         });
         const data = await response.json() || [];
-        questions.value = data.questions || [];
+        const questionsList = data.questions || [];
+        questionIDs.value = questionsList.map(q => q._id);
+        questions.value = questionsList.map(q => q.text);
         searchTriggered.value = false;
     } catch (error) {
         console.error('Error fetching forum data:', error);
