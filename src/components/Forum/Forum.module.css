@@ -1,3 +1,64 @@
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0rem 1rem 0rem 1rem;
+  background-color: #EED9C8;
+  border-bottom: 1px solid #ccc;
+}
+.titleText{
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #4d3326;
+  padding : 0rem 15px;
+}
+
+.searchInput{
+  width: 30rem;
+  border: 1px solid #ccc;
+  color: #4d3326;
+  border-radius: 4px;
+  font-size: 01rem;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #4d3326;
+}
+
+.searchButton{
+  font-size: 01rem;
+  cursor: pointer;
+  border: 1px solid #4d3326;
+  padding: 0.1rem;
+  border-radius: 4px;
+  background-color: #EED9C8;
+  box-shadow: 0 0 0 0 black;
+  transition: box-shadow 0.3s;
+}
+
+.searchButton:hover {
+  font-style: italic;
+  box-shadow: 0 0 0 1px #4d3326;
+  
+}
+
+.askQuestionBtn{
+  font-size: 01rem;
+  cursor: pointer;
+  border: 1px solid #4d3326;
+  padding: 0.1rem;
+  border-radius: 4px;
+  background-color: #EED9C8;
+  box-shadow: 0 0 0 0 black;
+  transition: box-shadow 0.3s;
+}
+
+.askQuestionBtn:hover {
+  font-style: italic;
+  box-shadow: 0 0 0 1px #4d3326;
+}
+
 .pageNumberContainer {
   display: flex;
   justify-content: center;

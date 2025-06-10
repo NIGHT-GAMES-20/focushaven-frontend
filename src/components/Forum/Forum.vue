@@ -2,8 +2,11 @@
     <div :class="Styles.forumContainer">
         <div :class="Styles.header">
             <h4 :class="Styles.titleText">Forum</h4>
-            <input v-model="searchQuery" type="text" placeholder="Search..." :class="Styles.searchInput" />
-            <button :class="Styles.searchButton" @click="fetchSearchQuesions">Search</button>
+            <div :class="Styles.search">
+                <input v-model="searchQuery" type="text" placeholder="Search..." :class="Styles.searchInput" />
+                <button :class="Styles.searchButton" @click="fetchSearchQuesions">Search</button>
+            </div>
+            <button :class="Styles.askQuestionBtn" @click="javascript.void(0)">Ask A Question</button>
         </div>
         <div v-if="searchTriggered" :class="Styles.forumQuestionsContainer">
             <ul class="list-disc list-inside">
