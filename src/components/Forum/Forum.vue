@@ -10,7 +10,7 @@
         </div>
         <div v-if="searchTriggered" :class="Styles.forumQuestionsContainer">
             <ul class="list-disc list-inside">
-                <li v-for="(question,index) in searchQuestions" :key="index" :class="Styles.questionItem">
+                <li v-for="(text ,index) in searchQuestions" :key="index" :class="Styles.questionItem">
                     <a :href="`/forum/question/${searchQuestionsIDs[index]}`" :class="Styles.question" >
                         {{ text }}
                     </a>
