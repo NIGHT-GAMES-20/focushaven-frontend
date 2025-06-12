@@ -57,7 +57,7 @@ async function fetchSearchQuesions() {
             method: 'GET',
             credentials: 'include',
         })
-        data = await response.json() || [];
+        const data = await response.json() || [];
         const questionsList = data.results || [];
         searchQuestionsIDs.value = questionsList.map(q => q._id);
         searchQuestions.value = questionsList.map(q => q.text);
