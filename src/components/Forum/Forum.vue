@@ -11,7 +11,9 @@
         <div v-if="searchTriggered" :class="Styles.forumQuestionsContainer">
             <ul class="list-disc list-inside">
                 <li v-for="(question,index) in searchQuestions" :key="index" :class="Styles.questionItem">
-                    <h5 :class="Styles.question">{{ question.question }}</h5>
+                    <a :href="`/forum/question/${searchQuestionsIDs[index]}`" :class="Styles.question" >
+                        {{ text }}
+                    </a>
                 </li>
                 <li v-if="searchQuestions.length === 0" :class="Styles.noQuestions">No questions found.</li>
             </ul>
@@ -42,6 +44,7 @@ import Styles from './Forum.module.css';
 
 const searchQuery = ref('');
 const searchQuestions = ref([]);
+const searchQuestionsIDs = ref([]);
 const questions = ref([]);
 const questionIDs = ref([]);
 const searchTriggered = ref(false);
@@ -54,7 +57,10 @@ async function fetchSearchQuesions() {
             method: 'GET',
             credentials: 'include',
         })
-        searchQuestions.value = await response.json().questions || [];
+        data = await response.json() || [];
+        const questionsList = data.questions || [];
+        searchQuestionsIDs.value = questionsList.map(q => q._id);
+        searchQuestions.value = questionsList.map(q => q.text);
         searchTriggered.value = true;
     }catch (error) {
         console.error('Error fetching forum data:', error);
