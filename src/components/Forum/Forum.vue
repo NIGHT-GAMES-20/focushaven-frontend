@@ -75,7 +75,7 @@ async function fetchQuestions(page) {
             credentials: 'include',
         });
         const data = await response.json() || [];
-        const questionsList = data.questions || [];
+        const questionsList = data.results || [];
         questionIDs.value = questionsList.map(q => q._id);
         questions.value = questionsList.map(q => q.text);
         searchTriggered.value = false;
