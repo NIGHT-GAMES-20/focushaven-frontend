@@ -58,7 +58,7 @@ async function fetchSearchQuesions() {
             credentials: 'include',
         })
         data = await response.json() || [];
-        const questionsList = data.questions || [];
+        const questionsList = data.results || [];
         searchQuestionsIDs.value = questionsList.map(q => q._id);
         searchQuestions.value = questionsList.map(q => q.text);
         searchTriggered.value = true;
@@ -75,7 +75,7 @@ async function fetchQuestions(page) {
             credentials: 'include',
         });
         const data = await response.json() || [];
-        const questionsList = data.results || [];
+        const questionsList = data.questions || [];
         questionIDs.value = questionsList.map(q => q._id);
         questions.value = questionsList.map(q => q.text);
         searchTriggered.value = false;
