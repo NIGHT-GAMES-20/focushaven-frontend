@@ -16,7 +16,10 @@
                     </a>
                 </li>
                 <li v-if="(searchQuestions.length === 0) && !searchInitiation " :class="Styles.noQuestions">No questions found.</li>
-                <li v-else-if="(searchQuestions.length === 0) && searchInitiation " :class="Styles.noQuestions">Searching, Please Wait</li>
+                <li v-else-if="(searchQuestions.length === 0) && searchInitiation " :class="Styles.loadingContainer">
+                    <span :class="Styles.spinner"></span>
+                    Searching, Please Wait
+                </li>
             </ul>
         </div>
         <div v-else :class="Styles.forumQuestionsContainer">
@@ -55,6 +58,9 @@ const currentPage = ref(1);
 
 async function fetchSearchQuesions() {
     try{
+        searchTriggered.value = false;
+        searchInitiation.value = false;
+        await nextTick();
         searchTriggered.value = true;
         searchInitiation.value = true;
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/search/questions?search=${encodeURIComponent(searchQuery.value)}`, {
@@ -65,10 +71,10 @@ async function fetchSearchQuesions() {
         const questionsList = data.results || [];
         searchQuestionsIDs.value = questionsList.map(q => q._id);
         searchQuestions.value = questionsList.map(q => q.text);
-        searchTriggered.value = true;
         searchInitiation.value = false;
     }catch (error) {
         console.error('Error fetching forum data:', error);
+        searchInitiation.value = false;
     }
 }
 
@@ -76,6 +82,7 @@ async function fetchQuestions(page) {
     try {
         currentPage.value = page;
         searchTriggered.value = false;
+        searchInitiation.value = false;
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/questions?page=${page}`, {
             method: 'GET',
             credentials: 'include',
@@ -84,7 +91,6 @@ async function fetchQuestions(page) {
         const questionsList = data.questions || [];
         questionIDs.value = questionsList.map(q => q._id);
         questions.value = questionsList.map(q => q.text);
-        searchTriggered.value = false;
     } catch (error) {
         console.error('Error fetching forum data:', error);
     }
