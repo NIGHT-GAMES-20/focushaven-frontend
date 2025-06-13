@@ -15,11 +15,11 @@
                         {{ text }}
                     </a>
                 </li>
-                <li v-if="(searchQuestions.length === 0) && !searchInitiation " :class="Styles.noQuestions">No questions found.</li>
-                <li v-else-if="(searchQuestions.length === 0) && searchInitiation " :class="Styles.loadingContainer">
+                <li v-if="searchInitiation" :class="Styles.loadingContainer">
                     <span :class="Styles.spinner"></span>
                     Searching, Please Wait
                 </li>
+                <li v-else-if="(searchQuestions.length === 0)" :class="Styles.noQuestions">No questions found.</li>
             </ul>
         </div>
         <div v-else :class="Styles.forumQuestionsContainer">
@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref , onMounted , nextTick } from 'vue';
+import { ref , onMounted } from 'vue';
 import Styles from './Forum.module.css';
 
 const searchQuery = ref('');
@@ -58,13 +58,7 @@ const currentPage = ref(1);
 
 async function fetchSearchQuesions() {
     try{
-        searchTriggered.value = false;
-        searchInitiation.value = false;
-
-        await nextTick();
-        await new Promise(resolve => setTimeout(resolve, 0));
-        
-        searchTriggered.value = true;
+        if (!searchTriggered.value) searchTriggered.value = true;
         searchInitiation.value = true;
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/search/questions?search=${encodeURIComponent(searchQuery.value)}`, {
             method: 'GET',
@@ -74,9 +68,9 @@ async function fetchSearchQuesions() {
         const questionsList = data.results || [];
         searchQuestionsIDs.value = questionsList.map(q => q._id);
         searchQuestions.value = questionsList.map(q => q.text);
-        searchInitiation.value = false;
     }catch (error) {
         console.error('Error fetching forum data:', error);
+    } finally {
         searchInitiation.value = false;
     }
 }
