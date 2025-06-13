@@ -53,6 +53,7 @@ const currentPage = ref(1);
 
 async function fetchSearchQuesions() {
     try{
+        searchTriggered.value = true;
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/search/questions?search=${encodeURIComponent(searchQuery.value)}`, {
             method: 'GET',
             credentials: 'include',
@@ -70,6 +71,7 @@ async function fetchSearchQuesions() {
 async function fetchQuestions(page) {
     try {
         currentPage.value = page;
+        searchTriggered.value = false;
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/questions?page=${page}`, {
             method: 'GET',
             credentials: 'include',
