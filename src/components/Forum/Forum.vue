@@ -60,6 +60,10 @@ async function fetchSearchQuesions() {
     try{
         if (!searchTriggered.value) searchTriggered.value = true;
         searchInitiation.value = true;
+
+        searchQuestions.value = [];
+        searchQuestionsIDs.value = [];
+        
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/search/questions?search=${encodeURIComponent(searchQuery.value)}`, {
             method: 'GET',
             credentials: 'include',
