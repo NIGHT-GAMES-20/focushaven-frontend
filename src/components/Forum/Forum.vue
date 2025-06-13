@@ -9,7 +9,7 @@
             <button :class="Styles.askQuestionBtn" @click="javascript.void(0)">Ask A Question</button>
         </div>
         <div v-if="searchTriggered" :class="Styles.forumQuestionsContainer">
-            <ul class="list-disc list-inside">
+            <ol class="list-disc list-inside">
                 <li v-for="(text ,index) in searchQuestions" :key="index" :class="Styles.questionItem">
                     <a :href="`/forum/question/${searchQuestionsIDs[index]}`" :class="Styles.question" >
                         {{ text }}
@@ -20,17 +20,17 @@
                     Searching, Please Wait
                 </li>
                 <li v-else-if="(searchQuestions.length === 0)" :class="Styles.noQuestions">No questions found.</li>
-            </ul>
+            </ol>
         </div>
         <div v-else :class="Styles.forumQuestionsContainer">
-            <ul class="list-disc list-inside">
+            <ol class="list-disc list-inside">
                 <li v-for="(text, index) in questions" :key="questionIDs[index]" :class="Styles.questionItem" >
                     <a :href="`/forum/question/${questionIDs[index]}`" :class="Styles.question" >
                         {{ text }}
                     </a>
                 </li>
                 <li v-if="questions.length === 0" :class="Styles.noQuestions">No questions found.</li>
-            </ul>
+            </ol>
         </div>
         <div :class="Styles.pageNumberContainer">
         <ul :class="Styles.pageList">
@@ -63,7 +63,7 @@ async function fetchSearchQuesions() {
 
         searchQuestions.value = [];
         searchQuestionsIDs.value = [];
-        
+
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/search/questions?search=${encodeURIComponent(searchQuery.value)}`, {
             method: 'GET',
             credentials: 'include',

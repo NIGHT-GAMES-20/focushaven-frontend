@@ -60,12 +60,13 @@
 }
 
 .questionItem{
-  list-style: none;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
 }
 
 .question{
   color: black;
-  padding: 2px;
   font-style: italic;
   list-style: none
 }
