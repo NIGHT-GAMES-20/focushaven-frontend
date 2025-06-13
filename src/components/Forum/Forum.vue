@@ -15,7 +15,8 @@
                         {{ text }}
                     </a>
                 </li>
-                <li v-if="searchQuestions.length === 0" :class="Styles.noQuestions">No questions found.</li>
+                <li v-if="(searchQuestions.length === 0) && !searchInitiation " :class="Styles.noQuestions">No questions found.</li>
+                <li v-else-if="(searchQuestions.length === 0) && searchInitiation " :class="Styles.noQuestions">Searching, Please Wait</li>
             </ul>
         </div>
         <div v-else :class="Styles.forumQuestionsContainer">
@@ -47,6 +48,7 @@ const searchQuestions = ref([]);
 const searchQuestionsIDs = ref([]);
 const questions = ref([]);
 const questionIDs = ref([]);
+const searchInitiation = ref(false);
 const searchTriggered = ref(false);
 const pages = ref([1]);
 const currentPage = ref(1);
@@ -54,6 +56,7 @@ const currentPage = ref(1);
 async function fetchSearchQuesions() {
     try{
         searchTriggered.value = true;
+        searchInitiation.value = true;
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/search/questions?search=${encodeURIComponent(searchQuery.value)}`, {
             method: 'GET',
             credentials: 'include',
@@ -63,6 +66,7 @@ async function fetchSearchQuesions() {
         searchQuestionsIDs.value = questionsList.map(q => q._id);
         searchQuestions.value = questionsList.map(q => q.text);
         searchTriggered.value = true;
+        searchInitiation.value = false;
     }catch (error) {
         console.error('Error fetching forum data:', error);
     }
