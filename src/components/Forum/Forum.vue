@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref,onMounted } from 'vue';
+import { ref , onMounted , nextTick } from 'vue';
 import Styles from './Forum.module.css';
 
 const searchQuery = ref('');
