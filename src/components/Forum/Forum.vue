@@ -60,7 +60,10 @@ async function fetchSearchQuesions() {
     try{
         searchTriggered.value = false;
         searchInitiation.value = false;
+
         await nextTick();
+        await new Promise(resolve => setTimeout(resolve, 0));
+        
         searchTriggered.value = true;
         searchInitiation.value = true;
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/search/questions?search=${encodeURIComponent(searchQuery.value)}`, {
