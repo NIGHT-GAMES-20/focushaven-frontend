@@ -7,11 +7,10 @@
     { 
       "source": "/forum/question/:id",
       "has": [{ "type": "header", "key": "accept", "value": "text/html.*" }],
-      "destination": "/question.html" },
-    {
-      "source": "/(.*)",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/html.*" }],
-      "destination": "/index.html"
+      "destination": "/question.html" 
     }
-  ]
+  ],
+  "error": {
+    "404": "/errors/error-404.html"
+  }
 }
