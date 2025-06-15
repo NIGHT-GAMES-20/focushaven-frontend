@@ -84,9 +84,7 @@
       responseMessage.value = 'Please fill in all fields'
       return
     }
-  
-    responseMessage.value = 'Trying...'
-  
+
     const requestBody = {
       username: username.value,
       password: MD5(password.value).toString(),
