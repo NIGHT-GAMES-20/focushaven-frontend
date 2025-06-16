@@ -3,7 +3,7 @@
         <div :class="Styles.header">
             <h4 :class="Styles.titleText">Forum</h4>
             <div :class="Styles.search">
-                <input v-model="searchQuery" type="text" placeholder="Search..." :class="Styles.searchInput" />
+                <input v-model="searchQuery" type="text" placeholder="Search..." :class="Styles.searchInput" @keydown.enter="fetchSearchQuesions" />
                 <button :class="Styles.searchButton" @click="fetchSearchQuesions">Search</button>
             </div>
             <button :class="Styles.askQuestionBtn" @click="javascript.void(0)">Ask A Question</button>
