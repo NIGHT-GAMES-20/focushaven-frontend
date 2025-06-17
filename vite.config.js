@@ -12,6 +12,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         login: resolve(__dirname, 'login.html'),
+        signIn: resolve(__dirname, 'signin.html'),
         notes: resolve(__dirname, 'notes.html'),
         forum: resolve(__dirname, 'forum.html'),
         dashboard: resolve(__dirname, 'dashboard.html'),

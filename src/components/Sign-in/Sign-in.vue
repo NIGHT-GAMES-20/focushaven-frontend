@@ -1,29 +1,42 @@
 <template>
   <div :class="styles.loginPage">
-    <h2>Login</h2>
+    <h2>Sign In</h2>
+
+    <label>
+      Name:
+      <input v-model="name" type="text" placeholder="Enter Name" :class="styles.usernameInput" />
+    </label>
 
     <label>
       Username:
-      <input
-        v-model="username"
-        type="text"
-        placeholder="Enter username"
-        :class="styles.usernameInput"
-      />
+      <input v-model="username" type="text" placeholder="Enter username" :class="styles.usernameInput" />
+    </label>
+
+    <label>
+      <span>
+        Email (Optional) 
+        <span :class="styles.tooltipContainer">
+          ⓘ:
+          <span :class="styles.tooltipText">Account Rcovery Will Not Be Available If Email is not Added</span>
+        </span>
+      </span>
+      <input v-model="email" type="email" placeholder="Enter Email" :class="styles.usernameInput" />
     </label>
 
     <label>
       Password:
       <div :class="styles.passwordRow">
-        <input
-          :type="showPassword ? 'text' : 'password'"
-          v-model="password"
-          placeholder="Enter password"
-          :class="styles.passwordInput"
-        />
+        <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Enter password" :class="styles.passwordInput"/>
         <button type="button" @click="togglePassword" :class="styles.viewPassBtn">
           <img :src="currentImage" alt="Toggle Password" :class="styles.viewPassImg" />
         </button>
+      </div>
+    </label>
+
+    <label>
+      Confirm Password:
+      <div :class="styles.passwordRow">
+        <input :type="showPassword ? 'text' : 'password'" v-model="CNFpassword" placeholder="Enter password" :class="styles.passwordInput"/>
       </div>
     </label>
 
@@ -38,18 +51,21 @@
   
 <script setup>
   import { ref, onMounted } from 'vue'
-  import { useRouter } from 'vue-router'
   import MD5 from 'crypto-js/md5'
   import imageA from './assets/view.png'
   import imageB from './assets/hide.png'
-  import styles from './login.module.css'
+  import styles from './sign-in.module.css'
 
   const currentImage = ref(imageA)
   
+  const name = ref('')
+  const email = ref('')
+  const CNFpassword = ref('')
   const username = ref('')
   const password = ref('')
   const showPassword = ref(false)
   const responseMessage = ref('')
+  const isAuthenticated = ref(false)
   
   function togglePassword() {
     showPassword.value = !showPassword.value
@@ -64,10 +80,13 @@
       })
       const data = await response.json()
       if (data.success) {
-        window.location.href = '/dashboard'
-      } 
-    } catch(error) {
-      console.error('Error checking authentication:', error)
+        isAuthenticated.value = true
+        responseMessage.value = data.user.username
+      } else {
+        isAuthenticated.value = false
+      }
+    } catch {
+      isAuthenticated.value = false
     }
   }
   

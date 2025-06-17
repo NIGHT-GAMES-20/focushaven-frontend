@@ -1,0 +1,164 @@
+.loginPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 5px 30px;
+    border: 5px solid #4D3326;
+    border-radius: 20px;
+    background-color: #EED9C8;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2em;
+    color: #4D3326;
+    box-sizing: border-box; /* ✅ Makes padding not overflow width */
+}
+
+h2 {
+    margin-bottom: 5px;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.usernameInput,
+.passwordInput {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: #4D3326;
+    color: #EED9C8;
+    border: 2px solid #917762;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+    height: 38px;
+}
+
+.passwordRow {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+}
+
+.viewPassBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background-color: #61463036;
+    border: 2px solid #917762;
+    border-radius: 5px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.viewPassImg {
+    width: 20px;
+    height: 20px;
+}
+
+.buttonRow {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap; /* ✅ Wrap buttons if screen is small */
+}
+
+.loginBtn,
+.logoutBtn {
+    cursor: pointer;
+    border: 2px solid #917762;
+    border-radius: 5px;
+    background-color: #61463036;
+    height: 38px;
+    width: 120px;
+    font-size: 1em;
+    margin: 0px;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.loginBtn:hover,
+.logoutBtn:hover {
+    background-color: #917762;
+    color: #fff;
+}
+
+.signin {
+    color: #4D3326;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition: text-decoration-color 100ms ease-in-out;
+}
+
+.signin:hover {
+    text-decoration-color: #4D3326;
+}
+
+/* Inside sign-in.module.css */
+.tooltipContainer {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+
+.tooltipText {
+  font-size: 1rem;
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 10;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #d4bfae;
+  border: 1px solid #4D3326;
+  color: #4D3326;
+  padding: 5px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.tooltipContainer:hover .tooltipText {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .loginPage {
+        padding: 20px 15px;
+        margin: 30px auto;
+    }
+
+    .buttonRow {
+        gap: 10px;
+    }
+
+    .loginBtn,
+    .logoutBtn {
+        width: 100%;
+        max-width: 200px; /* ✅ On very small phones, buttons don't get too wide */
+    }
+
+    .passwordRow {
+        flex-direction: column; /* ✅ Stack password and view button vertically if too small */
+        align-items: stretch;
+    }
+
+    .viewPassBtn {
+        width: 100%;
+        height: 38px;
+    }
+}
