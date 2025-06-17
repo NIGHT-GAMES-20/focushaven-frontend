@@ -60,6 +60,25 @@ label {
     cursor: pointer;
 }
 
+.emailVerifyBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 38px;
+    background-color: #61463036;
+    border: 2px solid #917762;
+    border-radius: 5px;
+    padding: 0;
+    font-size: 0.9em;
+    color: #4D3326;
+    cursor: pointer;
+}
+
+.verifiedEmail{
+    color: green;
+}
+
 .viewPassImg {
     width: 20px;
     height: 20px;
@@ -133,6 +152,12 @@ label {
   visibility: visible;
   opacity: 1;
 }
+
+.errMsg{
+    color : red;
+    font-size: 0.7em;
+}
+
 
 
 /* Mobile responsiveness */
