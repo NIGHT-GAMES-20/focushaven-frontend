@@ -54,7 +54,7 @@
   import MD5 from 'crypto-js/md5'
   import imageA from './assets/view.png'
   import imageB from './assets/hide.png'
-  import styles from './sign-in.module.css'
+  import styles from './Sign-in.module.css'
 
   const currentImage = ref(imageA)
   
