@@ -29,7 +29,7 @@
       })
       isAuthenticated.value = false
       console.log('Logged out successfully')
-      setTimeout(() => { window.location.href = '/home'; }, 10)
+      setTimeout(() => { window.location.href = '/'; }, 10)
     } catch (error) {
       console.error(`Logout Failed: ${error}`)
     }
