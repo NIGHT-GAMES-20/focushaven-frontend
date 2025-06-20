@@ -408,7 +408,7 @@
       if (data.success) {
         isAuthenticated.value = true
         responseMessage.value = `Sign Up successful FHiD: ${data.FHiD}! Redirecting...`
-        setTimeout(() => { window.location.href = '/dashboard'; }, 1000)
+        setTimeout(() => { window.location.href = '/login'; }, 1000)
       } else {
         responseMessage.value = data.error || data.message || 'Sign Up failed'
       }
