@@ -123,7 +123,7 @@
     // Availability check
     isUsernameValid.value = await validateUsername(val)
     if (!isUsernameValid.value) {
-      usernameAlreadyUsedMsg.value = ''
+      usernameAlreadyUsedMsg.value = 'Username already exists'
       return
     } else {
       usernameAlreadyUsedMsg.value = 'Username is available'
