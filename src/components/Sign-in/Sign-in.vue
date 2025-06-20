@@ -290,7 +290,7 @@
       return
     }
 
-    if(emailErrMsg.value){
+    if(emailErrMsg.value !== 'Please verify your email before signing up'){
       return
     }
 
