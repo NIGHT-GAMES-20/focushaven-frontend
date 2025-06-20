@@ -275,7 +275,7 @@
       const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/signin/usernameValidation`, {
         params: { username },
       })
-      const data = await response.json()
+      const data = await response.data
       if (data.success) {
         return data.isAvailable
       }
