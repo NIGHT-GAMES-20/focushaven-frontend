@@ -276,9 +276,8 @@
         params: { username },
       })
       const data = await response.data
-      if (data.success) {
-        return data.isAvailable
-      }
+      return data.success;
+      
     } catch (error) {
       console.error('Error validating username:', error)
       return false
