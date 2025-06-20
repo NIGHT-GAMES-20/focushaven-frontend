@@ -1,6 +1,6 @@
 <template>
   <div :class="styles.loginPage">
-    <h2>Sign In</h2>
+    <h2>Register</h2>
 
     <label>
       Name:
@@ -12,6 +12,7 @@
       Username:
       <input v-model="username" type="text" placeholder="Enter username" :class="styles.usernameInput" />
       <span :class="styles.errMsg">{{ usernameErrMsg }}</span>
+      <span :class="[ isUsernameValid ? styles.otpSendMsg : styles.errMsg]">{{ usernameAlreadyUsedMsg }}</span>
     </label>
 
     <label>
@@ -27,7 +28,13 @@
         <button type="button" @click="VerifyEmail" :class="[styles.emailVerifyBtn, emailVerificationStatus ? styles.verifiedEmail : '' ]" :disabled="emailVerificationStatus" >{{ emailVerificationBtn }}</button>
       </div> 
       <span :class="styles.errMsg">{{ emailErrMsg }}</span>
-    </label>
+      <div :class="styles.passwordRow">
+        <input v-if="verifyingEmail" type="text" v-model="EmailOTP" placeholder="Enter OTP" :class="styles.emailOTPInput" :disabled="emailVerificationStatus" maxlength="6" />
+        <button v-if="verifyingEmail" type="button" @click="VerifyEmailOTP" :class="[styles.emailOTPVerifyBtn, emailVerificationStatus ? styles.verifiedEmail : '' ]" :disabled="emailVerificationStatus">Verify OTP</button>
+      </div>
+      <span v-if="verifyingEmail" :class="styles.errMsg">{{ emailOTPErrMsg }}</span>
+      <span v-if="verifyingEmail" :class="styles.otpSendMsg">{{ EmailOTPSent }}</span>
+      </label>
 
     <label>
       Password:
@@ -49,10 +56,10 @@
     </label>
 
     <div :class="styles.buttonRow">
-      <button @click="loginFunc" :class="styles.loginBtn">Login</button>
+      <button @click="SignupFunc" :class="styles.loginBtn">Sign Up</button>
     </div>
 
-    <p style="margin-top: 20px;">{{ responseMessage }}</p>
+    <p :class="styles.errMsg">{{ responseMessage }}</p>
   </div>
 </template>
 
@@ -75,13 +82,19 @@
   const showPassword = ref(false)
   const responseMessage = ref('')
   const isAuthenticated = ref(false)
+  const isUsernameValid = ref(false)
   const usernameErrMsg = ref('')
+  const usernameAlreadyUsedMsg = ref('')
   const nameErrMsg = ref('')
   const emailErrMsg = ref('')
   const passwordErrMsg = ref('')
   const CNFpasswordErrMsg = ref('')
+  const verifyingEmail = ref(false)
   const emailVerificationStatus = ref(false)
   const emailVerificationBtn = ref('Verify')
+  const EmailOTP = ref('')
+  const EmailOTPSent = ref('')
+  const emailOTPErrMsg = ref('')
 
 
   watch(username, async () => {
@@ -108,9 +121,12 @@
     }
 
     // Availability check
-    const isAvailable = await validateUsername(val)
-    if (!isAvailable) {
-      usernameErrMsg.value = 'Username already in use'
+    isUsernameValid.value = await validateUsername(val)
+    if (!isUsernameValid.value) {
+      usernameAlreadyUsedMsg.value = ''
+      return
+    } else {
+      usernameAlreadyUsedMsg.value = 'Username is available'
       return
     }
 
@@ -126,7 +142,7 @@
     // Character check
     const isValidString = validateNameString(val)
     if (!isValidString) {
-      nameErrMsg.value = 'Name must contain only alphanumeric characters'
+      nameErrMsg.value = 'Name must contain only alphabets characters'
       return
     }
 
@@ -158,11 +174,73 @@
       return
     }
 
+    const checkEmailExistance = doesEmailExist(val)
+    if (checkEmailExistance) {
+      emailErrMsg.value = 'Email already exists'
+      return
+    }
+
     // All good
     emailErrMsg.value = ''
   })
 
+  watch(EmailOTP, async () => {
+    const val = EmailOTP.value
+    emailOTPErrMsg.value = ''
+    
+    // Character check
+    const isValidString = /^[0-9]+$/.test(val)
+    if (!isValidString) {
+      emailOTPErrMsg.value = 'OTP must contain only numbers'
+      return
+    }
 
+    // Length checks
+    if (val.length !== 6) {
+      emailOTPErrMsg.value = 'OTP must be exactly 6 characters long'
+      return
+    }
+
+
+    // All good
+    emailOTPErrMsg.value = ''
+  })
+
+  watch(password, async () => {
+    const val = password.value
+    passwordErrMsg.value = ''
+
+    // Character check
+    const isValidString = validatePasswordString(val)
+    if (!isValidString) {
+      passwordErrMsg.value = 'Passord must contain at least one lowercase letter, one uppercase letter, one digit, and be at least 8 characters long'
+      return
+    }
+
+    // All good
+    passwordErrMsg.value = ''
+  })
+
+  watch(CNFpassword, async () => {
+    const val = CNFpassword.value
+    CNFpasswordErrMsg.value = ''
+
+    // Character check
+    const isValidString = validatePasswordString(val)
+    if (!isValidString) {
+      CNFpasswordErrMsg.value = 'Passord must contain at least one lowercase letter, one uppercase letter, one digit, and be at least 8 characters long'
+      return
+    }
+
+    // All good
+    CNFpasswordErrMsg.value = ''
+  })
+
+  function validatePasswordString(val) {
+    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    // This regex checks for at least one lowercase letter, one uppercase letter, one digit, and a minimum length of 8 characters.
+    return re.test(val)
+  }
   function validateEmailString(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return re.test(email)
@@ -174,6 +252,22 @@
 
   function validateNameString(val) {
     return /^[a-zA-Z ]+$/.test(val)
+  }
+
+  async function doesEmailExist(){
+
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/signin/emailValidation`, {
+        params: { email: email.value },
+      })
+      const data = await response.data
+      return !data.success
+
+    } catch (error) {
+      console.error('Error checking email existence:', error)
+      return false
+    }
+
   }
 
   async function validateUsername(username) {
@@ -197,8 +291,63 @@
       return
     }
 
-    emailVerificationStatus.value = true
-    emailVerificationBtn.value = 'Verified'
+    if(emailErrMsg.value){
+      return
+    }
+
+    try{
+      emailVerificationStatus.value = false
+      emailVerificationBtn.value = 'Resend OTP'
+      verifyingEmail.value = true
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/signin/sendEmailOTP`, { email: email.value }, { headers: { 'Content-Type': 'application/json' } })
+
+      if (response.data.success) {
+        EmailOTPSent.value = 'OTP sent to your email'
+      } else {
+        emailOTPErrMsg.value = response.data.message || 'Failed to send OTP'
+      }
+    }
+    catch (error) {
+      emailVerificationStatus.value = false
+      emailVerificationBtn.value = 'Resend OTP'
+      verifyingEmail.value = true
+      emailOTPErrMsg.value = `Failed to send OTP: ${error.message}`
+      return
+    }
+
+    setTimeout(() => {
+      EmailOTPSent.value = ''
+    }, 3000)
+    verifyingEmail.value = true
+  }
+
+  async function VerifyEmailOTP(){
+    if (!EmailOTP.value) {
+      emailOTPErrMsg.value = 'Please enter the OTP'
+      return
+    }
+
+    if(emailOTPErrMsg.value){
+      return
+    }
+
+    try{
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/signin/verifyEmailOTP`, { email: email.value, otp: EmailOTP.value }, { headers: { 'Content-Type': 'application/json' } })
+
+      if (response.data.success) {
+        emailOTPErrMsg.value = ''
+        emailVerificationStatus.value = true
+        emailVerificationBtn.value = 'Verified'
+        verifyingEmail.value = false
+      } else {
+        emailOTPErrMsg.value = response.data.message || 'Failed to verify OTP'
+        return
+      }
+    } catch (error) {
+      emailOTPErrMsg.value = `Failed to verify OTP: ${error.message}`
+      return
+    }
+    
   }
   
   function togglePassword() {
@@ -214,13 +363,10 @@
       })
       const data = await response.json()
       if (data.success) {
-        isAuthenticated.value = true
-        responseMessage.value = data.user.username
-      } else {
-        isAuthenticated.value = false
-      }
-    } catch {
-      isAuthenticated.value = false
+        window.location.href = '/dashboard'
+      } 
+    } catch(error) {
+      console.error('Error checking authentication:', error)
     }
   }
   
@@ -228,37 +374,51 @@
     checkAuth()
   })
   
-  async function loginFunc() {
-    if (!username.value || !password.value) {
-      responseMessage.value = 'Please fill in all fields'
+  async function SignupFunc() {
+
+    if( !name.value || !username.value || !password.value || !CNFpassword.value) {
+      responseMessage.value = 'Please fill all the required fields'
+      return
+    }
+    
+    if( nameErrMsg.value || usernameErrMsg.value || emailErrMsg.value || passwordErrMsg.value || CNFpasswordErrMsg.value || emailOTPErrMsg.value) {
+      responseMessage.value = 'Please fix the errors before signing up'
+      return
+    }
+
+    if (password.value !== CNFpassword.value) {
+      CNFpasswordErrMsg.value = 'Passwords do not match'
+      return
+    }
+
+    if(email.value && !emailVerificationStatus.value) {
+      emailErrMsg.value = 'Please verify your email before signing up'
       return
     }
 
     const requestBody = {
+      name: name.value,
       username: username.value,
       password: MD5(password.value).toString(),
+      email: email.value,
     }
-  
-    try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody),
-        credentials: 'include',
-      })
-  
-      const data = await response.json()
+
+    try{
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/signin`, requestBody, { headers: { 'Content-Type': 'application/json' }, withCredentials: true })
+      const data = response.data
       if (data.success) {
         isAuthenticated.value = true
-        responseMessage.value = 'Login successful! Redirecting...'
+        responseMessage.value = `Sign Up successful FHiD: ${data.FHiD}! Redirecting...`
         setTimeout(() => { window.location.href = '/dashboard'; }, 1000)
-
       } else {
-        responseMessage.value = data.error || data.message || 'Login failed'
+        responseMessage.value = data.error || data.message || 'Sign Up failed'
       }
     } catch (error) {
-      responseMessage.value = `Failed To Fetch Response: ${error}`
+      console.error('Error during sign up:', error)
+      responseMessage.value = 'Sign Up failed. Please try again later.'
     }
+    
   }
+
    
   </script>
