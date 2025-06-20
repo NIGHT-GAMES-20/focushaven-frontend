@@ -174,8 +174,8 @@
       return
     }
 
-    const checkEmailExistance = doesEmailExist(val)
-    if (checkEmailExistance) {
+    const checkEmailExistance = await doesEmailExist(val)
+    if (!checkEmailExistance) {
       emailErrMsg.value = 'Email already exists'
       return
     }
@@ -261,7 +261,7 @@
         params: { email: email.value },
       })
       const data = await response.data
-      return !data.success
+      return data.success
 
     } catch (error) {
       console.error('Error checking email existence:', error)
