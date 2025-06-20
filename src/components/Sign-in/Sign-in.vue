@@ -290,8 +290,8 @@
       return
     }
 
-    if(emailErrMsg.value !== 'Please verify your email before signing up'){
-      return
+    if (emailErrMsg.value && emailErrMsg.value !== 'Please verify your email before signing up') {
+      return;
     }
 
     try{
