@@ -31,6 +31,7 @@
       <button @click="loginFunc" :class="styles.loginBtn">Login</button>
     </div>
 
+    <a href="./signin" :class="styles.signinPageLink">Dont have an account? Register Here</a>
     <p style="margin-top: 20px;">{{ responseMessage }}</p>
   </div>
 </template>

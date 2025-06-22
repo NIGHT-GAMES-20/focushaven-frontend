@@ -104,6 +104,13 @@ label {
     text-decoration-color: #4D3326;
 }
 
+.signinPageLink{
+    font-size: 1.5rem;
+    color: #4d3326;
+    text-decoration:underline;
+    margin-top: 10px;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 600px) {
     .loginPage {
