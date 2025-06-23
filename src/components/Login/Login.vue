@@ -51,6 +51,7 @@
   const password = ref('')
   const showPassword = ref(false)
   const responseMessage = ref('')
+  const isAuthenticated = ref(false)
   
   function togglePassword() {
     showPassword.value = !showPassword.value
