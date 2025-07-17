@@ -5,6 +5,7 @@
     { "source": "/dashboard", "destination": "/dashboard.html" },
     { "source": "/notes", "destination": "/notes.html" },
     { "source": "/forum", "destination": "/forum.html" },
+    { "source": "/forum/ask", "destination": "/ask.html" },
     { 
       "source": "/forum/question/:id",
       "has": [{ "type": "header", "key": "accept", "value": "text/html.*" }],

@@ -66,6 +66,7 @@
   
 <script setup>
   import { ref, onMounted, watch } from 'vue'
+  import { useUserStore } from '/stores/user.js'
   import MD5 from 'crypto-js/md5'
   import imageA from './assets/view.png'
   import imageB from './assets/hide.png'
@@ -73,6 +74,7 @@
   import axios from 'axios'
 
   const currentImage = ref(imageA)
+  const userStore = useUserStore()
   
   const name = ref('')
   const email = ref('')
@@ -354,23 +356,8 @@
     currentImage.value = showPassword.value ? imageB : imageA
   }
   
-  async function checkAuth() {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login/protected`, {
-        method: 'GET',
-        credentials: 'include',
-      })
-      const data = await response.json()
-      if (data.success) {
-        window.location.href = '/dashboard'
-      } 
-    } catch(error) {
-      console.error('Error checking authentication:', error)
-    }
-  }
-  
   onMounted(() => {
-    checkAuth()
+    setTimeout(() => { if(userStore.isLoggedIn) setTimeout(() => { window.location.href = '/dashboard'; }, 10)},5000)
   })
   
   async function SignupFunc() {
@@ -419,5 +406,4 @@
     
   }
 
-  
   </script>

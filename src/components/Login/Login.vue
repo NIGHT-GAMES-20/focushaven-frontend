@@ -39,42 +39,28 @@
   
 <script setup>
   import { ref, onMounted } from 'vue'
-  import { useRouter } from 'vue-router'
   import MD5 from 'crypto-js/md5'
   import imageA from './assets/view.png'
   import imageB from './assets/hide.png'
   import styles from './login.module.css'
+  import { useUserStore } from '/stores/user.js'
 
+  const userStore = useUserStore()
   const currentImage = ref(imageA)
   
   const username = ref('')
   const password = ref('')
   const showPassword = ref(false)
   const responseMessage = ref('')
-  const isAuthenticated = ref(false)
   
   function togglePassword() {
     showPassword.value = !showPassword.value
     currentImage.value = showPassword.value ? imageB : imageA
   }
   
-  async function checkAuth() {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login/protected`, {
-        method: 'GET',
-        credentials: 'include',
-      })
-      const data = await response.json()
-      if (data.success) {
-        window.location.href = '/dashboard'
-      } 
-    } catch(error) {
-      console.error('Error checking authentication:', error)
-    }
-  }
   
   onMounted(() => {
-    checkAuth()
+    setTimeout(() => { if(userStore.isLoggedIn) setTimeout(() => { window.location.href = '/dashboard'; }, 10)},5000)
   })
   
   async function loginFunc() {
@@ -98,7 +84,6 @@
   
       const data = await response.json()
       if (data.success) {
-        isAuthenticated.value = true
         responseMessage.value = 'Login successful! Redirecting...'
         setTimeout(() => { window.location.href = '/dashboard'; }, 1000)
 

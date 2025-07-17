@@ -2,32 +2,17 @@
     import headerImage from '../../assets/LogoTitle.png'
     import styles from './header.module.css'
     import { ref, onMounted } from 'vue'
+    import { useUserStore } from '/stores/user.js'
 
-    const isAuthenticated = ref(false)
-
-    async function checkAuth() {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login/protected`, {
-            method: 'GET',
-            credentials: 'include'
-            });
-            const data = await response.json()
-            isAuthenticated.value = !!data.success
-        } catch {
-            isAuthenticated.value = false
-        }
-    }
+    const userStore = useUserStore()
 
     onMounted(() => {
-        checkAuth()
+        userStore.fetchUser()
     })
+
     async function logoutFunc() {
     try {
-      await fetch(`${import.meta.env.VITE_BACKEND_URL}/login/logout`, {
-        method: 'POST',
-        credentials: 'include',
-      })
-      isAuthenticated.value = false
+      userStore.logout()
       console.log('Logged out successfully')
       setTimeout(() => { window.location.href = '/'; }, 10)
     } catch (error) {
@@ -52,13 +37,13 @@
                         <li>
                             <a href="./notes" >Notes</a>
                         </li>
-                        <li v-if="isAuthenticated" >
+                        <li v-if="userStore.isLoggedIn" >
                             <a href="./dashboard" >Dashboard</a>
                         </li>
                         <li v-else>
                             <a href="./login" >Login/Register</a>
                         </li>
-                        <li v-if="isAuthenticated" >
+                        <li v-if="userStore.isLoggedIn" >
                             <a @click="logoutFunc" href="javascript:void(0)" style="margin-right: 10px;" >Logout</a>
                         </li>
                     </ul>

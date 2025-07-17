@@ -1,0 +1,86 @@
+.headerViewPanel{
+  display: flex;
+  flex-direction: row;
+  
+}
+
+.contentPanelContainer{
+  display: flex;
+  flex-direction: row;
+}
+
+.toggleText {
+  cursor: pointer;
+  margin: 1rem;
+  border: #4d3326 2px solid;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  width: fit-content;
+}
+
+.contentBox {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #d1d5db; /* Tailwind gray-300 */
+  border-radius: 10px;
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  width: 100%;
+}
+
+.tags {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.tag {
+  background-color: white;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #4d3326;
+  font-style: italic;
+  padding: 0.5rem;
+  list-style: none
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #ccc;
+  border-top: 2px solid #4d3326;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.btns{    
+  cursor: pointer;
+  border: 2px solid #917762;
+  border-radius: 5px;
+  background-color: #61463036;
+  height: 30px;
+  width: fit-content;
+  font-size: 1em;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.btns:hover{
+  background-color: #917762;
+  color: #fff;
+}

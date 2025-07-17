@@ -2,6 +2,7 @@
     import Footer from "../../components/Footer/Footer.vue"
     import Header from "../../components/Header/Header.vue";
     import Signin from "../../components/Sign-in/Sign-in.vue";
+    
 </script>
 
 <template>

@@ -179,13 +179,13 @@ label {
 }
 
 .errMsg{
-    color : red;
-    font-size: 0.7em;
+  color : red;
+  font-size: 0.7em;
 }
 
 .otpSendMsg{
-    color : green;
-    font-size: 0.7em;
+  color : green;
+  font-size: 0.7em;
 }
 
 input:focus {

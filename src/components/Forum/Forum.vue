@@ -10,8 +10,8 @@
         </div>
         <div v-if="searchTriggered" :class="Styles.forumQuestionsContainer">
             <ol class="list-disc list-inside">
-                <li v-for="(text ,index) in searchQuestions" :key="index" :class="Styles.questionItem">
-                    <a :href="`/forum/question/${searchQuestionsIDs[index]}`" :class="Styles.question" >
+                <li v-for="(text ,index) in questions" :key="index" :class="Styles.questionItem">
+                    <a :href="`/forum/question/${questionIDs[index]}`" :class="Styles.question" >
                         {{ text }}
                     </a>
                 </li>
@@ -19,7 +19,7 @@
                     <span :class="Styles.spinner"></span>
                     Searching, Please Wait
                 </li>
-                <li v-else-if="(searchQuestions.length === 0)" :class="Styles.noQuestions">No questions found.</li>
+                <li v-else-if="(questions.length === 0)" :class="Styles.noQuestions">No questions found.</li>
             </ol>
         </div>
         <div v-else :class="Styles.forumQuestionsContainer">
@@ -47,10 +47,11 @@ import { ref , onMounted } from 'vue';
 import Styles from './Forum.module.css';
 
 const searchQuery = ref('');
-const searchQuestions = ref([]);
-const searchQuestionsIDs = ref([]);
 const questions = ref([]);
 const questionIDs = ref([]);
+const questionAuthor = ref([]);
+const questionDate = ref([]);
+const questionLikes = ref([]);
 const searchInitiation = ref(false);
 const searchTriggered = ref(false);
 const pages = ref([1]);
@@ -61,17 +62,17 @@ async function fetchSearchQuesions() {
         if (!searchTriggered.value) searchTriggered.value = true;
         searchInitiation.value = true;
 
-        searchQuestions.value = [];
-        searchQuestionsIDs.value = [];
+        questions.value = [];
+        questionIDs.value = [];
 
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/search/questions?search=${encodeURIComponent(searchQuery.value)}`, {
-            method: 'GET',
-            credentials: 'include',
-        })
+        const response = await secureFetch(`${import.meta.env.VITE_BACKEND_URL}/forum/search/questions?search=${encodeURIComponent(searchQuery.value)}`, { method: 'GET' })
         const data = await response.json() || [];
         const questionsList = data.results || [];
-        searchQuestionsIDs.value = questionsList.map(q => q._id);
-        searchQuestions.value = questionsList.map(q => q.text);
+        questionIDs.value = questionsList.map(q => q._id);
+        questions.value = questionsList.map(q => q.text);
+        questionAuthor.value = questionsList.map(q => q.author);
+        questionDate.value = questionsList.map(q => q.date);
+        questionLikes.value = questionsList.map(q => q.likes);
     }catch (error) {
         console.error('Error fetching forum data:', error);
     } finally {
@@ -84,30 +85,56 @@ async function fetchQuestions(page) {
         currentPage.value = page;
         searchTriggered.value = false;
         searchInitiation.value = false;
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/questions?page=${page}`, {
-            method: 'GET',
-            credentials: 'include',
-        });
+        const response = await secureFetch(`${import.meta.env.VITE_BACKEND_URL}/forum/questions?page=${page}&sortByLikes=false`, { method: 'GET' });
         const data = await response.json() || [];
         const questionsList = data.questions || [];
         questionIDs.value = questionsList.map(q => q._id);
         questions.value = questionsList.map(q => q.text);
+        questionAuthor.value = questionsList.map(q => q.author);
+        questionDate.value = questionsList.map(q => q.date);
+        questionLikes.value = questionsList.map(q => q.likes);
     } catch (error) {
         console.error('Error fetching forum data:', error);
     }
 }
 async function fetchPages() {
     try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/questions/pages`, {
-            method: 'GET',
-            credentials: 'include',
-        });
+        const response = await secureFetch(`${import.meta.env.VITE_BACKEND_URL}/forum/questions/pages`, { method: 'GET' });
         const data = await response.json();
         const pageCount = data.pages; // Default to 1 if no pages are returned
         pages.value = Array.from({ length: pageCount }, (_, i) => i + 1);
     } catch (error) {
         console.error('Error fetching forum pages:', error);
     }
+}
+
+async function getValidToken() {
+  let token = sessionStorage.getItem('formAuthToken');
+
+  if (!token || isTokenExpired(token)) {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/auth/token`, { method: 'POST',headers: { 'Origin': window.location.origin } });
+    const data = await res.json();
+    sessionStorage.setItem('formAuthToken', data.token);
+    return data.token;
+  }
+
+  return token;
+}
+
+function isTokenExpired(token) {
+  if (!token) return true;
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  return Date.now() >= payload.exp * 1000;
+}
+
+async function secureFetch(url, options = {}) {
+  const token = await getValidToken();
+  options.headers = {
+    ...options.headers,
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
+  return fetch(url, options);
 }
 
 onMounted(() => {
