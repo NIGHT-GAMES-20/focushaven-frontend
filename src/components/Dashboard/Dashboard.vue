@@ -13,16 +13,19 @@
         <transition name="fade">
           <div v-if="isOpenNoteUpdate" :class="style.contentBox">
             <div v-if="!isLoadingNotes">
-              <ol>
-                <li v-for="(topic, index) in newTopics" :key="index" :class="style.topicItem">
-                  <div>
-                    <strong>Topic:</strong> {{ topic.topic }}<br>
-                    <strong>Class:</strong> {{ topic.class }}<br>
-                    <strong>Subject:</strong> {{ topic.sub }}<br><br>
-                  </div>
-                  <button @click="updateDB(topic.topic)" :class="style.btns">Add {{ topic.topic }} </button>
-                </li>
-              </ol>
+              <div v-if="newTopics.length">
+                <ol>
+                  <li v-for="(topic, index) in newTopics" :key="index" :class="style.topicItem">
+                    <div>
+                      <strong>Topic:</strong> {{ topic.topic }}<br>
+                      <strong>Class:</strong> {{ topic.class }}<br>
+                      <strong>Subject:</strong> {{ topic.sub }}<br><br>
+                    </div>
+                    <button @click="updateDB(topic.topic)" :class="style.btns">Add {{ topic.topic }} </button>
+                  </li>
+                </ol>
+              </div>
+              <div v-else> No New Topics Found</div>
             </div>
             <div v-else :class="style.loadingContainer"><span :class="style.spinner"></span>Loading, Please Wait</div>
             <div v-if="!isLoadingNotes" :class="style.tags">

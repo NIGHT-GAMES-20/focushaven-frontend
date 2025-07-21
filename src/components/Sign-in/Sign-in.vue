@@ -16,6 +16,11 @@
     </label>
 
     <label>
+      Class:
+      <input v-model="Class" type="number" placeholder="Enter Class" :class="styles.usernameInput" max="12" min="1"/>
+    </label>
+
+    <label>
       <span>
         Email (Optional) 
         <span :class="styles.tooltipContainer">
@@ -78,6 +83,7 @@
   
   const name = ref('')
   const email = ref('')
+  const Class = ref('')
   const CNFpassword = ref('')
   const username = ref('')
   const password = ref('')
@@ -157,6 +163,11 @@
     // All good
     nameErrMsg.value = ''
   })
+
+  watch(() => Class, (newVal) => {
+    if (newVal > 12) Class = 12;
+    if (newVal < 1) Class = 1;
+  });
 
   // Email validation
   watch(email, async () => {
@@ -362,7 +373,7 @@
   
   async function SignupFunc() {
 
-    if( !name.value || !username.value || !password.value || !CNFpassword.value) {
+    if( !name.value || !username.value || !password.value || !CNFpassword.value || !Class.value) {
       responseMessage.value = 'Please fill all the required fields'
       return
     }
@@ -387,6 +398,7 @@
       username: username.value,
       password: MD5(password.value).toString(),
       email: email.value,
+      Class: Class.value,
     }
 
     try{
