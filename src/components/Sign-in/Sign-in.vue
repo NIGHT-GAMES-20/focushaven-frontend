@@ -1,70 +1,72 @@
 <template>
-  <div :class="styles.loginPage">
-    <h2>Register</h2>
+  <div :class="styles.container">
+    <div :class="styles.loginPage">
+      <h2>Register</h2>
 
-    <label>
-      Name:
-      <input v-model="name" type="text" placeholder="Enter Name" :class="styles.usernameInput" />
-      <span :class="styles.errMsg">{{ nameErrMsg }}</span>
-    </label>
-
-    <label>
-      Username:
-      <input v-model="username" type="text" placeholder="Enter username" :class="styles.usernameInput" />
-      <span :class="styles.errMsg">{{ usernameErrMsg }}</span>
-      <span :class="[ isUsernameValid ? styles.otpSendMsg : styles.errMsg]">{{ usernameAlreadyUsedMsg }}</span>
-    </label>
-
-    <label>
-      Class:
-      <input v-model="Class" type="number" placeholder="Enter Class" :class="styles.usernameInput" max="12" min="1"/>
-    </label>
-
-    <label>
-      <span>
-        Email (Optional) 
-        <span :class="styles.tooltipContainer">
-          ⓘ:
-          <span :class="styles.tooltipText">Account Rcovery Will Not Be Available If Email is not Added</span>
-        </span>
-      </span>
-      <div :class="styles.passwordRow">
-        <input v-model="email" type="email" placeholder="Enter Email" :class="styles.passwordInput" :disabled="emailVerificationStatus" />
-        <button type="button" @click="VerifyEmail" :class="[styles.emailVerifyBtn, emailVerificationStatus ? styles.verifiedEmail : '' ]" :disabled="emailVerificationStatus" >{{ emailVerificationBtn }}</button>
-      </div> 
-      <span :class="styles.errMsg">{{ emailErrMsg }}</span>
-      <div :class="styles.passwordRow">
-        <input v-if="verifyingEmail" type="text" v-model="EmailOTP" placeholder="Enter OTP" :class="styles.emailOTPInput" :disabled="emailVerificationStatus" maxlength="6" />
-        <button v-if="verifyingEmail" type="button" @click="VerifyEmailOTP" :class="[styles.emailOTPVerifyBtn, emailVerificationStatus ? styles.verifiedEmail : '' ]" :disabled="emailVerificationStatus">Verify OTP</button>
-      </div>
-      <span v-if="verifyingEmail" :class="styles.errMsg">{{ emailOTPErrMsg }}</span>
-      <span v-if="verifyingEmail" :class="styles.otpSendMsg">{{ EmailOTPSent }}</span>
+      <label>
+        Name:
+        <input v-model="name" type="text" placeholder="Enter Name" :class="styles.usernameInput" />
+        <span :class="styles.errMsg">{{ nameErrMsg }}</span>
       </label>
 
-    <label>
-      Password:
-      <div :class="styles.passwordRow">
-        <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Enter password" :class="styles.passwordInput"/>
-        <button type="button" @click="togglePassword" :class="styles.viewPassBtn">
-          <img :src="currentImage" alt="Toggle Password" :class="styles.viewPassImg" />
-        </button>
-      </div>
-      <span :class="styles.errMsg">{{ passwordErrMsg }}</span>
-    </label>
+      <label>
+        Username:
+        <input v-model="username" type="text" placeholder="Enter username" :class="styles.usernameInput" />
+        <span :class="styles.errMsg">{{ usernameErrMsg }}</span>
+        <span :class="[ isUsernameValid ? styles.otpSendMsg : styles.errMsg]">{{ usernameAlreadyUsedMsg }}</span>
+      </label>
 
-    <label>
-      Confirm Password:
-      <div :class="styles.passwordRow">
-        <input :type="showPassword ? 'text' : 'password'" v-model="CNFpassword" placeholder="Enter password" :class="styles.passwordInput"/>
-      </div>
-      <span :class="styles.errMsg">{{ CNFpasswordErrMsg }}</span>
-    </label>
+      <label>
+        Class:
+        <input v-model="Class" type="number" placeholder="Enter Class" :class="styles.usernameInput" max="12" min="1"/>
+      </label>
 
-    <div :class="styles.buttonRow">
-      <button @click="SignupFunc" :class="styles.loginBtn">Sign Up</button>
+      <label>
+        <span>
+          Email (Optional) 
+          <span :class="styles.tooltipContainer">
+            ⓘ:
+            <span :class="styles.tooltipText">Account Rcovery Will Not Be Available If Email is not Added</span>
+          </span>
+        </span>
+        <div :class="styles.passwordRow">
+          <input v-model="email" type="email" placeholder="Enter Email" :class="styles.passwordInput" :disabled="emailVerificationStatus" />
+          <button type="button" @click="VerifyEmail" :class="[styles.emailVerifyBtn, emailVerificationStatus ? styles.verifiedEmail : '' ]" :disabled="emailVerificationStatus" >{{ emailVerificationBtn }}</button>
+        </div> 
+        <span :class="styles.errMsg">{{ emailErrMsg }}</span>
+        <div :class="styles.passwordRow">
+          <input v-if="verifyingEmail" type="text" v-model="EmailOTP" placeholder="Enter OTP" :class="styles.emailOTPInput" :disabled="emailVerificationStatus" maxlength="6" />
+          <button v-if="verifyingEmail" type="button" @click="VerifyEmailOTP" :class="[styles.emailOTPVerifyBtn, emailVerificationStatus ? styles.verifiedEmail : '' ]" :disabled="emailVerificationStatus">Verify OTP</button>
+        </div>
+        <span v-if="verifyingEmail" :class="styles.errMsg">{{ emailOTPErrMsg }}</span>
+        <span v-if="verifyingEmail" :class="styles.otpSendMsg">{{ EmailOTPSent }}</span>
+        </label>
+
+      <label>
+        Password:
+        <div :class="styles.passwordRow">
+          <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Enter password" :class="styles.passwordInput"/>
+          <button type="button" @click="togglePassword" :class="styles.viewPassBtn">
+            <img :src="currentImage" alt="Toggle Password" :class="styles.viewPassImg" />
+          </button>
+        </div>
+        <span :class="styles.errMsg">{{ passwordErrMsg }}</span>
+      </label>
+
+      <label>
+        Confirm Password:
+        <div :class="styles.passwordRow">
+          <input :type="showPassword ? 'text' : 'password'" v-model="CNFpassword" placeholder="Enter password" :class="styles.passwordInput"/>
+        </div>
+        <span :class="styles.errMsg">{{ CNFpasswordErrMsg }}</span>
+      </label>
+
+      <div :class="styles.buttonRow">
+        <button @click="SignupFunc" :class="styles.loginBtn">Sign Up</button>
+      </div>
+
+      <p :class="styles.errMsg">{{ responseMessage }}</p>
     </div>
-
-    <p :class="styles.errMsg">{{ responseMessage }}</p>
   </div>
 </template>
 

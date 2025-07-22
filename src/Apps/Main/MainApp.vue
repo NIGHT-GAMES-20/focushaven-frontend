@@ -7,7 +7,7 @@
 <template>
     <div class="mainApp">
         <Header />
-        <Main />
+        <Main style="padding-bottom: 51px;" />
         <Footer />
     </div>
 </template>

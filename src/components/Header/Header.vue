@@ -24,33 +24,33 @@
 
 
 <template>
-    <header>
-            <div :class="styles.headerDiv">
-                <div :class="styles.logo">
-                    <img alt="Logo" :src="headerImage" :class="styles.logo" />
-                </div>
-                <nav :class="styles.navBar">
-                    <ul :class="styles.navElem" >
-                        <li>
-                            <a href="/" >Home</a>
-                        </li>
-                        <li>
-                            <a href="/notes" >Notes</a>
-                        </li>
-                        <li>
-                          <a href="https://focushaven-testportal.netlify.app/">Test Portal</a>
-                        </li>
-                        <li v-if="userStore.isLoggedIn" >
-                            <a href="/dashboard" >Dashboard</a>
-                        </li>
-                        <li v-else>
-                            <a href="/login" >Login/Register</a>
-                        </li>
-                        <li v-if="userStore.isLoggedIn" >
-                            <a @click="logoutFunc" href="javascript:void(0)" style="margin-right: 10px;" >Logout</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
+  <header>
+    <div :class="styles.headerDiv">
+      <div :class="styles.logo">
+        <img alt="Logo" :src="headerImage" :class="styles.logo" />
+      </div>
+      <nav :class="styles.navBar">
+        <ul :class="styles.navElem" >
+          <li>
+            <a href="/" >Home</a>
+          </li>
+          <li>
+            <a href="/notes" >Notes</a>
+          </li>
+          <li>
+            <a href="https://focushaven-testportal.netlify.app/">Test Portal</a>
+          </li>
+          <li v-if="userStore.isLoggedIn" >
+            <a href="/dashboard" >Dashboard</a>
+          </li>
+          <li v-else>
+            <a href="/login" >Login/Register</a>
+          </li>
+          <li v-if="userStore.isLoggedIn" >
+            <a @click="logoutFunc" href="javascript:void(0)" style="margin-right: 10px;" >Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 </template>

@@ -13,6 +13,7 @@
     font-size: 1.2em;
     color: #4D3326;
     box-sizing: border-box; /* ✅ Makes padding not overflow width */
+    
 }
 
 h2 {

@@ -1,10 +1,10 @@
 .mainDiv {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;     /* vertical centering */
-    align-items: center;         /* horizontal centering */
-    text-align: center;          /* center text content */
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.2em;
-    color: #4D3326;               /* optional, for spacing */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;     /* vertical centering */
+  align-items: center;         /* horizontal centering */
+  text-align: center;          /* center text content */
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2em;
+  color: #4D3326;          
 }
