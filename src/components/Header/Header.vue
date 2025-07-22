@@ -35,13 +35,16 @@
                             <a href="/" >Home</a>
                         </li>
                         <li>
-                            <a href="./notes" >Notes</a>
+                            <a href="/notes" >Notes</a>
+                        </li>
+                        <li>
+                          <a href="https://focushaven-testportal.netlify.app/">Test Portal</a>
                         </li>
                         <li v-if="userStore.isLoggedIn" >
-                            <a href="./dashboard" >Dashboard</a>
+                            <a href="/dashboard" >Dashboard</a>
                         </li>
                         <li v-else>
-                            <a href="./login" >Login/Register</a>
+                            <a href="/login" >Login/Register</a>
                         </li>
                         <li v-if="userStore.isLoggedIn" >
                             <a @click="logoutFunc" href="javascript:void(0)" style="margin-right: 10px;" >Logout</a>
