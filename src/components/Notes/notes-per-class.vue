@@ -6,10 +6,10 @@
       <select
         id="class-select"
         v-model="selectedClass"
-        class="border p-2 rounded"
+        :class="styles.selectClass"
       >
         <option disabled value="">Please select</option>
-        <option v-for="className in classList" :key="className" :value="className">
+        <option v-for="className in classList" :key="className" :value="className" :class="styles.listOptions">
           Class {{ className }}
         </option>
       </select>
@@ -20,10 +20,10 @@
       <select
         id="subject-select"
         v-model="selectedSub"
-        class="border p-2 rounded"
+        :class="styles.selectClass"
       >
         <option disabled value="">Please select</option>
-        <option v-for="subName in subList" :key="subName.name" :value="subName.code">
+        <option v-for="subName in subList" :key="subName.name" :value="subName.code" :class="styles.listOptions">
           Subject {{ subName.name }}
         </option>
       </select>

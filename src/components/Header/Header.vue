@@ -32,7 +32,7 @@
       </div>
 
       <!-- Hamburger button -->
-      <button @click="menuOpen = !menuOpen" class="menu-toggle">
+      <button @click="menuOpen = !menuOpen" :class="styles.menuToggle">
         ☰
       </button>
 

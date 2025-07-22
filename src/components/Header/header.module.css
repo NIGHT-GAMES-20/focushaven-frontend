@@ -96,7 +96,7 @@ a:hover::after {
     top: 70px;
     right: 10px;
     width: 200px;
-    background-color: #4d3326;
+    background-color: #6b4c3a; /* lighter than #4d3326 */
     flex-direction: column;
     align-items: flex-start;
     border-radius: 8px;
@@ -104,6 +104,7 @@ a:hover::after {
     display: none;
     z-index: 1000;
   }
+
 
   .navBar.open {
     display: flex;
@@ -115,6 +116,20 @@ a:hover::after {
     gap: 10px;
     width: 100%;
   }
+
+  .navElem li {
+    width: 80%;
+    border: 1px solid #eed9c870;
+    background-color: #5a3d2f;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+  }
+
+  .navElem li:hover {
+    background-color: #7a5744;
+  }
+
 
   .logo h1 {
     font-size: 1.5em;
