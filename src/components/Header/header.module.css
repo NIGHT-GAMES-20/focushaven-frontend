@@ -1,104 +1,135 @@
 .headerDiv {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
-    background-color: #4d3326;
-    color: #EED9C8;
-    height: 70px;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .logo img {
-    height: 120px;
-    width: auto;
-    object-fit: contain;
-  }
-  
-  .logo h1 {
-    font-size: 3em;
-    margin: 0;
-    white-space: nowrap;
-  }
-  
-  .navBar {
-    display: flex;
-    gap: 25px;
-    font-size: 1.38em;
-    align-items: center;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #4d3326;
+  color: #EED9C8;
+  height: 70px;
+  position: relative;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 120px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo h1 {
+  font-size: 3em;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.menuToggle {
+  display: none;
+  font-size: 30px;
+  background: none;
+  border: none;
+  color: #EED9C8;
+  cursor: pointer;
+}
+
+/* Nav layout for desktop */
+.navBar {
+  display: flex;
+  gap: 25px;
+  font-size: 1.38em;
+  align-items: center;
+}
+
 .navElem {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap; /* Allow nav items to wrap on small screens */
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
 a {
-    color: #EED9C8;
-    text-decoration: none;
-    padding: 5px 0;
-    position: relative;
-    transition: font-weight 0.2s ease-in-out;
-    display: inline-block;
+  color: #EED9C8;
+  text-decoration: none;
+  padding: 5px 0;
+  position: relative;
+  transition: font-weight 0.2s ease-in-out;
+  display: inline-block;
 }
 
 a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: #EED9C8;
-    transition: width 0.3s ease-in-out;
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #EED9C8;
+  transition: width 0.3s ease-in-out;
 }
 
 a:hover::after {
-    width: 100%;
+  width: 100%;
 }
 
 .active {
-    font-weight: bold;
-    color: #eed9c85d;
-    transition: font-weight 0.2s ease-in-out;
+  font-weight: bold;
+  color: #eed9c85d;
+  transition: font-weight 0.2s ease-in-out;
 }
 
 /* -------------------------- */
 /* MOBILE FIX (responsive) */
 @media (max-width: 768px) {
-.headerDiv {
-    flex-direction: row;
+  .menuToggle {
+    display: block;
+  }
+
+  .navBar {
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    width: 200px;
+    background-color: #4d3326;
+    flex-direction: column;
     align-items: flex-start;
-    height: auto;
-    padding: 5px;
-    }
+    border-radius: 8px;
+    padding: 10px;
+    display: none;
+    z-index: 1000;
+  }
 
-    .navBar {
-    justify-content: right;
+  .navBar.open {
+    display: flex;
+  }
+
+  .navElem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
     width: 100%;
-    margin-top: 3px;
-    }
+  }
 
-    .logo h1 {
+  .logo h1 {
     font-size: 1.5em;
-    }
+  }
 
-    .logo img {
+  .logo img {
     height: 60px;
-    }
+  }
 
-    a {
-      font-size: 0.7em;
-      margin-top: -8px;
-    }
+  a {
+    font-size: 0.9em;
+    width: 100%;
+  }
+
+  a::after {
+    display: none;
+  }
 }
