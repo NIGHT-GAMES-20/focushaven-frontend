@@ -3,13 +3,13 @@
     <div>
       <div :class="style.headerViewPanel">
         <p :class="style.toggleText" @click="openUserViewPanel()" v-if="userStore.isLoggedIn && userStore.isAdmin">
-          <Users :size="20" /> {{ isOpenUserViewPanel ? 'Hide User View Panel' : 'Show User View Panel' }}
+          <Users :size="18" /> {{ isOpenUserViewPanel ? 'Hide User View Panel' : 'Show User View Panel' }}
         </p>
         <p :class="style.toggleText" @click="openNoteUpdatePanel()" v-if="userStore.isLoggedIn && userStore.isAdmin">
-          <FileText :size="20" />  {{ isOpenNoteUpdate ? 'Hide Update Note Panel' : 'Show Update Note Panel' }}
+          <FileText :size="18" />  {{ isOpenNoteUpdate ? 'Hide Update Note Panel' : 'Show Update Note Panel' }}
         </p>
         <p :class="style.toggleText" @click="openQuestionReviewPanel()" v-if="userStore.isLoggedIn && userStore.isAdmin">
-          <MessagesSquare :size="20" />  {{ isOpenQuestionReview ? 'Close Held Question Review Panel' : 'Open Held Question review Panel'}}
+          <MessagesSquare :size="18" />  {{ isOpenQuestionReview ? 'Close Held Question Review Panel' : 'Open Held Question review Panel'}}
         </p>
       </div>
       <div :class="style.contentPanelContainer">
