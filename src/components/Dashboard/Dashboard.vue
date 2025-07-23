@@ -3,13 +3,13 @@
     <div>
       <div :class="style.headerViewPanel">
         <p :class="style.toggleText" @click="openUserViewPanel()" v-if="userStore.isLoggedIn && userStore.isAdmin">
-          {{ isOpenNoteUpdate ? 'Hide User View Panel' : 'Show User View Panel' }}
+          <Users :size="20" /> {{ isOpenUserViewPanel ? 'Hide User View Panel' : 'Show User View Panel' }}
         </p>
         <p :class="style.toggleText" @click="openNoteUpdatePanel()" v-if="userStore.isLoggedIn && userStore.isAdmin">
-          {{ isOpenNoteUpdate ? 'Hide Update Note Panel' : 'Show Update Note Panel' }}
+          <FileText :size="20" />  {{ isOpenNoteUpdate ? 'Hide Update Note Panel' : 'Show Update Note Panel' }}
         </p>
         <p :class="style.toggleText" @click="openQuestionReviewPanel()" v-if="userStore.isLoggedIn && userStore.isAdmin">
-          {{ isOpenQuestionReview ? 'Close Held Question Review Panel' : 'Open Held Question review Panel'}}
+          <MessagesSquare :size="20" />  {{ isOpenQuestionReview ? 'Close Held Question Review Panel' : 'Open Held Question review Panel'}}
         </p>
       </div>
       <div :class="style.contentPanelContainer">
@@ -84,10 +84,10 @@
                     <td :class="style.tableCell">{{ user._id }}</td>
                     <td :class="style.tableCell">{{ user.name }}</td>
                     <td :class="style.tableCell">{{ user.username }}</td>
-                    <td :class="style.tableCell">{{ new Date(user.registrationDate).toLocaleString() }}</td>
-                    <td :class="style.tableCell">{{ user.FHiD }}</td>
-                    <td :class="style.tableCell">{{ user.email }}</td>
-                    <td :class="style.tableCell">{{ user.Class }}</td>
+                    <td :class="style.tableCell">{{ new Date(user.registrationDate).toLocaleString() || 'N/A' }}</td>
+                    <td :class="style.tableCell">{{ user.FHiD || 'N/A' }}</td>
+                    <td :class="style.tableCell">{{ user.email || 'N/A'}}</td>
+                    <td :class="style.tableCell">{{ user.Class || 'N/A' }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -105,6 +105,7 @@
   import { ref, onMounted } from 'vue'
   import { useUserStore } from '/stores/user.js'
   import style from './dashboard.module.css'
+  import { Users, FileText, MessagesSquare } from 'lucide-vue-next'
 
   const userStore = useUserStore()
   const isOpenNoteUpdate = ref(false)
