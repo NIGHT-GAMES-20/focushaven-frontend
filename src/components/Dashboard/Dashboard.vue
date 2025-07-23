@@ -2,6 +2,9 @@
   <div>
     <div>
       <div :class="style.headerViewPanel">
+        <p :class="style.toggleText" @click="openUserViewPanel()" v-if="userStore.isLoggedIn && userStore.isAdmin">
+          {{ isOpenNoteUpdate ? 'Hide User View Panel' : 'Show User View Panel' }}
+        </p>
         <p :class="style.toggleText" @click="openNoteUpdatePanel()" v-if="userStore.isLoggedIn && userStore.isAdmin">
           {{ isOpenNoteUpdate ? 'Hide Update Note Panel' : 'Show Update Note Panel' }}
         </p>
@@ -11,7 +14,7 @@
       </div>
       <div :class="style.contentPanelContainer">
         <transition name="fade">
-          <div v-if="isOpenNoteUpdate" :class="style.contentBox">
+          <div v-if="isOpenNoteUpdate && userStore.isLoggedIn && userStore.isAdmin" :class="style.contentBox">
             <div v-if="!isLoadingNotes">
               <div v-if="newTopics.length">
                 <ol>
@@ -34,7 +37,7 @@
           </div>
         </transition>
         <transition name="fade">
-          <div v-if="isOpenQuestionReview" :class="style.contentBox">
+          <div v-if="isOpenQuestionReview && userStore.isLoggedIn && userStore.isAdmin" :class="style.contentBox">
             <div v-if="!isLoadingHeldQuestions">
               <ul v-if="heldQuestions.length">
                 <li v-for="question in heldQuestions" :key="question._id">
@@ -61,6 +64,35 @@
             <div v-else :class="style.loadingContainer"><span :class="style.spinner"></span>Loading, Please Wait</div>
           </div>
         </transition>
+        <transition name="fade">
+           <div class="p-4" v-if="isOpenUserViewPanel&& userStore.isLoggedIn && userStore.isAdmin">
+            <div v-if="!isLoadingUsers">
+              <table :class="style.userTable">
+                <thead>
+                  <tr :class="style.tableHeaderRow">
+                    <th :class="style.tableCell">Database ID</th>
+                    <th :class="style.tableCell">Name</th>
+                    <th :class="style.tableCell">Username</th>
+                    <th :class="style.tableCell">Reg. Date</th>
+                    <th :class="style.tableCell">FH ID</th>
+                    <th :class="style.tableCell">Class</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(user, index) in users" :key="index">
+                    <td :class="style.tableCell">{{ user._id }}</td>
+                    <td :class="style.tableCell">{{ user.name }}</td>
+                    <td :class="style.tableCell">{{ user.username }}</td>
+                    <td :class="style.tableCell">{{ new Date(user.registrationDate).toLocaleString() }}</td>
+                    <td :class="style.tableCell">{{ user.FHiD }}</td>
+                    <td :class="style.tableCell">{{ user.class }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div v-else :class="style.loadingContainer"><span :class="style.spinner"></span>Loading, Please Wait</div>
+          </div>
+        </transition>   
       </div>
     </div>
   </div>
@@ -75,10 +107,13 @@
   const userStore = useUserStore()
   const isOpenNoteUpdate = ref(false)
   const isOpenQuestionReview = ref(false)
+  const isOpenUserViewPanel = ref(false)
   const isLoadingNotes = ref(false)
   const isLoadingHeldQuestions = ref(false)
+  const isLoadingUsers = ref(false)
   const newTopics = ref([])
   const heldQuestions = ref([])
+  const users = ref([])
 
   onMounted(async () => {
     if (!userStore.isLoggedIn) {
@@ -92,14 +127,23 @@
 
   function openNoteUpdatePanel(){
     isOpenQuestionReview.value = false
+    isOpenUserViewPanel.value = false
     GetNewFileList()
     setTimeout( ()=> {isOpenNoteUpdate.value = !isOpenNoteUpdate.value;}, 350) 
   }
 
   function openQuestionReviewPanel(){
     isOpenNoteUpdate.value = false
+    isOpenUserViewPanel.value = false
     getHeldQuestion()
     setTimeout( ()=> {isOpenQuestionReview.value = !isOpenQuestionReview.value;}, 350) 
+  }
+
+  function openUserViewPanel(){
+    isOpenNoteUpdate.value = false
+    isOpenQuestionReview.value = false
+    getUsersList()
+    setTimeout( ()=> {isOpenUserViewPanel.value = !isOpenUserViewPanel.value;}, 350) 
   }
 
   async function updateDB(reqFile) {
@@ -165,6 +209,28 @@
       console.error('Failed to fetch held questions:', error)
     } finally {
       isLoadingHeldQuestions.value = false
+    }
+  }
+
+  async function getUsersList(){
+    isLoadingUsers.value = true
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/allUserList`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+
+      const data = await response.json()
+      if (data.success && Array.isArray(data.users)) {
+        users.value = data.users
+      } else {
+        users.value = []
+      }
+
+    } catch (error) {
+      console.error('Failed to fetch users:', error)
+    } finally {
+      isLoadingUsers.value = false
     }
   }
 

@@ -84,3 +84,35 @@
   background-color: #917762;
   color: #fff;
 }
+
+.userTable {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #d1d5db; /* gray-300 */
+  background-color: white;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.tableHeaderRow {
+  background-color: #f3f4f6; /* gray-100 */
+}
+
+.tableCell {
+  border: 1px solid #d1d5db;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+/* Optional striped rows */
+.userTable tbody tr:nth-child(even) {
+  background-color: #f9fafb; /* gray-50 */
+}
+
+/* Optional hover effect */
+.userTable tbody tr:hover {
+  background-color: #f3f4f6; /* light hover */
+}
