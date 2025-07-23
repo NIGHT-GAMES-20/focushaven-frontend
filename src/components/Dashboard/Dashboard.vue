@@ -75,6 +75,7 @@
                     <th :class="style.tableCell">Username</th>
                     <th :class="style.tableCell">Reg. Date</th>
                     <th :class="style.tableCell">FH ID</th>
+                    <th :class="style.tableCell">Email</th>
                     <th :class="style.tableCell">Class</th>
                   </tr>
                 </thead>
@@ -85,7 +86,8 @@
                     <td :class="style.tableCell">{{ user.username }}</td>
                     <td :class="style.tableCell">{{ new Date(user.registrationDate).toLocaleString() }}</td>
                     <td :class="style.tableCell">{{ user.FHiD }}</td>
-                    <td :class="style.tableCell">{{ user.class }}</td>
+                    <td :class="style.tableCell">{{ user.email }}</td>
+                    <td :class="style.tableCell">{{ user.Class }}</td>
                   </tr>
                 </tbody>
               </table>
