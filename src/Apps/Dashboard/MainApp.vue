@@ -8,7 +8,7 @@
     <div class="mainApp">
         <Header />
         <Dashboard />
-        <p>Heloo From the Dashboard</p>
+        <p>Dashboard is Still In Devlopment</p>
         <Footer />
     </div>
 </template>

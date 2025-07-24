@@ -25,8 +25,8 @@
         <span>
           Email (Optional) 
           <span :class="styles.tooltipContainer">
-            ⓘ:
-            <span :class="styles.tooltipText">Account Rcovery Will Not Be Available If Email is not Added</span>
+            <Info :size="18"/>:
+            <span :class="styles.tooltipText">When Account Rcovery will be added, It Will Not Be Available If Email is not Added</span>
           </span>
         </span>
         <div :class="styles.passwordRow">
@@ -74,6 +74,7 @@
 <script setup>
   import { ref, onMounted, watch } from 'vue'
   import { useUserStore } from '/stores/user.js'
+  import { Info } from 'lucide-vue-next';
   import MD5 from 'crypto-js/md5'
   import imageA from './assets/view.png'
   import imageB from './assets/hide.png'
