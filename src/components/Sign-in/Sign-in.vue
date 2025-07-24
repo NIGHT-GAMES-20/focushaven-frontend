@@ -25,7 +25,7 @@
         <span>
           Email (Optional) 
           <span :class="styles.tooltipContainer">
-            <Info :size="18"/>:
+            <Info :size="20" style="margin-bottom: -4px;"/>:
             <span :class="styles.tooltipText">When Account Rcovery will be added, It Will Not Be Available If Email is not Added</span>
           </span>
         </span>
@@ -168,8 +168,8 @@
   })
 
   watch(() => Class, (newVal) => {
-    if (newVal > 12) Class = 12;
-    if (newVal < 1) Class = 1;
+    if (newVal > 12) Class.value = 12;
+    if (newVal < 1) Class.value = 1;
   });
 
   // Email validation
