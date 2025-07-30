@@ -55,7 +55,7 @@ async function submitQuestion() {
   };
 
   try {
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/question`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/ask`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
