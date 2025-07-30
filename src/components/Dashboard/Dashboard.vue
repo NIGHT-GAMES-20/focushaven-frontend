@@ -41,6 +41,7 @@
             <div v-if="!isLoadingHeldQuestions">
               <ul v-if="heldQuestions.length">
                 <li v-for="question in heldQuestions" :key="question._id">
+                  <strong>Question ID:</strong> {{ question._id }}<br>
                   <strong>Title:</strong> {{ question.title }}<br>
                   <strong>Body:</strong> {{ question.body }}<br>
                   <strong>Tags:</strong> {{ question.tags.join(', ') }}<br>
@@ -54,8 +55,8 @@
                     </li>
                   </ul>
                   <div :class="style.tags">
-                    <button @click="" :class="style.btns">Approve Question</button>
-                    <button @click="" :class="style.btns">Reject Question</button>
+                    <button @click="approveQuestion(question._id, true)" :class="style.btns">Approve Question</button>
+                    <button @click="approveQuestion(question._id, false)" :class="style.btns">Reject Question</button>
                   </div>
                 </li>
               </ul>
@@ -235,6 +236,30 @@
     } finally {
       isLoadingUsers.value = false
     }
+  }
+
+  async function approveQuestion(questionId, isApproved) {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/questions/approve`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ questionId, isApproved })
+      })
+
+      const data = await response.json()
+      if (data.success) {
+        window.alert(data.message)
+        heldQuestions.value = heldQuestions.value.filter(q => q._id !== questionId)
+      } else {
+        console.error('Failed to approve/reject question:', data.message)
+      }
+    } catch (error) {
+      console.error('Error approving/rejecting question:', error)
+    }
+    
   }
 
 

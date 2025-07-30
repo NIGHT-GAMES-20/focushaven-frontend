@@ -17,7 +17,6 @@ export default defineConfig({
         forum: resolve(__dirname, 'forum.html'),
         dashboard: resolve(__dirname, 'dashboard.html'),
         question: resolve(__dirname, 'question.html'),
-        ask: resolve(__dirname, 'ask.html'),
         error404: resolve(__dirname, 'errors/error-404.html') 
       },
     }

@@ -3,6 +3,8 @@ import { defineStore } from 'pinia'
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: null,
+    name: null,
+    FHiD: null,
     isLoggedIn: false,
     isAdmin: false,
     loading: true
@@ -17,15 +19,21 @@ export const useUserStore = defineStore('user', {
         const res = await responce.json();
         if (res.success) {
           this.user = res.user;
+          this.name = res.name;
+          this.FHiD = res.FHiD;
           this.isLoggedIn = true;
           this.isAdmin = res.admin || false;
         } else {
           this.user = null;
+          this.name = null;
+          this.FHiD = null;
           this.isLoggedIn = false;
           this.isAdmin = false;
         }
       } catch (err) {
         this.user = null;
+        this.name = null;
+        this.FHiD = null;
         this.isLoggedIn = false;
         this.isAdmin = false;
       } finally {
