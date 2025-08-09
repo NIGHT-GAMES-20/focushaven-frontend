@@ -7,12 +7,12 @@
 </template>
 
 <script setup>
-  import { onMounted } from 'vue';
+  import { onMounted,ref } from 'vue';
   import { useRoute } from 'vue-router';
 
   const route = useRoute()
   const routeId = route.params.id;
-  const dataRef = ref([]);
+  const dataRef = ref(null);
 
   // You can use routeId in your component logic
   console.log('Route ID:', routeId);
