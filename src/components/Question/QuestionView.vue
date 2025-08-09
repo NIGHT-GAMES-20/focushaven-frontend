@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h2>Parent Component</h2>
-    <p @click="fetchData()">Route ID: {{ routeId }}</p>
+    <p>Route ID: {{ routeId }}</p>
+    <p>Data will be fetched based on the route ID.</p>
+    <p>{{ dataRef }}</p>
   </div>
 </template>
 
@@ -11,6 +12,7 @@
 
   const route = useRoute()
   const routeId = route.params.id;
+  const dataRef = ref([]);
 
   // You can use routeId in your component logic
   console.log('Route ID:', routeId);
@@ -25,6 +27,7 @@
         }
       });
       const data = await response.json();
+      dataRef.value = data;
       console.log('Fetched data:', data);
     } catch (error) {
       console.error('Error fetching data:', error);
