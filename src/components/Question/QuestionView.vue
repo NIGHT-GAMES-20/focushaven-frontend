@@ -18,7 +18,7 @@
   // Fetch data using the route ID
   async function fetchData() {
     try {
-      const response = await secureFetch(`${import.meta.env.VITE_BACKEND_URL}/question/data/${routeId}`, {
+      const response = await secureFetch(`${import.meta.env.VITE_BACKEND_URL}/forum/question/data/${routeId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
