@@ -39,14 +39,14 @@
       <!-- Nav menu -->
       <nav :class="[styles.navBar, { [styles.open]: menuOpen }]">
         <ul :class="styles.navElem">
-          <li><a href="/">Home</a></li>
-          <li><a href="/notes">Notes</a></li>
-          <li><a href="https://focushaven-testportal.netlify.app/">Test Portal</a></li>
-          <li><a href="/forum">Forum</a></li>
-          <li v-if="userStore.isLoggedIn"><a href="/dashboard">Dashboard</a></li>
-          <li v-else><a href="/login">Login/Register</a></li>
+          <li><a href="/" :class="styles.links">Home</a></li>
+          <li><a href="/notes" :class="styles.links">Notes</a></li>
+          <li><a href="https://focushaven-testportal.netlify.app/" :class="styles.links">Test Portal</a></li>
+          <li><a href="/forum" :class="styles.links">Forum</a></li>
+          <li v-if="userStore.isLoggedIn"><a href="/dashboard" :class="styles.links">Dashboard</a></li>
+          <li v-else><a href="/login" :class="styles.links" >Login/Register</a></li>
           <li v-if="userStore.isLoggedIn">
-            <a @click="logoutFunc" href="javascript:void(0)" style="margin-right: 10px;">Logout</a>
+            <a @click="logoutFunc" href="javascript:void(0)" style="margin-right: 10px;" :class="styles.links">Logout</a>
           </li>
         </ul>
       </nav>

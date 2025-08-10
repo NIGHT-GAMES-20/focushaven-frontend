@@ -54,7 +54,7 @@
   flex-wrap: wrap;
 }
 
-a {
+.links {
   color: #EED9C8;
   text-decoration: none;
   padding: 5px 0;
@@ -63,7 +63,7 @@ a {
   display: inline-block;
 }
 
-a::after {
+.links::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -74,7 +74,7 @@ a::after {
   transition: width 0.3s ease-in-out;
 }
 
-a:hover::after {
+.links:hover::after {
   width: 100%;
 }
 

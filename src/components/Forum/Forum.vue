@@ -8,19 +8,22 @@
         <input v-model="searchQuery" type="text" placeholder="Search..." :class="Styles.searchInput" @keydown.enter="fetchSearchQuesions" />
         <button :class="Styles.searchButton" @click="fetchSearchQuesions">Search</button>
       </div>
-      <div :class="Styles.userActions">
+      <div :class="Styles.userActions" style="position: relative;">
         <a href="/"><div :class="Styles.backBtn">
-          <ArrowLeft/> Home
+          <ArrowLeft :class="Styles.arrowIcon"/> Home
         </div></a>
+
         <QuestionAsk/>
-        <div class="dropdown" @click="toggleDropdown">
-          <img v-if="userStore.user" alt="user Identicon" :src="userStore.profilePic" :class="Styles.userIdenticon" />
-          <div v-if="isUserDropdownOpen" class="dropdown-menu" @click.stop >
-            <a href="/profile">Profile</a>
-            <a href="/settings">Settings</a>
-            <a @click.prevent="logout">Logout</a>
-          </div>
+
+        <div v-if="userStore.isLoggedIn" @click="toggleDropdown" :class="Styles.userIdenticonContainer" ref="dropdownRef">
+          <img  alt="user Identicon" :src="userStore.profilePic" :class="Styles.userIdenticon" ref="dropdownRef" /><ChevronDown :class="[Styles.chevronIconDropown, { [Styles.rotated]: isUserDropdownOpen }]" />
         </div>
+        <transition name="fade">
+          <div v-if="isUserDropdownOpen" :class="Styles.userDropdown"  @click.stop >
+            <a href="/dashboard" :class="Styles.dropdownElem">Dashboard</a>
+            <a @click.prevent="logout" :class="Styles.dropdownElem">Logout</a>
+          </div>
+        </transition>
       </div>
     </div>
     <div :class="Styles.forumQuestionsContainer">
@@ -75,10 +78,10 @@
 </template>
 
 <script setup>
-  import { ref , onMounted } from 'vue';
+  import { ref , onMounted, onBeforeUnmount  } from 'vue';
   import Styles from './Forum.module.css';
   import { useUserStore } from '/stores/user.js'
-  import { Trash2, ThumbsUp, ArrowLeft  } from 'lucide-vue-next';
+  import { Trash2, ThumbsUp, ArrowLeft,ChevronDown } from 'lucide-vue-next';
   import QuestionAsk from '../Question/QuestionAsk.vue';
   import ForumLogo from '../../assets/ForumLogoTitle.png'
 
@@ -91,10 +94,22 @@
   const currentPage = ref(1);
   const confirmDelete = ref(false);
   const isUserDropdownOpen = ref(false);
+  const dropdownRef = ref(null);
 
   function toggleDropdown() {
     isUserDropdownOpen.value = !isUserDropdownOpen.value;
   }
+
+  const closeDropdown = (event) => {
+  // If dropdown is open and click is outside the dropdown, close it
+    if (
+      isUserDropdownOpen.value &&
+      dropdownRef.value &&
+      !dropdownRef.value.contains(event.target)
+    ) {
+      isUserDropdownOpen.value = false;
+    }
+  };
 
   async function fetchSearchQuesions() {
     try {
@@ -214,10 +229,23 @@
     userStore.fetchUser()
     fetchPages();
     fetchQuestions(1);
+    document.addEventListener("click", closeDropdown);
   })
 
-  function QuestionAskFunc() {
-      window.location.href = '/forum/ask';
-  }
+  onBeforeUnmount(() => {
+    document.removeEventListener("click", closeDropdown);
+  });
 
 </script>
+
+<style>
+  /* Fade in / out transition classes */
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.25s ease;
+  }
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+</style>
