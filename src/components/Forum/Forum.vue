@@ -1,38 +1,76 @@
 <template>
   <div :class="Styles.forumContainer">
-      <div :class="Styles.header">
-          <h4 :class="Styles.titleText">Forum</h4>
-          <div :class="Styles.search">
-              <input v-model="searchQuery" type="text" placeholder="Search..." :class="Styles.searchInput" @keydown.enter="fetchSearchQuesions" />
-              <button :class="Styles.searchButton" @click="fetchSearchQuesions">Search</button>
+    <div :class="Styles.header">
+      <div :class="Styles.logo">
+        <img alt="Forum" :src="ForumLogo" :class="Styles.logo" />
+      </div>
+      <div :class="Styles.search">
+        <input v-model="searchQuery" type="text" placeholder="Search..." :class="Styles.searchInput" @keydown.enter="fetchSearchQuesions" />
+        <button :class="Styles.searchButton" @click="fetchSearchQuesions">Search</button>
+      </div>
+      <div :class="Styles.userActions">
+        <a href="/"><div :class="Styles.backBtn">
+          <ArrowLeft/> Home
+        </div></a>
+        <QuestionAsk/>
+        <div class="dropdown" @click="toggleDropdown">
+          <img v-if="userStore.user" alt="user Identicon" :src="userStore.profilePic" :class="Styles.userIdenticon" />
+          <div v-if="isUserDropdownOpen" class="dropdown-menu" @click.stop >
+            <a href="/profile">Profile</a>
+            <a href="/settings">Settings</a>
+            <a @click.prevent="logout">Logout</a>
           </div>
-          <QuestionAsk/>
-      </div>
-      <div :class="Styles.forumQuestionsContainer">
-        <ol class="list-disc list-inside">
-            <li v-for="q in questions" :key="q.id" :class="Styles.questionItem">
-              <a :href="`/forum/question/${q.id}`" :class="Styles.question">
-                {{ q.title }}
-              </a>
-              <button  v-if="(q.author === userStore.user || userStore.isAdmin) && !searchTriggered" :class="Styles.searchButton" @click="confirmDelete = true" > <Trash2 color="red" :size="18"/> </button>
-              <div v-if="confirmDelete" :class="Styles.confirmDeleteContainer"> 
-                <text>
-                  Are You Sure you want to delete {{q.text}} ?? 
-                </text>
-                <button :class="Styles.searchButton" @click="deleteQuestion(q.id)">Delete</button>
-                <button :class="Styles.searchButton" @click="confirmDelete = false">Cancel</button>
-              </div>
-            </li>
-            <li v-if="questions.length === 0" :class="Styles.noQuestions">No questions found.</li>
-          </ol>
         </div>
-      <div :class="Styles.pageNumberContainer">
-        <ul :class="Styles.pageList">
-          <li v-for="page in pages" :key="page" :class="[Styles.pageNumber, { [Styles.selectedPage]: page === currentPage }]"  @click="fetchQuestions(page)">
-            {{ page }}
-          </li>
-        </ul>
       </div>
+    </div>
+    <div :class="Styles.forumQuestionsContainer">
+      <ol class="list-disc list-inside">
+        <li v-for="q in questions" :key="q.id" :class="Styles.questionItem">
+          <!-- Left side: Likes -->
+          <div :class="Styles.likesContainer">
+            <ThumbsUp style="margin-top: 1em;" />  {{ q.likes }}
+          </div>
+
+          <!-- Middle: Question content -->
+          <div :class="Styles.questionContent">
+            <a :href="`/forum/question/${q.id}`" :class="Styles.questionTitle">
+              {{ q.title }}
+            </a>
+            <p :class="Styles.questionBody">
+              {{ q.body.length > 120 ? q.body.slice(0, 120) + '...' : q.body }}
+            </p>
+            <div :class="Styles.tags">
+              <span v-for="tag in q.tags" :key="tag" :class="Styles.tag">{{ tag }}</span>
+            </div>
+          </div>
+
+          <!-- Right side: Author & date -->
+          <div :class="Styles.metaInfo">
+            <span>by {{ q.author }}</span>
+            <span>{{ new Date(q.date).toLocaleDateString() }}</span>
+          </div>
+
+          <!-- Delete button -->
+          <button v-if="(q.author === userStore.user || userStore.isAdmin) && !searchTriggered" :class="Styles.deleteButton" @click="confirmDelete = true" >
+            <Trash2 color="red" :size="18" />
+          </button>
+
+          <!-- Confirm delete -->
+          <div v-if="confirmDelete" :class="Styles.confirmDeleteContainer">
+            <text>Are you sure you want to delete "{{ q.title }}"?</text>
+            <button :class="Styles.searchButton" @click="deleteQuestion(q.id)">Delete</button>
+            <button :class="Styles.searchButton" @click="confirmDelete = false">Cancel</button>
+          </div>
+        </li>
+      </ol>
+    </div>
+    <div :class="Styles.pageNumberContainer">
+      <ul :class="Styles.pageList">
+        <li v-for="page in pages" :key="page" :class="[Styles.pageNumber, { [Styles.selectedPage]: page === currentPage }]"  @click="fetchQuestions(page)">
+          {{ page }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -40,8 +78,9 @@
   import { ref , onMounted } from 'vue';
   import Styles from './Forum.module.css';
   import { useUserStore } from '/stores/user.js'
-  import { Trash2 } from 'lucide-vue-next';
+  import { Trash2, ThumbsUp, ArrowLeft  } from 'lucide-vue-next';
   import QuestionAsk from '../Question/QuestionAsk.vue';
+  import ForumLogo from '../../assets/ForumLogoTitle.png'
 
   const userStore = useUserStore()
   const searchQuery = ref('');
@@ -51,6 +90,11 @@
   const pages = ref([1]);
   const currentPage = ref(1);
   const confirmDelete = ref(false);
+  const isUserDropdownOpen = ref(false);
+
+  function toggleDropdown() {
+    isUserDropdownOpen.value = !isUserDropdownOpen.value;
+  }
 
   async function fetchSearchQuesions() {
     try {
@@ -167,8 +211,9 @@
   }
 
   onMounted(() => {
-      fetchPages();
-      fetchQuestions(1);
+    userStore.fetchUser()
+    fetchPages();
+    fetchQuestions(1);
   })
 
   function QuestionAskFunc() {

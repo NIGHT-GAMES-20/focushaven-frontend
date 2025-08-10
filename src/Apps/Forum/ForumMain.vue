@@ -6,7 +6,6 @@
 
 <template>
     <div class="mainApp">
-        <Header />
         <Forum />
         <Footer />
     </div>
