@@ -21,7 +21,7 @@
         <transition name="fade">
           <div v-if="isUserDropdownOpen" :class="Styles.userDropdown"  @click.stop >
             <a href="/dashboard" :class="Styles.dropdownElem">Dashboard</a>
-            <a @click.prevent="logout" :class="Styles.dropdownElem">Logout</a>
+            <a @click="logoutFunc()" :class="Styles.dropdownElem">Logout</a>
           </div>
         </transition>
       </div>
@@ -235,6 +235,16 @@
   onBeforeUnmount(() => {
     document.removeEventListener("click", closeDropdown);
   });
+
+  async function logoutFunc() {
+    try {
+      userStore.logout()
+      console.log('Logged out successfully')
+      setTimeout(() => { window.location.href = '/'; }, 10)
+    } catch (error) {
+      console.error(`Logout Failed: ${error}`)
+    }
+  }
 
 </script>
 
