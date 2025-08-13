@@ -56,7 +56,7 @@
 
       <!-- Hamburger button -->
       <button @click="menuOpen = !menuOpen" :class="styles.menuToggle">
-        ☰
+        <img v-if="!userStore.isLoggedIn" alt="user Identicon" :src="userStore.profilePic" :class="styles.userIdenticon" />☰
       </button>
 
       <!-- Nav menu -->
