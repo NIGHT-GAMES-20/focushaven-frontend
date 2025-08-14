@@ -9,6 +9,7 @@
 <script setup>
   import { onMounted,ref } from 'vue';
   import { useRoute } from 'vue-router';
+  import { secureFetch } from '../../scripts/forumSecureFetch';
 
   const route = useRoute()
   const routeId = route.params.id;
@@ -53,7 +54,7 @@
     return Date.now() >= payload.exp * 1000;
   }
 
-  async function secureFetch(url, options = {}) {
+  async function secureFetch11(url, options = {}) {
     const token = await getValidToken();
     options.headers = {
       ...options.headers,
