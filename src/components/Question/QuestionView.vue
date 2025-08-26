@@ -109,7 +109,7 @@
 
       const data = response.json();
       if (data.success) {
-        question.value.Likes = data.newLikeCount;
+        question.value.Likes = data.Likes;
       } else {
         alert(data.error || 'Failed to like the question.');
       }
