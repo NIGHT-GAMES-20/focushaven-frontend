@@ -56,7 +56,7 @@
   import { useUserStore } from '/stores/user.js'
   import styles from './questionView.module.css';
   import { Answer } from './Comments,Answers/Answer.vue';
-  import Comment, { Comment } from './Comments,Answers/Comment.vue';
+  import { Comment } from './Comments,Answers/Comment.vue';
 
   const route = useRoute();
   const routeId = route.params.id;
