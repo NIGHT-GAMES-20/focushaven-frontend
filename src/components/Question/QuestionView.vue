@@ -5,7 +5,7 @@
       <div :class="styles.actions">
         <h1>{{ question.title }}</h1>
         <button @click="likeQuestion">
-          <ThumbsUp :size="4"/> {{ question.Likes }}
+          <ThumbsUp :size="20"/> {{ question.Likes }}
         </button>
       </div>
       <div :class="styles.meta">
