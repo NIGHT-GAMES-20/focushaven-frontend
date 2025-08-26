@@ -2,7 +2,7 @@
   <div :class="styles.questionPage">
     <!-- Question Header -->
     <div :class="styles.questionHeader">
-      <h1>{{ question.title }}</h1>
+      <h1>{{ question.title }}</h1><button @click="likeQuestion" :class="styles.actions"><ThumbsUp/> Like ({{ question.Likes }})</button>
       <div :class="styles.meta">
         <span>Asked by <strong>{{ question.user }}</strong></span>
         <span>• {{ formatDate(question.CreatedAt) }}</span>
@@ -17,15 +17,9 @@
       <p>{{ question.body }}</p>
     </div>
 
-    <!-- Actions -->
-    <div :class="styles.actions">
-      <button @click="likeQuestion"><ThumbsUp/> Like ({{ question.Likes }})</button>
-      <button @click="startAnswering">✏ Answer</button>
-    </div>
-
     <!-- Answers Section -->
     <div :class="styles.answersSection">
-      <h2>Answers</h2>
+      <h2>Answers</h2><button @click="startAnswering" :class="styles.actions" ><Reply /> Post Answer</button>
       <div :class="styles.emptyState">
         <MessageCircleQuestionMark  /> 
         <span>No answers yet. Be the first to share your knowledge!</span>
@@ -34,7 +28,7 @@
 
     <!-- Comments Section -->
     <div :class="styles.commentsSection">
-      <h3>Comments</h3>
+      <h3>Comments</h3><button @click="startAnswering" :class="styles.actions" ><Reply /> Post a Comment</button>
       <div :class="styles.emptyState">
         <MessageSquare />
         <span>No comments yet. Start the conversation!</span>
@@ -48,7 +42,7 @@
   import { useRoute } from 'vue-router';
   import { secureFetch } from '../../scripts/forumSecureFetch';
   import styles from './questionView.module.css';
-  import { MessageCircleQuestionMark , MessageSquare  } from 'lucide-vue-next';
+  import { MessageCircleQuestionMark, MessageSquare, Reply  } from 'lucide-vue-next';
 
   const route = useRoute();
   const routeId = route.params.id;

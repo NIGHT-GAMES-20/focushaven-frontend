@@ -7,6 +7,8 @@
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   color: #3a2a20;
   font-family: 'Inter', sans-serif;
+  border: #4d3326 1px solid;
+  margin-top: 0.7em;
 }
 
 .questionHeader h1 {
@@ -64,6 +66,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  right: 0;
 }
 
 .actions button:hover {
