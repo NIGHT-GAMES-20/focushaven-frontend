@@ -62,7 +62,7 @@
 
   const route = useRoute();
   const routeId = route.params.id;
-  const userStore = useUserStore();
+  const userStore = useUserStore()
 
   const question = ref({
     title: '',
@@ -125,6 +125,9 @@
     alert('Answer form coming soon!');
   }
 
-  onMounted(fetchData);
+  onMounted(() => {
+    fetchData();
+    userStore.fetchUser();
+  });
 
 </script>
