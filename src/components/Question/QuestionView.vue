@@ -104,7 +104,7 @@
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ questionId: routeId })
+        body: JSON.stringify({ questionID: routeId })
       });
 
       const data = response.json();
