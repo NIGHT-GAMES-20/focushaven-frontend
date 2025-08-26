@@ -100,14 +100,14 @@
     }
 
     try{
-      const response = secureFetch( `${import.meta.env.VITE_BACKEND_URL}/forum/question/like`, { 
+      const response = await secureFetch( `${import.meta.env.VITE_BACKEND_URL}/forum/question/like`, { 
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({ questionID: routeId })
       });
 
-      const data = response.json();
+      const data = await response.json();
       if (data.success) {
         question.value.Likes = data.Likes;
       } else {
