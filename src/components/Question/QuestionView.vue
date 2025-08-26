@@ -5,7 +5,7 @@
       <div :class="styles.actions">
         <h1>{{ question.title }}</h1>
         <button @click="likeQuestion">
-          <ThumbsUp/> ({{ question.Likes }})
+          <ThumbsUp :size="4"/> {{ question.Likes }}
         </button>
       </div>
       <div :class="styles.meta">
@@ -56,11 +56,14 @@
   import { onMounted, ref } from 'vue';
   import { useRoute } from 'vue-router';
   import { secureFetch } from '../../scripts/forumSecureFetch';
-  import styles from './questionView.module.css';
   import { MessageCircleQuestionMark, MessageSquare, Reply, ThumbsUp  } from 'lucide-vue-next';
+  import { useUserStore } from '../../stores/userStore';
+  import styles from './questionView.module.css';
 
   const route = useRoute();
   const routeId = route.params.id;
+  const userStore = useUserStore();
+
   const question = ref({
     title: '',
     body: '',
@@ -91,8 +94,31 @@
   }
 
   function likeQuestion() {
-    // Placeholder logic
-    question.value.Likes++;
+    if (!userStore.isLoggedIn) {
+      alert('Please log in to like the question.');
+      return;
+    }
+
+    try{
+      const response = secureFetch( `${import.meta.env.VITE_BACKEND_URL}/forum/question/like`, { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ questionId: routeId })
+      });
+
+      const data = response.json();
+      if (data.success) {
+        question.value.Likes = data.newLikeCount;
+      } else {
+        alert(data.error || 'Failed to like the question.');
+      }
+
+    } catch (error) {
+      alert('Failed to like the question. Please try again.');
+      console.error('Error liking question:', error);
+    }
+
   }
 
   function startAnswering() {
