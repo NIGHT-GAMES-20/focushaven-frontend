@@ -26,9 +26,7 @@
     <div :class="styles.answersSection">
       <div :class="styles.actions">
         <h2>Answers</h2>
-        <button @click="startAnswering">
-          <Reply /> Post Answer
-        </button>
+        <Answer />
       </div>
       <div :class="styles.emptyState">
         <MessageCircleQuestionMark  /> 
@@ -40,9 +38,7 @@
     <div :class="styles.commentsSection">
       <div :class="styles.actions">
         <h3>Comments</h3>
-        <button @click="startAnswering" >
-          <Reply /> Post a Comment
-        </button>
+        <Comment />
       </div>
       <div :class="styles.emptyState">
         <MessageSquare />
@@ -56,9 +52,11 @@
   import { onMounted, ref } from 'vue';
   import { useRoute } from 'vue-router';
   import { secureFetch } from '../../scripts/forumSecureFetch';
-  import { MessageCircleQuestionMark, MessageSquare, Reply, ThumbsUp  } from 'lucide-vue-next';
+  import { MessageCircleQuestionMark, MessageSquare, ThumbsUp  } from 'lucide-vue-next';
   import { useUserStore } from '/stores/user.js'
   import styles from './questionView.module.css';
+  import { Answer } from './Comments,Answers/Answer.vue';
+  import Comment, { Comment } from './Comments,Answers/Comment.vue';
 
   const route = useRoute();
   const routeId = route.params.id;
