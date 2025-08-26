@@ -93,7 +93,7 @@
     return date.toLocaleString();
   }
 
-  function likeQuestion() {
+  async function likeQuestion() {
     if (!userStore.isLoggedIn) {
       alert('Please log in to like the question.');
       return;
