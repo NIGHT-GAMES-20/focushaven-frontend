@@ -2,7 +2,12 @@
   <div :class="styles.questionPage">
     <!-- Question Header -->
     <div :class="styles.questionHeader">
-      <h1>{{ question.title }}</h1><button @click="likeQuestion" :class="styles.actions"><ThumbsUp/> Like ({{ question.Likes }})</button>
+      <div :class="styles.actions">
+        <h1>{{ question.title }}</h1>
+        <button @click="likeQuestion">
+          <ThumbsUp/> ({{ question.Likes }})
+        </button>
+      </div>
       <div :class="styles.meta">
         <span>Asked by <strong>{{ question.user }}</strong></span>
         <span>• {{ formatDate(question.CreatedAt) }}</span>
@@ -19,7 +24,12 @@
 
     <!-- Answers Section -->
     <div :class="styles.answersSection">
-      <h2>Answers</h2><button @click="startAnswering" :class="styles.actions" ><Reply /> Post Answer</button>
+      <div :class="styles.actions">
+        <h2>Answers</h2>
+        <button @click="startAnswering">
+          <Reply /> Post Answer
+        </button>
+      </div>
       <div :class="styles.emptyState">
         <MessageCircleQuestionMark  /> 
         <span>No answers yet. Be the first to share your knowledge!</span>
@@ -28,7 +38,12 @@
 
     <!-- Comments Section -->
     <div :class="styles.commentsSection">
-      <h3>Comments</h3><button @click="startAnswering" :class="styles.actions" ><Reply /> Post a Comment</button>
+      <div :class="styles.actions">
+        <h3>Comments</h3>
+        <button @click="startAnswering" >
+          <Reply /> Post a Comment
+        </button>
+      </div>
       <div :class="styles.emptyState">
         <MessageSquare />
         <span>No comments yet. Start the conversation!</span>
@@ -42,7 +57,7 @@
   import { useRoute } from 'vue-router';
   import { secureFetch } from '../../scripts/forumSecureFetch';
   import styles from './questionView.module.css';
-  import { MessageCircleQuestionMark, MessageSquare, Reply  } from 'lucide-vue-next';
+  import { MessageCircleQuestionMark, MessageSquare, Reply, ThumbsUp  } from 'lucide-vue-next';
 
   const route = useRoute();
   const routeId = route.params.id;

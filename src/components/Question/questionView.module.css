@@ -51,6 +51,8 @@
 
 .actions {
   margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .actions button {
@@ -66,7 +68,6 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  right: 0;
 }
 
 .actions button:hover {
