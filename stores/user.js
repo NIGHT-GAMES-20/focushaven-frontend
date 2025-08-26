@@ -12,6 +12,16 @@ export const useUserStore = defineStore('user', {
     loading: true
   }),
 
+  persist: {
+    enabled: true,             // ✅ persist across reloads
+    strategies: [
+      {
+        key: 'user-store',     // localStorage key
+        storage: localStorage, // or sessionStorage
+      }
+    ]
+  },
+
   actions: {
     async fetchUser() {
       try {

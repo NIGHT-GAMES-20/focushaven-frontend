@@ -198,7 +198,6 @@
 
 
   onMounted(() => {
-    userStore.fetchUser()
     fetchPages();
     fetchQuestions(1);
     document.addEventListener("click", closeDropdown);

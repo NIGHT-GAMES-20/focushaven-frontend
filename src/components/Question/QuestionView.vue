@@ -125,7 +125,6 @@
 
   onMounted(() => {
     fetchData();
-    userStore.fetchUser();
   });
 
 </script>

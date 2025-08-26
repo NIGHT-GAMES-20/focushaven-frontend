@@ -122,10 +122,7 @@
   onMounted(async () => {
     if (!userStore.isLoggedIn) {
       // Wait until fetchUser has been called at least once
-      await userStore.fetchUser()
-      if (!userStore.isLoggedIn) {
         window.location.href = '/login'
-      }
     }
   })
 
