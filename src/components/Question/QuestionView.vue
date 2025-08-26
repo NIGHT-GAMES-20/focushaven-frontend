@@ -57,7 +57,7 @@
   import { useRoute } from 'vue-router';
   import { secureFetch } from '../../scripts/forumSecureFetch';
   import { MessageCircleQuestionMark, MessageSquare, Reply, ThumbsUp  } from 'lucide-vue-next';
-  import { useUserStore } from '../../stores/userStore';
+  import { useUserStore } from '/stores/user.js'
   import styles from './questionView.module.css';
 
   const route = useRoute();
