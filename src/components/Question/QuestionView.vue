@@ -26,13 +26,19 @@
     <!-- Answers Section -->
     <div :class="styles.answersSection">
       <h2>Answers</h2>
-      <p>No answers yet. Be the first to answer!</p>
+      <div :class="styles.emptyState">
+        <MessageCircleQuestionMark  /> 
+        <span>No answers yet. Be the first to share your knowledge!</span>
+      </div>
     </div>
 
     <!-- Comments Section -->
     <div :class="styles.commentsSection">
       <h3>Comments</h3>
-      <p>No comments yet.</p>
+      <div :class="styles.emptyState">
+        <MessageSquare />
+        <span>No comments yet. Start the conversation!</span>
+      </div>
     </div>
   </div>
 </template>
@@ -42,7 +48,7 @@
   import { useRoute } from 'vue-router';
   import { secureFetch } from '../../scripts/forumSecureFetch';
   import styles from './questionView.module.css';
-  import { ThumbsUp } from 'lucide-vue-next';
+  import { MessageCircleQuestionMark , MessageSquare  } from 'lucide-vue-next';
 
   const route = useRoute();
   const routeId = route.params.id;
