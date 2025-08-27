@@ -1,5 +1,8 @@
 <template>
-  <div :class="styles.questionPage">
+  <div v-if="isLoading" :class="styles.questionPage" style="display: flex; justify-content: space-around;">
+    <div style="display: flex; flex-direction: row; margin-top: 20px;"><div :class="styles.spinner" style="margin-left:10px; margin-right: 10px;"></div>Loading, Please Wait...</div>
+  </div>
+  <div v-else :class="styles.questionPage">
     <!-- Question Header -->
     <div :class="styles.questionHeader">
       <div :class="styles.actions">
@@ -61,6 +64,7 @@
   const route = useRoute();
   const routeId = route.params.id;
   const userStore = useUserStore()
+  const isLoading = ref(false);
 
   const question = ref({
     title: '',
@@ -72,6 +76,7 @@
   });
 
   async function fetchData() {
+    isLoading.value = true;
     try {
       const response = await secureFetch(
         `${import.meta.env.VITE_BACKEND_URL}/forum/question/data/${routeId}`,
@@ -83,6 +88,8 @@
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+    }finally {
+      isLoading.value = false;
     }
   }
 

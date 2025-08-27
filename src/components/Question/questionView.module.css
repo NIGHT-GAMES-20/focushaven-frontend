@@ -105,3 +105,18 @@
   flex-shrink: 0;
   color: #b8a398;
 }
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #ccc;
+  border-top: 2px solid #4d3326;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -26,7 +26,10 @@
         </transition>
       </div>
     </div>
-    <div :class="Styles.forumQuestionsContainer">
+    <div v-if="isLoading" style="display: flex; justify-content: space-around;">
+      <div style="display: flex; flex-direction: row; margin-top: 20px;"><div :class="Styles.spinner" style="margin-left:10px; margin-right: 10px;"></div>Loading, Please Wait...</div>
+    </div>
+    <div :class="Styles.forumQuestionsContainer" v-else>
       <ol class="list-disc list-inside">
         <li v-for="q in questions" :key="q.id" :class="Styles.questionItem">
           <!-- Left side: Likes -->
@@ -96,6 +99,7 @@
   const confirmDelete = ref(false);
   const isUserDropdownOpen = ref(false);
   const dropdownRef = ref(null);
+  const isLoading = ref(false);
 
   function toggleDropdown() {
     isUserDropdownOpen.value = !isUserDropdownOpen.value;
@@ -117,6 +121,7 @@
       if (!searchTriggered.value) searchTriggered.value = true;
       searchInitiation.value = true;
       questions.value = [];
+      isLoading.value = true;
 
       const response = await secureFetch(
         `${import.meta.env.VITE_BACKEND_URL}/forum/search/questions?search=${encodeURIComponent(searchQuery.value)}`, 
@@ -141,6 +146,7 @@
       console.error('Error fetching forum data:', error);
     } finally {
       searchInitiation.value = false;
+      isLoading.value = false;
     }
   }
 
@@ -151,6 +157,7 @@
       currentPage.value = page;
       searchTriggered.value = false;
       searchInitiation.value = false;
+      isLoading.value = true;
       const response = await secureFetch(`${import.meta.env.VITE_BACKEND_URL}/forum/questions?page=${page}&sortByLikes=false`, { method: 'GET' });
       const data = await response.json() || [];
       const questionsList = data.questions || [];
@@ -165,6 +172,8 @@
       }));
     } catch (error) {
       console.error('Error fetching forum data:', error);
+    }finally {
+      isLoading.value = false;
     }
   }
   async function fetchPages() {
