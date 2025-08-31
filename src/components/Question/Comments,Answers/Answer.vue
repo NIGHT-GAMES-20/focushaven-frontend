@@ -5,7 +5,7 @@
     <div v-if="showModal" :class="styles.modalOverlay">
       <div :class="styles.modalBox">
         <div :class="styles.modalHeader">
-          <h2>Ask a Question</h2>
+          <h2>Post A Answer</h2>
           <button :class="styles.closeBtn" @click="showModal = false">×</button>
         </div>
 
@@ -23,21 +23,28 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref,defineProps } from 'vue';
 import styles from './Common.module.css';
 import { Reply } from 'lucide-vue-next';
+import { secureFetch } from '../../../scripts/forumSecureFetch';
 
 const showModal = ref(false);
 const answer = ref('')
+const props = defineProps({
+  quesID: {
+    type: String,
+    required: true
+  }
+});
 
 async function submitQuestion() {
 
   try {
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/forum/question/answer`, {
+    const res = await secureFetch(`${import.meta.env.VITE_BACKEND_URL}/forum/question/answer/post`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({answer: answer.value})
+      body: JSON.stringify({questionID: props.quesID, answer: answer.value})
     });
     const data = await res.json();
     if (data.success) {

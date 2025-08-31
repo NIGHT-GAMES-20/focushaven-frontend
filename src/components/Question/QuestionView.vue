@@ -29,7 +29,7 @@
     <div :class="styles.answersSection">
       <div :class="styles.actions">
         <h2>Answers</h2>
-        <Answer />
+        <Answer :quesID="routeId" />
       </div>
       <div :class="styles.emptyState">
         <MessageCircleQuestionMark  /> 
@@ -41,7 +41,7 @@
     <div :class="styles.commentsSection">
       <div :class="styles.actions">
         <h3>Comments</h3>
-        <Comment />
+        <Comment :quesID="routeId" />
       </div>
       <div :class="styles.emptyState">
         <MessageSquare />
@@ -54,7 +54,7 @@
 <script setup>
   import { onMounted, ref } from 'vue';
   import { useRoute } from 'vue-router';
-  import { secureFetch } from '../../scripts/forumSecureFetch';
+  import { secureFetch, getValidToken } from '../../scripts/forumSecureFetch';
   import { MessageCircleQuestionMark, MessageSquare, ThumbsUp  } from 'lucide-vue-next';
   import { useUserStore } from '/stores/user.js'
   import styles from './questionView.module.css';
@@ -126,11 +126,8 @@
 
   }
 
-  function startAnswering() {
-    alert('Answer form coming soon!');
-  }
-
-  onMounted(() => {
+  onMounted(async () => {
+    await getValidToken();
     fetchData();
   });
 

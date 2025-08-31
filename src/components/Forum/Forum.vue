@@ -84,7 +84,7 @@
   import { ref , onMounted, onBeforeUnmount  } from 'vue';
   import Styles from './Forum.module.css';
   import { useUserStore } from '/stores/user.js'
-  import { secureFetch } from '../../scripts/forumSecureFetch';
+  import { secureFetch ,getValidToken } from '../../scripts/forumSecureFetch';
   import { Trash2, ThumbsUp, ArrowLeft,ChevronDown } from 'lucide-vue-next';
   import QuestionAsk from '../Question/QuestionAsk.vue';
   import ForumLogo from '../../assets/ForumLogoTitle.png'
@@ -206,7 +206,8 @@
   }
 
 
-  onMounted(() => {
+  onMounted(async () => {
+    await getValidToken(); // Ensure token is valid on mount
     fetchPages();
     fetchQuestions(1);
     document.addEventListener("click", closeDropdown);
