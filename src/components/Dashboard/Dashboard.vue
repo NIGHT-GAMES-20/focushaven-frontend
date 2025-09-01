@@ -120,6 +120,7 @@
   const users = ref([])
 
   onMounted(async () => {
+    userStore.fetchUser();
     if (!userStore.isLoggedIn) {
       // Wait until fetchUser has been called at least once
         window.location.href = '/login'

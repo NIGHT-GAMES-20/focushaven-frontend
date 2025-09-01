@@ -88,7 +88,11 @@
       );
       const data = await response.json();
       if (data.success) {
-        question.value = data.question;
+        question.value = {
+          ...question.value,   // keep existing defaults
+          ...data.question,    // overwrite with backend data
+          Likers: data.question?.Likers || [], // ensure array
+        };
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -122,7 +126,7 @@
       const data = await response.json();
       if (data.success) {
         question.value.Likes = data.Likes;
-        question.value.Likers = data.Likers;
+        question.value.Likers = data.Likers || [];
       } else {
         alert(data.error || 'Failed to like the question.');
       }

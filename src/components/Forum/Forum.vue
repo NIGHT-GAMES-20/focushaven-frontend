@@ -32,9 +32,14 @@
     <div :class="Styles.forumQuestionsContainer" v-else>
       <ol class="list-disc list-inside">
         <li v-for="q in questions" :key="q.id" :class="Styles.questionItem">
-          <!-- Left side: Likes -->
+          <!-- Left side: Animated Like Button -->
           <div :class="Styles.likesContainer">
-            <ThumbsUp style="margin-top: 1em;" />  {{ q.likes }}
+            <LikeBtn 
+              :liked="hasUserLikedQuestion(q.id)"
+              :loading="likingQuestions.has(q.id)"
+              :likesCount="q.likes"
+              @click="() => likeQuestion(q.id)"
+            />
           </div>
 
           <!-- Middle: Question content -->
@@ -57,15 +62,15 @@
           </div>
 
           <!-- Delete button -->
-          <button v-if="(q.author === userStore.user || userStore.isAdmin) && !searchTriggered" :class="Styles.deleteButton" @click="confirmDelete = true" >
+          <button v-if="(q.author === userStore.user || userStore.isAdmin) && !searchTriggered" :class="Styles.deleteButton" @click="confirmDelete = q.id" >
             <Trash2 color="red" :size="18" />
           </button>
 
           <!-- Confirm delete -->
-          <div v-if="confirmDelete" :class="Styles.confirmDeleteContainer">
+          <div v-if="confirmDelete === q.id" :class="Styles.confirmDeleteContainer">
             <text>Are you sure you want to delete "{{ q.title }}"?</text>
             <button :class="Styles.searchButton" @click="deleteQuestion(q.id)">Delete</button>
-            <button :class="Styles.searchButton" @click="confirmDelete = false">Cancel</button>
+            <button :class="Styles.searchButton" @click="confirmDelete = null">Cancel</button>
           </div>
         </li>
       </ol>
@@ -81,12 +86,13 @@
 </template>
 
 <script setup>
-  import { ref , onMounted, onBeforeUnmount  } from 'vue';
+  import { ref, onMounted, onBeforeUnmount, reactive, computed } from 'vue';
   import Styles from './Forum.module.css';
   import { useUserStore } from '/stores/user.js'
-  import { secureFetch ,getValidToken } from '../../scripts/forumSecureFetch';
-  import { Trash2, ThumbsUp, ArrowLeft,ChevronDown } from 'lucide-vue-next';
+  import { secureFetch, getValidToken } from '../../scripts/forumSecureFetch';
+  import { Trash2, ArrowLeft, ChevronDown } from 'lucide-vue-next';
   import QuestionAsk from '../Question/QuestionAsk.vue';
+  import LikeBtn from '../Asset-Componets/LikeBtn.vue';
   import ForumLogo from '../../assets/ForumLogoTitle.png'
 
   const userStore = useUserStore()
@@ -96,17 +102,77 @@
   const searchTriggered = ref(false);
   const pages = ref([1]);
   const currentPage = ref(1);
-  const confirmDelete = ref(false);
+  const confirmDelete = ref(null); // Changed to store question ID
   const isUserDropdownOpen = ref(false);
   const dropdownRef = ref(null);
   const isLoading = ref(false);
+
+  // Like functionality
+  const likingQuestions = reactive(new Set());
+  const userLikedQuestions = ref(new Set());
+
+  // Check if user has liked a specific question
+  const hasUserLikedQuestion = (questionId) => {
+    return userStore.isLoggedIn && userLikedQuestions.value.has(questionId);
+  };
+
+  // Like/unlike a question
+  const likeQuestion = async (questionId) => {
+    if (!userStore.isLoggedIn) {
+      alert('Please log in to like questions.');
+      return;
+    }
+    
+    if (likingQuestions.has(questionId)) return; // Prevent multiple clicks
+
+    const wasLiked = hasUserLikedQuestion(questionId);
+    const question = questions.value.find(q => q.id === questionId);
+    if (!question) return;
+
+    likingQuestions.add(questionId);
+
+    try {
+      const response = await secureFetch(
+        `${import.meta.env.VITE_BACKEND_URL}/forum/question/like`, 
+        { 
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ questionID: questionId })
+        }
+      );
+
+      const data = await response.json();
+      if (data.success) {
+        // Update the likes count
+        question.likes = data.Likes;
+        
+        // Update the user liked questions set
+        if (wasLiked) {
+          userLikedQuestions.value.delete(questionId);
+        } else {
+          userLikedQuestions.value.add(questionId);
+        }
+        
+        console.log(`Question ${questionId} ${!wasLiked ? 'liked' : 'unliked'}`);
+        
+      } else {
+        alert(data.error || 'Failed to like the question.');
+      }
+
+    } catch (error) {
+      alert('Failed to like the question. Please try again.');
+      console.error('Error liking question:', error);
+    } finally {
+      likingQuestions.delete(questionId);
+    }
+  };
 
   function toggleDropdown() {
     isUserDropdownOpen.value = !isUserDropdownOpen.value;
   }
 
   const closeDropdown = (event) => {
-  // If dropdown is open and click is outside the dropdown, close it
     if (
       isUserDropdownOpen.value &&
       dropdownRef.value &&
@@ -133,14 +199,25 @@
 
       questions.value = questionsList.map(q => ({
         id: q._id,
-        text: q.title, // using title as main text
+        title: q.title,
         body: q.body,
         tags: q.tags,
-        author: q.user, // from backend `user`
-        date: q.CreatedAt, // from backend `CreatedAt`
-        likes: q.Likes, // from backend `Likes`
+        author: q.user,
+        date: q.CreatedAt,
+        likes: q.Likes,
+        likers: q.Likers || [], // Include likers array if available
         status: q.status
       }));
+
+      // Update userLikedQuestions set based on likers data
+      if (userStore.isLoggedIn) {
+        userLikedQuestions.value.clear();
+        questions.value.forEach(q => {
+          if (q.likers && q.likers.includes(userStore.FHiD)) {
+            userLikedQuestions.value.add(q.id);
+          }
+        });
+      }
 
     } catch (error) {
       console.error('Error fetching forum data:', error);
@@ -150,15 +227,18 @@
     }
   }
 
-
-
   async function fetchQuestions(page) {
     try {
       currentPage.value = page;
       searchTriggered.value = false;
       searchInitiation.value = false;
       isLoading.value = true;
-      const response = await secureFetch(`${import.meta.env.VITE_BACKEND_URL}/forum/questions?page=${page}&sortByLikes=false`, { method: 'GET' });
+      
+      const response = await secureFetch(
+        `${import.meta.env.VITE_BACKEND_URL}/forum/questions?page=${page}&sortByLikes=false`, 
+        { method: 'GET' }
+      );
+      
       const data = await response.json() || [];
       const questionsList = data.questions || [];
       
@@ -166,51 +246,69 @@
         id: q._id,
         title: q.title,
         body: q.body,
-        author: q.user ,
+        author: q.user,
         date: q.CreatedAt,
-        likes: q.Likes
+        likes: q.Likes,
+        likers: q.Likers || [] // Include likers array if available
       }));
+
+      // Update userLikedQuestions set based on likers data
+      if (userStore.isLoggedIn) {
+        userLikedQuestions.value.clear();
+        questions.value.forEach(q => {
+          if (q.likers && q.likers.includes(userStore.FHiD)) {
+            userLikedQuestions.value.add(q.id);
+          }
+        });
+      }
+
     } catch (error) {
       console.error('Error fetching forum data:', error);
-    }finally {
+    } finally {
       isLoading.value = false;
     }
   }
-  async function fetchPages() {
-      try {
-          const response = await secureFetch(`${import.meta.env.VITE_BACKEND_URL}/forum/questions/pages`, { method: 'GET' });
-          const data = await response.json();
-          const pageCount = data.pages; // Default to 1 if no pages are returned
-          pages.value = Array.from({ length: pageCount }, (_, i) => i + 1);
-      } catch (error) {
-          console.error('Error fetching forum pages:', error);
-      }
-  }
 
+  async function fetchPages() {
+    try {
+      const response = await secureFetch(`${import.meta.env.VITE_BACKEND_URL}/forum/questions/pages`, { method: 'GET' });
+      const data = await response.json();
+      const pageCount = data.pages;
+      pages.value = Array.from({ length: pageCount }, (_, i) => i + 1);
+    } catch (error) {
+      console.error('Error fetching forum pages:', error);
+    }
+  }
 
   async function deleteQuestion(questionID) {
     try {
-      const response = await secureFetch(`${import.meta.env.VITE_BACKEND_URL}/forum/question/delete/${questionID}`, { method: 'POST', credentials: 'include' });
+      const response = await secureFetch(
+        `${import.meta.env.VITE_BACKEND_URL}/forum/question/delete/${questionID}`, 
+        { method: 'POST', credentials: 'include' }
+      );
       const data = await response.json();
 
       if (data.success) {
         questions.value = questions.value.filter(q => q.id !== questionID);
+        userLikedQuestions.value.delete(questionID); // Clean up liked questions set
       } else {
         console.error('Failed to delete the question:', data.message);
       }
     } catch (error) {
       console.error('Error deleting the question:', error);
     }
-    confirmDelete.value = false;
-    fetchQuestions(currentPage.value); // Refresh the questions list after deletion
+    confirmDelete.value = null;
+    fetchQuestions(currentPage.value);
   }
 
-
   onMounted(async () => {
-    await getValidToken(); // Ensure token is valid on mount
+    isLoading.value = true;
+    await userStore.fetchUser();
+    await getValidToken();
     fetchPages();
     fetchQuestions(1);
     document.addEventListener("click", closeDropdown);
+    isLoading.value = false;
   })
 
   onBeforeUnmount(() => {
@@ -219,14 +317,13 @@
 
   async function logoutFunc() {
     try {
-      userStore.logout()
-      console.log('Logged out successfully')
-      setTimeout(() => { window.location.href = '/'; }, 10)
+      userStore.logout();
+      console.log('Logged out successfully');
+      setTimeout(() => { window.location.href = '/'; }, 10);
     } catch (error) {
-      console.error(`Logout Failed: ${error}`)
+      console.error(`Logout Failed: ${error}`);
     }
   }
-
 </script>
 
 <style>

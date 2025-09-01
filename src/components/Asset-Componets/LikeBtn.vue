@@ -212,7 +212,7 @@ const formatLikesCount = (count) => {
   height: 4px;
   background-color: #ff4757;
   border-radius: 50%;
-  animation: particleFloat 1s ease-out forwards;
+  animation: particleFloat 2s ease-out forwards;
 }
 
 .particle-1 { animation-delay: 0s; }
