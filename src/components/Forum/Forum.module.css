@@ -310,37 +310,349 @@
   transform: translateX(-4px); /* Move left */
 }
 
-@media (max-width: 800px) {
-  .titleText{
-    display: none;
+/* Enhanced Mobile Responsive CSS for Forum */
+
+/* Tablets and small screens */
+@media (max-width: 1024px) {
+  .questionItem {
+    grid-template-columns: 50px 1fr 120px auto;
+    gap: 0.8rem;
+    margin-right: 20px;
   }
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
+  
+  .searchInput {
+    width: 25rem;
+  }
+}
+
+/* Mobile devices - Enhanced from your existing styles */
+@media (max-width: 800px) {
+  .forumContainer {
+    padding: 0;
+    margin: 0;
   }
 
-  .search{
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem 0.5rem;
+    gap: 1rem;
+  }
+
+  .logo img {
+    height: 60px;
+  }
+
+  .logo h1 {
+    font-size: 2em;
+  }
+
+  .search {
     width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    gap: 0.5rem;
   }
 
   .searchInput {
     width: 100%;
-    margin: 0.5rem;
+    flex: 1;
+    padding: 0.5rem;
+    margin: 0;
   }
 
-  .searchButton, .askQuestionBtn {
+  .searchButton {
+    width: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .userActions {
+    justify-content: space-between;
     width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .backBtn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* Question items mobile layout */
+  .questionItem {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 0.5rem;
+    padding: 1rem 0.5rem;
+    margin-right: 10px;
+    position: relative;
+  }
+
+  .likesContainer {
+    position: absolute;
+    top: 1rem;
+    right: 0.5rem;
+    z-index: 10;
+  }
+
+  .questionContent {
+    grid-row: 1;
+    padding-right: 70px; /* Space for like button */
+  }
+
+  .questionTitle {
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+
+  .questionBody {
+    font-size: 0.85rem;
+    margin: 0.5rem 0;
+  }
+
+  .tags {
+    margin-top: 0.3rem;
+  }
+
+  .tag {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.7rem;
+    margin: 0 0.2rem 0.2rem 0;
+  }
+
+  .metaInfo {
+    grid-row: 2;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #888;
+    border-top: 1px solid #eee;
+    padding-top: 0.5rem;
+  }
+
+  .deleteButton {
+    grid-row: 3;
+    justify-self: end;
+    padding: 0.3rem;
+  }
+
+  .confirmDeleteContainer {
+    grid-row: 4;
+    grid-column: 1;
+    margin-top: 0.5rem;
+    padding: 0.8rem;
+    text-align: center;
+  }
+
+  .confirmDeleteContainer text {
+    font-size: 0.9rem;
     margin-bottom: 0.5rem;
   }
 
+  /* Pagination mobile */
   .pageNumberContainer {
-    flex-direction: column;
-    align-items: center;
+    padding: 0 0.5rem;
+    margin-bottom: 3rem;
   }
-  .userIdenticonContainer{
-    display: none;
+
+  .pageList {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem;
+  }
+
+  .pageNumber {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  /* User dropdown mobile */
+  .userDropdown {
+    right: 0.5rem;
+    min-width: 130px;
+  }
+
+  .dropdownElem {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .header {
+    padding: 0.5rem;
+  }
+
+  .logo img {
+    height: 50px;
+  }
+
+  .logo h1 {
+    font-size: 1.5em;
+  }
+
+  .searchInput {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.6rem;
+  }
+
+  .questionItem {
+    padding: 0.8rem 0.3rem;
+    margin-right: 5px;
+  }
+
+  .questionContent {
+    padding-right: 60px;
+  }
+
+  .questionTitle {
+    font-size: 1rem;
+  }
+
+  .questionBody {
+    font-size: 0.8rem;
+  }
+
+  .likesContainer {
+    right: 0.3rem;
+  }
+
+  .tag {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.3rem;
+  }
+
+  .metaInfo {
+    font-size: 0.7rem;
+  }
+
+  .backBtn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .pageNumber {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  /* Loading spinner mobile */
+  .loadingContainer {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 2rem 1rem;
+  }
+
+  .spinner {
+    width: 2rem;
+    height: 2rem;
+    border-width: 3px;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 320px) {
+  .questionTitle {
+    font-size: 0.95rem;
+  }
+
+  .questionBody {
+    font-size: 0.75rem;
+  }
+
+  .searchInput {
+    padding: 0.5rem;
+  }
+
+  .backBtn {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .pageNumber {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 800px) and (orientation: landscape) {
+  .header {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    flex: 0 0 auto;
+  }
+
+  .search {
+    flex: 1 1 auto;
+    margin: 0 1rem;
+  }
+
+  .userActions {
+    flex: 0 0 auto;
+  }
+
+  .questionItem {
+    grid-template-columns: 50px 1fr 100px auto;
+    grid-template-rows: auto auto;
+    gap: 0.5rem;
+  }
+
+  .likesContainer {
+    position: static;
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .questionContent {
+    grid-row: 1;
+    grid-column: 2;
+    padding-right: 0;
+  }
+
+  .metaInfo {
+    grid-row: 1;
+    grid-column: 3;
+  }
+
+  .deleteButton {
+    grid-row: 1;
+    grid-column: 4;
+  }
+
+  .confirmDeleteContainer {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  .searchButton,
+  .askQuestionBtn,
+  .pageNumber,
+  .backBtn {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  .deleteButton {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .userIdenticonContainer {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
