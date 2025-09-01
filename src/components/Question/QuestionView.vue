@@ -7,9 +7,7 @@
     <div :class="styles.questionHeader">
       <div :class="styles.actions">
         <h1>{{ question.title }}</h1>
-        <button @click="likeQuestion">
-          <ThumbsUp :size="20"/> {{ question.Likes }}
-        </button>
+        <LikeBtn :liked="hasUserLiked" :loading="isLiking" :likesCount="question.Likes" @click="likeQuestion" />
       </div>
       <div :class="styles.meta">
         <span>Asked by <strong>{{ question.user }}</strong></span>
@@ -55,24 +53,30 @@
   import { onMounted, ref } from 'vue';
   import { useRoute } from 'vue-router';
   import { secureFetch, getValidToken } from '../../scripts/forumSecureFetch';
-  import { MessageCircleQuestionMark, MessageSquare, ThumbsUp  } from 'lucide-vue-next';
+  import { MessageCircleQuestionMark, MessageSquare  } from 'lucide-vue-next';
   import { useUserStore } from '/stores/user.js'
   import styles from './questionView.module.css';
   import Answer from './Comments,Answers/Answer.vue';
   import Comment from './Comments,Answers/Comment.vue';
+  import LikeBtn from '../Asset-Componets/LikeBtn.vue';
 
   const route = useRoute();
   const routeId = route.params.id;
   const userStore = useUserStore()
   const isLoading = ref(false);
+  const isLiking = ref(false);
 
+  const  hasUserLiked = computed(() => {
+    return userStore.isLoggedIn && question.value.Likers.includes(userStore.FHiD);
+  });
   const question = ref({
     title: '',
     body: '',
     tags: [],
     user: '',
     CreatedAt: '',
-    Likes: 0
+    Likes: 0,
+    Likers: [],
   });
 
   async function fetchData() {
@@ -98,12 +102,15 @@
     return date.toLocaleString();
   }
 
+
+
   async function likeQuestion() {
     if (!userStore.isLoggedIn) {
       alert('Please log in to like the question.');
       return;
     }
-
+    if (isLiking.value) return; // Prevent multiple clicks
+    isLiking.value = true;
     try{
       const response = await secureFetch( `${import.meta.env.VITE_BACKEND_URL}/forum/question/like`, { 
         method: 'POST', 
@@ -122,8 +129,9 @@
     } catch (error) {
       alert('Failed to like the question. Please try again.');
       console.error('Error liking question:', error);
+    }finally {
+      isLiking.value = false;
     }
-
   }
 
   onMounted(async () => {
