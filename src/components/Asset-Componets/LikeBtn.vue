@@ -89,7 +89,7 @@ const animateButton = (wasLiked, isNowLiked) => {
     showParticles.value = true
     setTimeout(() => {
       showParticles.value = false
-    }, 1500)
+    }, 3.5 * 1000)
   }
   
   setTimeout(() => {
