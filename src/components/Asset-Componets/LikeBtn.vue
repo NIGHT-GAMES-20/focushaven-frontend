@@ -89,7 +89,7 @@ const animateButton = (wasLiked, isNowLiked) => {
     showParticles.value = true
     setTimeout(() => {
       showParticles.value = false
-    }, 600)
+    }, 1500)
   }
   
   setTimeout(() => {
@@ -212,7 +212,7 @@ const formatLikesCount = (count) => {
   height: 4px;
   background-color: #ff4757;
   border-radius: 50%;
-  animation: particleFloat 2s ease-out forwards;
+  animation: particleFloat 0.5s ease-out forwards;
 }
 
 .particle-1 { animation-delay: 0s; }
