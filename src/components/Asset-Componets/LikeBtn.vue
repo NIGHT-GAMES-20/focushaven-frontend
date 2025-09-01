@@ -149,12 +149,12 @@ const formatLikesCount = (count) => {
 }
 
 .like-button.loading .heart-icon {
-  animation: loadingPulse 1s ease-in-out infinite;
+  animation: loadingPulse 2s ease-in-out infinite;
 }
 
 @keyframes loadingPulse {
   0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
+  50% { opacity: 1; transform: scale(1.5); }
 }
 
 .like-button:hover {
@@ -189,7 +189,7 @@ const formatLikesCount = (count) => {
 
 /* Unlike animation (subtle shake) */
 .like-button:not(.liked).animating .heart-icon {
-  animation: heartShake 0.3s ease-in-out;
+  animation: heartShake 0.5s ease-in-out;
 }
 
 @keyframes heartShake {

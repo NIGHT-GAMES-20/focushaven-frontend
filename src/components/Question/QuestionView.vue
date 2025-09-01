@@ -7,7 +7,7 @@
     <div :class="styles.questionHeader">
       <div :class="styles.actions">
         <h1>{{ question.title }}</h1>
-        <LikeBtn :liked="hasUserLiked" :loading="isLiking" :likesCount="question.Likes" @click="likeQuestion" />
+        <LikeBtn :liked="hasUserLiked" :loading="isLiking" :likesCount="question.Likes" @click="likeQuestion" style="margin-top: 5px;"/>
       </div>
       <div :class="styles.meta">
         <span>Asked by <strong>{{ question.user }}</strong></span>
