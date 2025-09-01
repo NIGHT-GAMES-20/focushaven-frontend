@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-  import { onMounted, ref } from 'vue';
+  import { onMounted, ref, computed } from 'vue';
   import { useRoute } from 'vue-router';
   import { secureFetch, getValidToken } from '../../scripts/forumSecureFetch';
   import { MessageCircleQuestionMark, MessageSquare  } from 'lucide-vue-next';
