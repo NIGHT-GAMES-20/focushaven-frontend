@@ -149,12 +149,12 @@ const formatLikesCount = (count) => {
 }
 
 .like-button.loading .heart-icon {
-  animation: loadingPulse 2s ease-in-out infinite;
+  animation: loadingPulse 1s ease-in-out infinite;
 }
 
 @keyframes loadingPulse {
   0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.5); }
+  50% { opacity: 1; transform: scale(1.05); }
 }
 
 .like-button:hover {
@@ -212,7 +212,7 @@ const formatLikesCount = (count) => {
   height: 4px;
   background-color: #ff4757;
   border-radius: 50%;
-  animation: particleFloat 0.6s ease-out forwards;
+  animation: particleFloat 1s ease-out forwards;
 }
 
 .particle-1 { animation-delay: 0s; }
@@ -225,11 +225,11 @@ const formatLikesCount = (count) => {
 @keyframes particleFloat {
   0% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(1.7);
   }
   100% {
     opacity: 0;
-    transform: translateY(-30px) scale(0.3);
+    transform: translateY(-30px) scale(1);
   }
 }
 
