@@ -121,371 +121,154 @@
   }
 }
 
-/* Mobile CSS for Question View Page */
-
-/* Tablets and medium screens */
-@media (max-width: 1024px) {
-  .questionPage {
-    max-width: 90%;
-    margin: 20px auto;
-    padding: 25px;
-  }
-
-  .questionHeader h1 {
-    font-size: 1.8rem;
-  }
-
-  .actions {
-    flex-direction: column;
-    gap: 15px;
-    align-items: flex-start;
-  }
+/* Mobile-specific styles */
+.mobileOnly {
+  display: none;
 }
 
-/* Mobile devices */
+.desktopOnly {
+  display: block;
+}
+
 @media (max-width: 768px) {
-  .questionPage {
-    max-width: 95%;
-    margin: 15px auto;
-    padding: 20px 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  }
-
-  .questionHeader h1 {
-    font-size: 1.6rem;
-    line-height: 1.3;
-    margin-bottom: 12px;
-  }
-
-  .actions {
-    flex-direction: column;
-    gap: 12px;
-    align-items: stretch;
-  }
-
-  .actions h1,
-  .actions h2,
-  .actions h3 {
-    margin-bottom: 8px;
-  }
-
-  .meta {
-    font-size: 0.85rem;
-    line-height: 1.4;
-    margin-bottom: 15px;
-  }
-
-  .tags {
-    margin-top: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .tag {
-    font-size: 0.8rem;
-    padding: 6px 12px;
-    margin-right: 0;
-    white-space: nowrap;
-  }
-
-  .questionBody {
-    margin-top: 20px;
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-
-  .actions button {
-    width: 100%;
-    justify-content: center;
-    padding: 12px 16px;
-    font-size: 0.95rem;
-    margin-right: 0;
-    margin-bottom: 8px;
-  }
-
-  .answersSection,
-  .commentsSection {
-    margin-top: 30px;
-    padding-top: 20px;
-  }
-
-  .answersSection h2,
-  .commentsSection h3 {
-    font-size: 1.3rem;
-    margin-bottom: 12px;
-  }
-
-  .emptyState {
-    padding: 20px 16px;
-    font-size: 0.9rem;
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
-  }
-
-  .emptyState svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  /* Loading state mobile */
-  .questionPage[style*="justify-content: space-around"] {
-    padding: 40px 20px;
-    text-align: center;
-  }
-
-  .spinner {
-    width: 1.5rem;
-    height: 1.5rem;
-    border-width: 3px;
-  }
-}
-
-/* Small mobile devices */
-@media (max-width: 480px) {
-  .questionPage {
-    max-width: 100%;
-    margin: 10px auto;
-    padding: 15px 12px;
-    border-radius: 6px;
-  }
-
-  .questionHeader h1 {
-    font-size: 1.4rem;
-    line-height: 1.25;
-    word-wrap: break-word;
-    hyphens: auto;
-  }
-
-  .meta {
-    font-size: 0.8rem;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .meta span {
+  .mobileOnly {
     display: block;
   }
-
-  .tags {
-    margin-top: 10px;
-  }
-
-  .tag {
-    font-size: 0.75rem;
-    padding: 5px 10px;
-  }
-
-  .questionBody {
-    font-size: 0.95rem;
-    margin-top: 18px;
-    word-wrap: break-word;
-  }
-
-  .actions button {
-    padding: 14px 16px;
-    font-size: 0.9rem;
-    border-radius: 6px;
-  }
-
-  .answersSection h2,
-  .commentsSection h3 {
-    font-size: 1.2rem;
-  }
-
-  .emptyState {
-    padding: 18px 14px;
-    font-size: 0.85rem;
-  }
-
-  .emptyState svg {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-/* Very small screens */
-@media (max-width: 320px) {
-  .questionPage {
-    padding: 12px 8px;
-    margin: 5px auto;
-  }
-
-  .questionHeader h1 {
-    font-size: 1.2rem;
-    line-height: 1.2;
-  }
-
-  .meta {
-    font-size: 0.75rem;
-  }
-
-  .tag {
-    font-size: 0.7rem;
-    padding: 4px 8px;
-  }
-
-  .questionBody {
-    font-size: 0.9rem;
-  }
-
-  .actions button {
-    padding: 12px 14px;
-    font-size: 0.85rem;
-  }
-
-  .answersSection h2,
-  .commentsSection h3 {
-    font-size: 1.1rem;
-  }
-
-  .emptyState {
-    padding: 16px 12px;
-    font-size: 0.8rem;
-  }
-}
-
-/* Landscape mobile orientation */
-@media (max-width: 768px) and (orientation: landscape) {
-  .questionPage {
-    max-width: 85%;
-    padding: 18px 20px;
-  }
-
-  .actions {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .actions button {
-    width: auto;
-    min-width: 120px;
-    margin-bottom: 0;
-  }
-
-  .questionHeader h1 {
-    font-size: 1.5rem;
-  }
-
-  .emptyState {
-    flex-direction: row;
-    text-align: left;
-    gap: 10px;
-  }
-}
-
-/* Touch-friendly improvements */
-@media (hover: none) and (pointer: coarse) {
-  .actions button {
-    min-height: 44px;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: rgba(77, 51, 38, 0.1);
-  }
-
-  .tag {
-    min-height: 32px;
-    display: flex;
-    align-items: center;
-  }
-
-  /* Improve touch targets for like button area */
-  .actions > * {
-    touch-action: manipulation;
-  }
-}
-
-/* Dark mode support for mobile (if needed) */
-@media (max-width: 768px) and (prefers-color-scheme: dark) {
-  .questionPage {
-    background: #2a2019;
-    color: #e6d5c6;
-    border-color: #4d3326;
-  }
-
-  .questionHeader h1 {
-    color: #f2e8de;
-  }
-
-  .meta {
-    color: #a89289;
-  }
-
-  .tag {
-    background: #3a2a20;
-    color: #e6d5c6;
-  }
-
-  .tag:hover {
-    background: #4d3326;
-  }
-
-  .actions button {
-    background: #3a2a20;
-    color: #e6d5c6;
-  }
-
-  .actions button:hover {
-    background: #4d3326;
-  }
-
-  .emptyState {
-    background: #2a2019;
-    border-color: #4d3326;
-    color: #a89289;
-  }
-
-  .emptyState svg {
-    color: #7c6f66;
-  }
-}
-
-/* Accessibility improvements for mobile */
-@media (max-width: 768px) {
-  .questionPage {
-    scroll-margin-top: 20px;
-  }
-
-  .questionHeader h1 {
-    scroll-margin-top: 20px;
-  }
-
-  .answersSection h2,
-  .commentsSection h3 {
-    scroll-margin-top: 20px;
-  }
-
-  /* Better focus states for mobile */
-  .actions button:focus {
-    outline: 2px solid #4d3326;
-    outline-offset: 2px;
-  }
-
-  .tag:focus {
-    outline: 1px solid #4d3326;
-    outline-offset: 1px;
-  }
-}
-
-/* Print styles for mobile */
-@media print and (max-width: 768px) {
-  .questionPage {
-    max-width: 100%;
-    margin: 0;
-    padding: 15px;
-    box-shadow: none;
-    border: 1px solid #ddd;
-  }
-
-  .actions button {
+  
+  .desktopOnly {
     display: none;
   }
+}
 
-  .emptyState {
-    display: none;
+/* Mobile Comments Button */
+.mobileCommentsBtn {
+  padding: 16px;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 24px;
+}
+
+.commentButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.commentButton:hover {
+  background-color: #2563eb;
+}
+
+.commentButton:active {
+  transform: translateY(1px);
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.commentModal {
+  background: white;
+  width: 100%;
+  max-width: 500px;
+  max-height: 85vh;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.closeBtn:hover {
+  background-color: #f3f4f6;
+}
+
+.modalContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .commentModal {
+    background: #1f2937;
+    color: white;
+  }
+  
+  .modalHeader {
+    border-bottom-color: #374151;
+  }
+  
+  .modalHeader h3 {
+    color: white;
+  }
+  
+  .closeBtn {
+    color: #9ca3af;
+  }
+  
+  .closeBtn:hover {
+    background-color: #374151;
   }
 }

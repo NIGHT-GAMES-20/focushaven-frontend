@@ -35,8 +35,8 @@
       </div>
     </div>
 
-    <!-- Comments Section -->
-    <div :class="styles.commentsSection">
+    <!-- Desktop Comments Section -->
+    <div :class="[styles.commentsSection, styles.desktopOnly]">
       <div :class="styles.actions">
         <h3>Comments</h3>
         <Comment :quesID="routeId" />
@@ -44,6 +44,41 @@
       <div :class="styles.emptyState">
         <MessageSquare />
         <span>No comments yet. Start the conversation!</span>
+      </div>
+    </div>
+
+    <!-- Mobile Comments Button -->
+    <div :class="[styles.mobileCommentsBtn, styles.mobileOnly]">
+      <button @click="openCommentModal" :class="styles.commentButton">
+        <MessageSquare :size="20" />
+        View Comments
+      </button>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div 
+      v-if="isCommentModalOpen" 
+      :class="styles.modalOverlay" 
+      @click="closeCommentModal"
+    >
+      <!-- Comment Modal Window -->
+      <div 
+        :class="styles.commentModal" 
+        @click.stop
+      >
+        <div :class="styles.modalHeader">
+          <h3>Comments</h3>
+          <button @click="closeCommentModal" :class="styles.closeBtn">
+            ×
+          </button>
+        </div>
+        <div :class="styles.modalContent">
+          <Comment :quesID="routeId" />
+          <div :class="styles.emptyState">
+            <MessageSquare />
+            <span>No comments yet. Start the conversation!</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -65,10 +100,12 @@
   const userStore = useUserStore()
   const isLoading = ref(false);
   const isLiking = ref(false);
+  const isCommentModalOpen = ref(false);
 
   const  hasUserLiked = computed(() => {
     return userStore.isLoggedIn && question.value.Likers.includes(userStore.FHiD);
   });
+  
   const question = ref({
     title: '',
     body: '',
@@ -78,6 +115,18 @@
     Likes: 0,
     Likers: [],
   });
+
+  function openCommentModal() {
+    isCommentModalOpen.value = true;
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCommentModal() {
+    isCommentModalOpen.value = false;
+    // Restore body scroll
+    document.body.style.overflow = 'auto';
+  }
 
   async function fetchData() {
     isLoading.value = true;
@@ -105,8 +154,6 @@
     const date = new Date(dateStr);
     return date.toLocaleString();
   }
-
-
 
   async function likeQuestion() {
     if (!userStore.isLoggedIn) {
@@ -145,3 +192,4 @@
   });
 
 </script>
+
