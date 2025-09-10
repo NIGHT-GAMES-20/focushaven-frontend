@@ -48,7 +48,7 @@ async function submitQuestion() {
     });
     const data = await res.json();
     if (data.success) {
-      alert('Question submitted!');
+      alert('Answer submitted!');
       showModal.value = false;
       comment.value = '';
     } else {
