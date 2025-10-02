@@ -60,18 +60,6 @@
             <span>by {{ q.author }}</span>
             <span>{{ new Date(q.date).toLocaleDateString() }}</span>
           </div>
-
-          <!-- Delete button -->
-          <button v-if="(q.author === userStore.user || userStore.isAdmin) && !searchTriggered" :class="Styles.deleteButton" @click="confirmDelete = q.id" >
-            <Trash2 color="red" :size="18" />
-          </button>
-
-          <!-- Confirm delete -->
-          <div v-if="confirmDelete === q.id" :class="Styles.confirmDeleteContainer">
-            <text>Are you sure you want to delete "{{ q.title }}"?</text>
-            <button :class="Styles.searchButton" @click="deleteQuestion(q.id)">Delete</button>
-            <button :class="Styles.searchButton" @click="confirmDelete = null">Cancel</button>
-          </div>
         </li>
       </ol>
     </div>
@@ -102,7 +90,6 @@
   const searchTriggered = ref(false);
   const pages = ref([1]);
   const currentPage = ref(1);
-  const confirmDelete = ref(null); // Changed to store question ID
   const isUserDropdownOpen = ref(false);
   const dropdownRef = ref(null);
   const isLoading = ref(false);
@@ -278,27 +265,6 @@
     } catch (error) {
       console.error('Error fetching forum pages:', error);
     }
-  }
-
-  async function deleteQuestion(questionID) {
-    try {
-      const response = await secureFetch(
-        `${import.meta.env.VITE_BACKEND_URL}/forum/question/delete/${questionID}`, 
-        { method: 'POST', credentials: 'include' }
-      );
-      const data = await response.json();
-
-      if (data.success) {
-        questions.value = questions.value.filter(q => q.id !== questionID);
-        userLikedQuestions.value.delete(questionID); // Clean up liked questions set
-      } else {
-        console.error('Failed to delete the question:', data.message);
-      }
-    } catch (error) {
-      console.error('Error deleting the question:', error);
-    }
-    confirmDelete.value = null;
-    fetchQuestions(currentPage.value);
   }
 
   onMounted(async () => {

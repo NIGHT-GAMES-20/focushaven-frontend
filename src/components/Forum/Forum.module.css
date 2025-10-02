@@ -205,12 +205,6 @@
   justify-content: center;
 }
 
-.deleteButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
 .logo {
   display: flex;
   align-items: center;
