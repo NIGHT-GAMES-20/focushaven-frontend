@@ -271,7 +271,7 @@
     showEditModal.value = true
   }
 
-  function saveEdit() {
+  async function saveEdit() {
   console.log("Edited Question:", {
     title: editTitle.value,
     body: editBody.value,
