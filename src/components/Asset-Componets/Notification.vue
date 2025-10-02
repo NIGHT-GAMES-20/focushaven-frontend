@@ -25,8 +25,8 @@ const notifications = ref([]);
 function addNotification({ title, message, details = null, type = "info" }) {
   notifications.value.push({ title, message, details, type });
 
-  // Auto remove after 5s
-  setTimeout(() => notifications.value.shift(), 5000);
+  // Auto remove after 10s
+  setTimeout(() => notifications.value.shift(), 10000);
 }
 
 defineExpose({ addNotification });
@@ -41,6 +41,7 @@ defineExpose({ addNotification });
   flex-direction: column;
   gap: 10px;
   z-index: 9999;
+  margin-bottom: 50px;
 }
 
 .notification {

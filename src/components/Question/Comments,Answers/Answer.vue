@@ -55,7 +55,7 @@ async function submitQuestion() {
       showModal.value = false;
       answer.value = '';
     } else {
-      const details = data.retryAfter ? {"Retry After :":data.retryAfter} : null
+      const details = data.retryAfter ? {"Retry After ":data.retryAfter} : null
       notifyRef.value.addNotification({ title: 'Error', message: data.message || 'Submission failed', details: details , type: 'info' });
       showModal.value = false;
       answer.value = '';
