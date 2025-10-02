@@ -27,7 +27,7 @@ import { ref,defineProps } from 'vue';
 import styles from './Common.module.css';
 import { Reply } from 'lucide-vue-next';
 import { secureFetch } from '../../../scripts/forumSecureFetch';
-import Notification from "../Asset-Componets/Notification.vue";
+import Notification from "../../Asset-Componets/Notification.vue";
 
 const showModal = ref(false);
 const answer = ref('')
