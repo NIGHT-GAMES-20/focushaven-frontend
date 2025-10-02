@@ -41,11 +41,13 @@
 <script setup>
 import { ref } from 'vue';
 import styles from './QuestionAsk.module.css';
+import Notification from "../Asset-Componets/Notification.vue";
 
 const showModal = ref(false);
 const title = ref('');
 const body = ref('');
 const tags = ref('');
+const notifyRef = ref(null);
 
 async function submitQuestion() {
   const payload = {
@@ -63,17 +65,26 @@ async function submitQuestion() {
     });
     const data = await res.json();
     if (data.success) {
-      alert('Question submitted!');
+      notifyRef.value.addNotification({ title: 'Success', message: 'Question submitted successfully', type: 'success' });
       showModal.value = false;
       title.value = '';
       body.value = '';
       tags.value = '';
     } else {
-      alert(data.error || 'Submission failed');
+      const details = data.retryAfter ? {"Retry After :":data.retryAfter} : null
+      notifyRef.value.addNotification({ title: 'Error', message: data.message || 'Submission failed', details: details , type: 'info' });
+      showModal.value = false;
+      title.value = '';
+      body.value = '';
+      tags.value = '';
     }
   } catch (err) {
     console.error(err);
-    alert('Something went wrong');
+    notifyRef.value.addNotification({ title: 'Error', message: 'An error occurred during submission', type: 'error' });
+    showModal.value = false;
+    title.value = '';
+    body.value = '';
+    tags.value = '';
   }
 }
 </script>

@@ -27,9 +27,11 @@ import { ref,defineProps } from 'vue';
 import styles from './Common.module.css';
 import { Reply } from 'lucide-vue-next';
 import { secureFetch } from '../../../scripts/forumSecureFetch';
+import Notification from "../Asset-Componets/Notification.vue";
 
 const showModal = ref(false);
 const comment = ref('')
+const notifyRef = ref(null);
 const props = defineProps({
   quesID: {
     type: String,
@@ -48,15 +50,20 @@ async function submitQuestion() {
     });
     const data = await res.json();
     if (data.success) {
-      alert('Answer submitted!');
+      notifyRef.value.addNotification({ title: 'Success', message: 'Comment posted successfully', type: 'success' });
       showModal.value = false;
       comment.value = '';
     } else {
-      alert(data.error || 'Submission failed');
+      const details = data.retryAfter ? {"Retry After :":data.retryAfter} : null
+      notifyRef.value.addNotification({ title: 'Error', message: data.message || 'Submission failed', details: details , type: 'info' });
+      showModal.value = false;
+      comment.value = '';
     }
   } catch (err) {
     console.error(err);
-    alert('Something went wrong');
+    notifyRef.value.addNotification({ title: 'Error', message: 'An error occurred during submission', type: 'error' });
+    showModal.value = false;
+    comment.value = '';
   }
 }
 </script>
