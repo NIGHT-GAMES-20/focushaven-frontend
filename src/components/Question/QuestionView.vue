@@ -8,8 +8,8 @@
       <div :class="styles.actions">
         <h1>{{ question.title }}</h1>
         <LikeBtn :liked="hasUserLiked" :loading="isLiking" :likesCount="question.Likes" @click="likeQuestion" style="margin-top: 5px;"/>
-        <Trash2 v-if="question.user === userStore.user || userStore.isAdmin" color="red" @click="showDeleteModal = true" :size="18" style="margin-top: 5px;" />
-        <SquarePen v-if="question.user === userStore.user" @click="openEditModal" :size="18" style="margin-top: 5px;" />
+        <SquarePen v-if="question.user.username === userStore.user" @click="openEditModal" :size="20" style="margin-top: 5px;" />
+        <Trash2 v-if="question.user.username === userStore.user || userStore.isAdmin" color="red" @click="showDeleteModal = true" :size="20" style="margin-top: 5px;" />
       </div>
       <div :class="styles.meta">
         <span>Asked by <strong>{{ question.user }}</strong></span>
