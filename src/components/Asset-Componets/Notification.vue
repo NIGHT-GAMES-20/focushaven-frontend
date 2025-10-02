@@ -25,8 +25,8 @@ const notifications = ref([]);
 function addNotification({ title, message, details = null, type = "info" }) {
   notifications.value.push({ title, message, details, type });
 
-  // Auto remove after 10s
-  setTimeout(() => notifications.value.shift(), 10000);
+  // Auto remove after 5s
+  setTimeout(() => notifications.value.shift(), 5000);
 }
 
 defineExpose({ addNotification });
@@ -51,7 +51,7 @@ defineExpose({ addNotification });
   width: 280px;
   border-radius: 6px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-  animation: slidein 0.3s ease;
+  animation: slidein 0.4s ease;
 }
 
 .notification h4 {
@@ -76,7 +76,7 @@ defineExpose({ addNotification });
 .notification.info { border-color: blue; }
 
 @keyframes slidein {
-  from { opacity: 0; transform: translateX(50px); }
-  to { opacity: 1; transform: translateX(0); }
+  from { opacity: 0; transform: translateY(-1000px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
