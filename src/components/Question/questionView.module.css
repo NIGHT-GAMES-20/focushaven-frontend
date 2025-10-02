@@ -426,3 +426,8 @@
   margin-left: 5px;
   margin-right: 5px;
 }
+
+.userControls{
+  display: flex;
+  flex-direction: row;
+}
