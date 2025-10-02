@@ -8,7 +8,7 @@
       <div :class="styles.actions">
         <h1>{{ question.title }}</h1>
         <div :class="styles.userControls">
-          <LikeBtn :liked="hasUserLiked" :loading="isLiking" :likesCount="question.Likes" @click="likeQuestion"/>
+          <LikeBtn :liked="hasUserLiked" :loading="isLiking" :likesCount="question.Likes" @click="likeQuestion" style="margin-top: 5px;"/>
           <SquarePen v-if="question.user === userStore.user.username" @click="openEditModal" :size="24" :class="styles.userActions" />
           <Trash2 v-if="question.user === userStore.user.username || userStore.isAdmin" color="red" @click="showDeleteModal = true" :size="24" :class="styles.userActions" />
         </div>
