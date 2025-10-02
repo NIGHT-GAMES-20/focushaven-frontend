@@ -29,7 +29,7 @@ import styles from './Common.module.css';
 import { Reply } from 'lucide-vue-next';
 import { secureFetch } from '../../../scripts/forumSecureFetch';
 import Notification from "../../Asset-Componets/Notification.vue";
-import {formatTime, reloader} from '../../scripts/UtilityFunc.js';
+import {formatTime, reloader} from '../../../scripts/UtilityFunc.js';
 
 const showModal = ref(false);
 const comment = ref('')
