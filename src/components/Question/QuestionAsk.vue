@@ -43,6 +43,7 @@
 import { ref } from 'vue';
 import styles from './QuestionAsk.module.css';
 import Notification from "../Asset-Componets/Notification.vue";
+import {formatTime, reloader} from '../../scripts/UtilityFunc.js';
 
 const showModal = ref(false);
 const title = ref('');
@@ -71,8 +72,9 @@ async function submitQuestion() {
       title.value = '';
       body.value = '';
       tags.value = '';
+      reloader(3);
     } else {
-      const details = data.retryAfter ? {"Retry After ":`${data.retryAfter} Seconds`} : null
+      const details = data.retryAfter ? {"Retry After ":formatTime(data.retryAfter)} : null
       notifyRef.value.addNotification({ title: 'Error', message: data.message || 'Submission failed', details: details , type: 'info' });
       showModal.value = false;
       title.value = '';

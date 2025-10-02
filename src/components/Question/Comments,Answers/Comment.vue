@@ -29,6 +29,7 @@ import styles from './Common.module.css';
 import { Reply } from 'lucide-vue-next';
 import { secureFetch } from '../../../scripts/forumSecureFetch';
 import Notification from "../../Asset-Componets/Notification.vue";
+import {formatTime, reloader} from '../../scripts/UtilityFunc.js';
 
 const showModal = ref(false);
 const comment = ref('')
@@ -54,8 +55,9 @@ async function submitQuestion() {
       notifyRef.value.addNotification({ title: 'Success', message: 'Comment posted successfully', type: 'success' });
       showModal.value = false;
       comment.value = '';
+      reloader(3);
     } else {
-      const details = data.retryAfter ? {"Retry After ":`${data.retryAfter} Seconds`} : null
+      const details = data.retryAfter ? {"Retry After ":formatTime(data.retryAfter)} : null
       notifyRef.value.addNotification({ title: 'Error', message: data.message || 'Submission failed', details: details , type: 'info' });
       showModal.value = false;
       comment.value = '';
