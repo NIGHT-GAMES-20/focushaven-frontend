@@ -345,6 +345,8 @@
 
 .formLabel {
   display: block;
+  margin-left:0px;
+  margin-right: 0px;
   margin-bottom: 12px;
   font-size: 0.95rem;
   font-weight: 500;
@@ -355,6 +357,8 @@
   width: 100%;
   padding: 8px;
   margin-top: 5px;
+  margin-left:0px;
+  margin-right: 0px;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 0.95rem;
