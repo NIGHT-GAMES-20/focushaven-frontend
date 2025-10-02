@@ -60,7 +60,7 @@
     <!-- Modal Overlay -->
     <div 
       v-if="isCommentModalOpen" 
-      :class="styles.modalOverlay" 
+      :class="styles.CommentsModalOverlay" 
       @click="closeCommentModal"
     >
       <!-- Comment Modal Window -->
@@ -86,7 +86,7 @@
   </div>
 
   <!-- Delete Confirmation Modal -->
-  <div v-if="showDeleteModal" :class="styles.DeletemodalOverlay">
+  <div v-if="showDeleteModal" :class="styles.DeleteModalOverlay">
     <div :class="styles.modalBox">
       <h2 :class="styles.modalTitle">Confirm Delete</h2>
       <p :class="styles.modalMessage">Are you sure you want to delete this item? This action cannot be undone.</p>
