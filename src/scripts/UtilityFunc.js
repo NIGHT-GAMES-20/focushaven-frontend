@@ -1,4 +1,4 @@
-function formatTime(seconds) {
+export default function formatTime(seconds) {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
 
@@ -8,9 +8,8 @@ function formatTime(seconds) {
   return `${secs} sec`;
 }
 
-function reloader(s) {
+export default function reloader(s) {
   setTimeout(() => {
     window.location.reload();
   }, s * 1000); // Convert seconds to milliseconds
 }
-export default {formatTime ,reloader};
