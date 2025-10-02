@@ -2,6 +2,7 @@
   <div>
     <button :class="styles.askButton" @click="showModal = true"><Reply />Post A Comment</button>
 
+    <Notification ref="notifyRef" />
     <div v-if="showModal" :class="styles.modalOverlay">
       <div :class="styles.modalBox">
         <div :class="styles.modalHeader">
