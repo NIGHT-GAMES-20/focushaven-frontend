@@ -86,7 +86,7 @@
   </div>
 
   <!-- Delete Confirmation Modal -->
-  <div v-if="showDeleteModal" :class="styles.DeleteModalOverlay">
+  <div v-if="showDeleteModal" :class="styles.ModalOverlay" style="margin:0px;">
     <div :class="styles.modalBox">
       <h2 :class="styles.modalTitle">Confirm Delete</h2>
       <p :class="styles.modalMessage">Are you sure you want to delete this item? This action cannot be undone.</p>
