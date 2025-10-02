@@ -7,9 +7,11 @@
     <div :class="styles.questionHeader">
       <div :class="styles.actions">
         <h1>{{ question.title }}</h1>
-        <LikeBtn :liked="hasUserLiked" :loading="isLiking" :likesCount="question.Likes" @click="likeQuestion"/>
-        <SquarePen v-if="question.user === userStore.user.username" @click="openEditModal" :size="24" :class="styles.userActions" />
-        <Trash2 v-if="question.user === userStore.user.username || userStore.isAdmin" color="red" @click="showDeleteModal = true" :size="24" :class="styles.userActions" />
+        <div>
+          <LikeBtn :liked="hasUserLiked" :loading="isLiking" :likesCount="question.Likes" @click="likeQuestion"/>
+          <SquarePen v-if="question.user === userStore.user.username" @click="openEditModal" :size="24" :class="styles.userActions" />
+          <Trash2 v-if="question.user === userStore.user.username || userStore.isAdmin" color="red" @click="showDeleteModal = true" :size="24" :class="styles.userActions" />
+        </div>
       </div>
       <div :class="styles.meta">
         <span>Asked by <strong>{{ question.user }}</strong></span>
