@@ -305,7 +305,7 @@
   background: #bbb;
 }
 
-.confirmBtn {
+.DelConfirmBtn {
   background: #e74c3c;
   color: white;
   border: none;
@@ -315,7 +315,7 @@
   transition: background 0.2s;
 }
 
-.confirmBtn:hover {
+.DelConfirmBtn:hover {
   background: #c0392b;
 }
 
@@ -346,7 +346,7 @@
 .formLabel {
   display: block;
   margin-left:0px;
-  margin-right: 0px;
+  margin-right: 10px;
   margin-bottom: 12px;
   font-size: 0.95rem;
   font-weight: 500;

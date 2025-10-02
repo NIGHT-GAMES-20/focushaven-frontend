@@ -93,7 +93,7 @@
 
       <div :class="styles.modalActions">
         <button :class="styles.cancelBtn" @click="showDeleteModal = false">Cancel</button>
-        <button :class="styles.confirmBtn" @click="confirmDelete">Yes, Delete</button>
+        <button :class="styles.DelConfirmBtn" @click="confirmDelete">Yes, Delete</button>
       </div>
     </div>
   </div>
