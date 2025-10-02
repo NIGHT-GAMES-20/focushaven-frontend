@@ -363,7 +363,6 @@
   border: 1px solid #ccc;
   font-size: 0.95rem;
   transition: border 0.2s;
-  margin: 5px;
 }
 
 .input:focus, .textarea:focus {
