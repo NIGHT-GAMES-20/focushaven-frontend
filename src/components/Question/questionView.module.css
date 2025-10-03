@@ -433,8 +433,8 @@
 .userIdenticon {
   border: 2px solid #d9c2b2;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 25px;
+  height: 25px;
   object-fit: cover;
 }
 
