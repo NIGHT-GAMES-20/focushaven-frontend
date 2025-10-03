@@ -49,7 +49,7 @@
               <span v-else-if="answer.status == 'unverified'" style="color: #d41c1c;"> • Unverifed</span>
             </div>
             <div :class="styles.answerUserControlBtns" >
-              <Heart :color="answer.Likers.includes(userStore.FHiD) ? 'red' : 'grey'" :fill="answer.Likers.includes(userStore.FHiD) ? 'red' : ''" :size="20" :class="styles.userActions" @click="likeFunc('a',answer._id)" />
+              <Heart :color="answer.Likers.includes(userStore.FHiD) ? 'red' : 'grey'" :fill="answer.Likers.includes(userStore.FHiD) ? 'red' : 'none'" :size="20" :class="styles.userActions" @click="likeFunc('a',answer._id)" />
               <SquarePen v-if="answer.user === userStore.user.username" :size="20" :class="styles.userActions" />
               <Trash2 v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" />
               <BadgeCheck v-if="userStore.isAdmin && answer.status !== 'verified'" color="green"  :size="20" :class="styles.userActions" />
@@ -335,93 +335,64 @@
   showEditModal.value = false
 }
 
-async function likeFunc(type, id) {
-  if (!userStore.isLoggedIn) {
-    notifyRef.value.showNotification({
-      title: 'Invalid Login',
-      message: 'Please log in to like.',
-      type: 'error'
-    });
+async function likeFunc(type,id){
+  if(!userStore.isLoggedIn){
+    notifyRef.value.showNotification({title: 'Invalid Login', message: 'Please log in to like.', type: 'error'});
     return;
   }
-
-  if (LikingAnswer.value.includes(id)) return;
+  if(LikingAnswer.value.includes(id)) return; // Prevent multiple clicks
   LikingAnswer.value.push(id);
 
   let fullType = '';
   let body = {};
-  if (type === 'a') {
+  if(type === 'a'){
     fullType = 'answer';
     body = JSON.stringify({ questionID: routeId, answerID: id });
-  } else if (type === 'c') {
+  }else if(type === 'c'){
     fullType = 'comment';
     body = JSON.stringify({ questionID: routeId, commentID: id });
-  } else {
+  }else{
     console.error('Invalid type for liking:', type);
     return;
   }
 
-  // 🔹 Optimistic toggle
-  const arr = type === 'a' ? question.value.answers : question.value.comments;
-  const index = arr.findIndex(item => item._id === id);
-  if (index !== -1) {
-    const item = arr[index];
-    const hasLiked = item.Likers.includes(userStore.FHiD);
-
-    arr[index] = {
-      ...item,
-      Likes: hasLiked ? item.Likes - 1 : item.Likes + 1,
-      Likers: hasLiked
-        ? item.Likers.filter(uid => uid !== userStore.FHiD)
-        : [...item.Likers, userStore.FHiD]
-    };
-    if (type === 'a') {
-      question.value.answers = [...arr];
-    } else {
-      question.value.comments = [...arr];
-    }
-  }
-
-  try {
-    const response = await secureFetch(
-      `${import.meta.env.VITE_BACKEND_URL}/forum/question/${fullType}/like`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body
-      }
-    );
+  try{
+    const response = await secureFetch( `${import.meta.env.VITE_BACKEND_URL}/forum/question/${fullType}/like`, { 
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: body
+    });
 
     const data = await response.json();
     if (data.success) {
-      // 🔹 Final sync with backend
-      if (index !== -1) {
-        arr[index] = {
-          ...arr[index],
-          Likes: data.Likes,
-          Likers: data.Likers || []
-        };
-        if (type === 'a') {
-          question.value.answers = [...arr];
-        } else {
-          question.value.comments = [...arr];
+      // Update the specific answer or comment's likes and likers
+      if(type === 'a'){
+        const answer = question.value.answers.find(a => a._id === id);
+        if (answer) {
+          answer.Likes = data.Likes;
+          answer.Likers = data.Likers || [];
         }
+        question.value.answers = [...question.value.answers]; // Trigger reactivity
+      }else if(type === 'c'){
+        const comment = question.value.comments.find(c => c._id === id);
+        if (comment) {
+          comment.Likes = data.Likes;
+          comment.Likers = data.Likers || [];
+        }
+        question.value.comments = [...question.value.comments]; // Trigger reactivity
       }
     } else {
-      notifyRef.value.showNotification({
-        title: 'Error',
-        message: data.error || `Failed to like the ${fullType}.`,
-        type: 'error'
-      });
+      notifyRef.value.showNotification({title: 'Error', message: data.error || `Failed to like the ${fullType}.`, type: 'error'});
     }
-  } catch (error) {
-    console.error('Error liking:', error);
-  } finally {
+    
+  }catch (error) {
+    console.error('Error liking answer:', error);
+  }finally {
     LikingAnswer.value = LikingAnswer.value.filter(aid => aid !== id);
   }
-}
 
+}
 
 
 onMounted(async () => {
