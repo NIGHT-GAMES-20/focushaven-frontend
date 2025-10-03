@@ -47,7 +47,7 @@ export const useUserStore = defineStore('user', {
             this.profilePic = res.profilePic;
           } else {
             // No picture → create identicon from username or fallback seed
-            this.profilePic = this.generateIdenticon(this.name || 'default');
+            this.profilePic = this.generateIdenticon(this.user.username || 'default');
           }
         } else {
           this.resetUser();
