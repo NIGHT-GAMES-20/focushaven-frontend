@@ -54,11 +54,11 @@
                 <span v-if="showTooltip === 'heart' && showTooltipIn === answer._id" :class="styles.tooltip">Like</span>
               </div>
               <div :class="styles.tooltipWrapper">
-                <SquarePen @mouseenter="showTooltipWithDelay('edit',answer._id)" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username" :size="20" :class="styles.userActions" />
+                <SquarePen @mouseenter="showTooltipWithDelay('edit',answer._id)" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username" :size="20" :class="styles.userActions" @click="editFunc('a',answer._id)" />
                 <span v-if="showTooltip === 'edit' && showTooltipIn === answer._id" :class="styles.tooltip">Edit</span>
               </div>
               <div :class="styles.tooltipWrapper">
-                <Trash2 @mouseenter="showTooltipWithDelay('delete',answer._id)" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" />
+                <Trash2 @mouseenter="showTooltipWithDelay('delete',answer._id)" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" @click="delFunc('a',answer._id)" />
                 <span v-if="showTooltip === 'delete' && showTooltipIn === answer._id" :class="styles.tooltip">Delete</span>
               </div>
               <div :class="styles.tooltipWrapper">
@@ -160,6 +160,24 @@
       </form>
     </div>
   </div>
+  <!-- Answer/Comment Edit Modal -->
+  <div v-if="showAnsComEditModal" :class="styles.modalOverlay">
+    <div :class="styles.modalBox">
+      <h2 :class="styles.modalTitle">Edit {{ showAnsComEditModal === 'a' ? 'Answer' : 'Comment' }}</h2>
+
+      <form @submit.prevent="saveEditAnsCom(showAnsComEditModal, editingID)">
+        <label :class="styles.formLabel">
+          {{ showAnsComEditModal === 'a' ? 'Answer' : 'Comment' }}:
+          <textarea v-model="editingAnsCom" :class="styles.textarea" required></textarea>
+        </label>
+
+        <div :class="styles.modalActions">
+          <button type="button" :class="styles.cancelBtn" @click="showAnsComEditModal = ''">Cancel</button>
+          <button type="submit" :class="styles.confirmBtn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
   <Notification ref="notifyRef" />
 </template>
 
@@ -191,6 +209,9 @@
   const LikingAnswer = ref([]);
   const showTooltip = ref(null)
   const showTooltipIn = ref(null)
+  const showAnsComEditModal = ref('');
+  const editingAnsCom = ref('');
+  const editingID = ref('');
 
   let timer = null
   
@@ -408,6 +429,65 @@ async function likeFunc(type,id){
     LikingAnswer.value = LikingAnswer.value.filter(aid => aid !== id);
   }
 }
+
+function editFunc(type,id){
+  if(type === 'a'){
+    const answer = question.value.answers.find(a => a._id === id);
+    if (answer && answer.user === userStore.user.username) {
+    } else {
+      notifyRef.value.addNotification({title: 'Unauthorized', message: 'You do not have permission to edit this answer.', type: 'error'});
+      return;
+    }
+    editingAnsCom.value = answer.answer;
+    showAnsComEditModal.value = 'a';
+    editingID.value = id;
+  }else if(type === 'c'){
+    // Implement comment editing logic if needed
+    notifyRef.value.addNotification({title: 'Info', message: 'Comment editing not implemented yet.', type: 'info'});
+  }else{
+    console.error('Invalid type for editing:', type);
+  }
+}
+
+async function saveEditAnsCom(type,id) {
+  if(type === 'a'){
+    try{
+      const response = await secureFetch( `${import.meta.env.VITE_BACKEND_URL}/forum/question/answer/edit`, { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          questionID: routeId,
+          answerID: id,
+          newAnswer: editingAnsCom.value
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        notifyRef.value.addNotification({title: 'Success', message: 'Answer edited successfully.', type: 'success'});
+        fetchData(); // Refresh question data
+      } else {
+        if (!data.error) {
+          harmScore=(data.harmScore || 0).toFixed(2);
+          notifyRef.value.addNotification({title: 'Warning', message: data.message ,details: {"Harm Score":harmScore} , type: 'warning'});
+          return;
+        }
+        notifyRef.value.addNotification({title: 'Error', message: data.message || 'Failed to edit answer.', type: 'error'});
+      }
+    }catch (error) {
+      console.error('Error editing answer:', error);
+    }
+  }else if(type === 'c'){
+    // Implement comment editing logic if needed
+    notifyRef.value.addNotification({title: 'Info', message: 'Comment editing not implemented yet.', type: 'info'});
+  }else{
+    console.error('Invalid type for saving edit:', type);
+  }
+  
+  showAnsComEditModal.value = '';
+  editingID.value = '';
+}
+
 
 async function VerifyAnswer(answerID) {
   if (!userStore.isAdmin) {
