@@ -43,10 +43,10 @@
           <div :class="styles.answerHeader">
             <div :class="styles.answerMeta">
               <img :src="generateIdenticon(answer.user)" :alt="`Avatar of ${answer.user}`" :class="styles.userIdenticon" />
-              <span>Answered by <strong>{{ answer.user }}</strong></span>
+              <span><strong>{{ answer.user }}</strong></span>
               <span> • {{ formatDate(answer.CreatedAt) }}</span>
-              <span v-if="answer.status == 'verified'">|| <CircleCheck color="green" :size="14" style="margin-top: 3px;" /> Verified</span>
-              <span v-else-if="answer.status == 'unverified'">|| <CircleX color="red" :size="14" style="margin-top: 3px;" /> Unverifed</span>
+              <span v-if="answer.status == 'verified'"> • <CircleCheck color="green" :size="14" style="margin-top: 5px;" /> Verified</span>
+              <span v-else-if="answer.status == 'unverified'"> • <CircleX color="red" :size="14" style="margin-top: 5px;" /> Unverifed</span>
             </div>
             <div :class="styles.answerUserControlBtns" >
               <Heart :color="answer.Liked ? 'red' : 'grey'" :size="20" :class="styles.userActions" />
