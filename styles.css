@@ -4,7 +4,7 @@ html, body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  background-image: linear-gradient(to right bottom, oklch(98.2% 0.018 155.826), oklch(95.4% 0.038 75.164));    
+  background-color: oklch(95.4% 0.038 75.164);  
   height: 100vh; /* Full viewport height */ 
 }
   
