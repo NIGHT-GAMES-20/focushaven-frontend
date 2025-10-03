@@ -462,7 +462,7 @@
   flex-direction: row;
 }
 
-.AnswerUserControlBtns{
+.answerUserControlBtns{
   display: flex;
   align-items: center;
   gap: 10px;
@@ -481,5 +481,5 @@
   margin-top: 8px;
   line-height: 1.5;
   color: #2b1e17;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
