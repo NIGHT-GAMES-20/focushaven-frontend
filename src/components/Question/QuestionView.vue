@@ -291,16 +291,16 @@
         });
         const data = await response.json();
         if (data.success) {
-          notifyRef.value.showNotification({title: 'Success', message: 'Question deleted successfully.', type: 'success'});
+          notifyRef.value.addNotification({title: 'Success', message: 'Question deleted successfully.', type: 'success'});
           setTimeout(() => {
             window.location.href = '/forum'; // Redirect after a short delay
           }, 1500);
         } else {
-          notifyRef.value.showNotification({title: 'Error', message: data.message || 'Failed to delete question.', type: 'error'});
+          notifyRef.value.addNotification({title: 'Error', message: data.message || 'Failed to delete question.', type: 'error'});
         }
     } catch (error) {
         console.error('Error deleting question:', error);
-        notifyRef.value.showNotification({title: 'Error', message: 'An error occurred while deleting the question.', type: 'error'});
+        notifyRef.value.addNotification({title: 'Error', message: 'An error occurred while deleting the question.', type: 'error'});
     } finally {
         showDeleteModal.value = false;
     }
@@ -334,15 +334,15 @@
     });
     const data = await response.json();
     if (data.success) {
-      notifyRef.value.showNotification({title: 'Success', message: 'Question edited successfully.', type: 'success'});
+      notifyRef.value.addNotification({title: 'Success', message: 'Question edited successfully.', type: 'success'});
       fetchData(); // Refresh question data
     } else {
       if (!data.error) {
         harmScore=(data.harmScore || 0).toFixed(2);
-        notifyRef.value.showNotification({title: 'Warning', message: data.message ,details: {"Harm Score":harmScore} , type: 'warning'});
+        notifyRef.value.addNotification({title: 'Warning', message: data.message ,details: {"Harm Score":harmScore} , type: 'warning'});
         return;
       }
-      notifyRef.value.showNotification({title: 'Error', message: data.message || 'Failed to edit question.', type: 'error'});
+      notifyRef.value.addNotification({title: 'Error', message: data.message || 'Failed to edit question.', type: 'error'});
     }
   }catch (error) {
     console.error('Error editing question:', error);
@@ -353,7 +353,7 @@
 
 async function likeFunc(type,id){
   if(!userStore.isLoggedIn){
-    notifyRef.value.showNotification({title: 'Invalid Login', message: 'Please log in to like.', type: 'error'});
+    notifyRef.value.addNotification({title: 'Invalid Login', message: 'Please log in to like.', type: 'error'});
     return;
   }
   if(LikingAnswer.value.includes(id)) return; // Prevent multiple clicks
@@ -399,7 +399,7 @@ async function likeFunc(type,id){
         question.value.comments = [...question.value.comments]; // Trigger reactivity
       }
     } else {
-      notifyRef.value.showNotification({title: 'Error', message: data.error || `Failed to like the ${fullType}.`, type: 'error'});
+      notifyRef.value.addNotification({title: 'Error', message: data.error || `Failed to like the ${fullType}.`, type: 'error'});
     }
     
   }catch (error) {
@@ -407,12 +407,11 @@ async function likeFunc(type,id){
   }finally {
     LikingAnswer.value = LikingAnswer.value.filter(aid => aid !== id);
   }
-
 }
 
 async function VerifyAnswer(answerID) {
   if (!userStore.isAdmin) {
-    notifyRef.value.showNotification({title: 'Unauthorized', message: 'You do not have permission to verify answers.', type: 'error'});
+    notifyRef.value.addNotification({title: 'Unauthorized', message: 'You do not have permission to verify answers.', type: 'error'});
     return;
   }
 
@@ -429,18 +428,18 @@ async function VerifyAnswer(answerID) {
 
     const data = await response.json();
     if (data.success) {
-      notifyRef.value.showNotification({title: 'Success', message: 'Answer verified successfully.', type: 'success'});
+      notifyRef.value.addNotification({title: 'Success', message: 'Answer verified successfully.', type: 'success'});
       if (data.question) {
         question.value.answers = data.question.answers || [];
       } else {
         fetchData();
       }
     } else {
-      notifyRef.value.showNotification({title: 'Error', message: data.message || 'Failed to verify answer.', type: 'error'});
+      notifyRef.value.addNotification({title: 'Error', message: data.message || 'Failed to verify answer.', type: 'error'});
     }
   } catch (error) {
     console.error('Error verifying answer:', error);
-    notifyRef.value.showNotification({title: 'Error', message: 'An error occurred while verifying the answer.', type: 'error'});
+    notifyRef.value.addNotification({title: 'Error', message: 'An error occurred while verifying the answer.', type: 'error'});
   }
 }
 
