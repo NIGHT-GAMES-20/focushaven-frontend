@@ -50,20 +50,20 @@
             </div>
             <div :class="styles.answerUserControlBtns" >
               <div :class="styles.tooltipWrapper">
-                <Heart @mouseenter="showTooltipWithDelay('heart')" @mouseleave="hideTooltip" :color="answer.Likers.includes(userStore.FHiD) ? 'red' : 'grey'" :fill="answer.Likers.includes(userStore.FHiD) ? 'red' : LikingAnswer.includes(answer._id) ? 'grey' : 'none'" :size="20" :class="[styles.userActions, LikingAnswer.includes(answer._id) ? styles.likePulse : '' ]" @click="likeFunc('a',answer._id)" />
-                <span v-if="showTooltip === 'heart'" :class="styles.tooltip">Like</span>
+                <Heart @mouseenter="showTooltipWithDelay('heart',answer._id)" @mouseleave="hideTooltip" :color="answer.Likers.includes(userStore.FHiD) ? 'red' : 'grey'" :fill="answer.Likers.includes(userStore.FHiD) ? 'red' : LikingAnswer.includes(answer._id) ? 'grey' : 'none'" :size="20" :class="[styles.userActions, LikingAnswer.includes(answer._id) ? styles.likePulse : '' ]" @click="likeFunc('a',answer._id)" />
+                <span v-if="showTooltip === 'heart' && showTooltipIn === answer._id" :class="styles.tooltip">Like</span>
               </div>
               <div :class="styles.tooltipWrapper">
-                <SquarePen @mouseenter="showTooltipWithDelay('edit')" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username" :size="20" :class="styles.userActions" />
-                <span v-if="showTooltip === 'edit'" :class="styles.tooltip">Edit</span>
+                <SquarePen @mouseenter="showTooltipWithDelay('edit',answer._id)" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username" :size="20" :class="styles.userActions" />
+                <span v-if="showTooltip === 'edit' && showTooltipIn === answer._id" :class="styles.tooltip">Edit</span>
               </div>
               <div :class="styles.tooltipWrapper">
-                <Trash2 @mouseenter="showTooltipWithDelay('delete')" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" />
-                <span v-if="showTooltip === 'delete'" :class="styles.tooltip">Delete</span>
+                <Trash2 @mouseenter="showTooltipWithDelay('delete',answer._id)" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" />
+                <span v-if="showTooltip === 'delete' && showTooltipIn === answer._id" :class="styles.tooltip">Delete</span>
               </div>
               <div :class="styles.tooltipWrapper">
-                <BadgeCheck @mouseenter="showTooltipWithDelay('verify')" @mouseleave="hideTooltip" v-if="userStore.isAdmin && answer.status !== 'verified'" color="green"  :size="20" :class="styles.userActions" />
-                <span v-if="showTooltip === 'verify'" :class="styles.tooltip">verify</span>
+                <BadgeCheck @mouseenter="showTooltipWithDelay('verify',answer._id)" @mouseleave="hideTooltip" v-if="userStore.isAdmin && answer.status !== 'verified'" color="green"  :size="20" :class="styles.userActions" />
+                <span v-if="showTooltip === 'verify' && showTooltipIn === answer._id" :class="styles.tooltip">verify</span>
               </div>
             </div>
           </div>
@@ -190,6 +190,7 @@
   const showEditModal = ref(false);
   const LikingAnswer = ref([]);
   const showTooltip = ref(null)
+  const showTooltipIn = ref(null)
 
   let timer = null
   
@@ -410,16 +411,17 @@ async function likeFunc(type,id){
 }
 
 
-function showTooltipWithDelay(id){
+function showTooltipWithDelay(id,inID){
   timer = setTimeout(() => {
     showTooltip.value = id
-    console.log("Tooltip shown:", id)
-  }, 1000) // 1 second delay
+    showTooltipIn.value = inID
+  }, 500) // 0.5 second delay
 }
 
 function hideTooltip(){
   clearTimeout(timer)
   showTooltip.value = null
+  showTooltipIn.value = null
 }
 
 
