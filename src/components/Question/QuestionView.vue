@@ -49,7 +49,7 @@
               <span v-else-if="answer.status == 'unverified'" style="color: #d41c1c;"> • Unverifed</span>
             </div>
             <div :class="styles.answerUserControlBtns" >
-              <Heart :color="answer.Likers.includes(userStore.FHiD) ? 'red' : 'grey'" :size="20" :class="styles.userActions" @click="likeFunc('a',answer._id)" />
+              <Heart :color="answer.Likers.includes(userStore.FHiD) ? 'red' : 'grey'" :fill="answer.Likers.includes(userStore.FHiD) ? 'red' : ''" :size="20" :class="styles.userActions" @click="likeFunc('a',answer._id)" />
               <SquarePen v-if="answer.user === userStore.user.username" :size="20" :class="styles.userActions" />
               <Trash2 v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" />
               <BadgeCheck v-if="userStore.isAdmin && answer.status !== 'verified'" color="green"  :size="20" :class="styles.userActions" />
@@ -368,19 +368,26 @@ async function likeFunc(type,id){
     if (data.success) {
       // Update the specific answer or comment's likes and likers
       if(type === 'a'){
-        const answer = question.value.answers.find(a => a._id === id);
-        if (answer) {
-          answer.Likes = data.Likes;
-          answer.Likers = data.Likers || [];
+        const index = question.value.answers.findIndex(a => a._id === id);
+        if (index !== -1) {
+          // Replace the whole object with a new one
+          question.value.answers[index] = {
+            ...question.value.answers[index],
+            Likes: data.Likes,
+            Likers: data.Likers || []
+          };
+          question.value.answers = [...question.value.answers]; // ensure reactivity
         }
-        question.value.answers = [...question.value.answers]; // Trigger reactivity
       }else if(type === 'c'){
-        const comment = question.value.comments.find(c => c._id === id);
-        if (comment) {
-          comment.Likes = data.Likes;
-          comment.Likers = data.Likers || [];
+        const index = question.value.comments.findIndex(c => c._id === id);
+        if (index !== -1) {
+          question.value.comments[index] = {
+            ...question.value.comments[index],
+            Likes: data.Likes,
+            Likers: data.Likers || []
+          };
+          question.value.comments = [...question.value.comments]; // Trigger reactivity
         }
-        question.value.comments = [...question.value.comments]; // Trigger reactivity
       }
     } else {
       notifyRef.value.showNotification({title: 'Error', message: data.error || `Failed to like the ${fullType}.`, type: 'error'});
