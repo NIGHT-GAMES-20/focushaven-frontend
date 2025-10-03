@@ -44,9 +44,9 @@
             <div :class="styles.answerMeta">
               <img :src="generateIdenticon(answer.user)" :alt="`Avatar of ${answer.user}`" :class="styles.userIdenticon" />
               <span><strong>{{ answer.user }}</strong></span>
-              <span> • {{ formatDate(answer.CreatedAt) }}</span>
-              <span v-if="answer.status == 'verified'" style="color: #42d446;"> • Verified</span>
-              <span v-else-if="answer.status == 'unverified'" style="color: #d41c1c;"> • Unverifed</span>
+              <span> • {{ formatDate(answer.CreatedAt) }} • </span>
+              <span v-if="answer.status == 'verified'" style="color: #42d446;">Verified</span>
+              <span v-else-if="answer.status == 'unverified'" style="color: #d41c1c;">Unverifed</span>
             </div>
             <div :class="styles.answerUserControlBtns" >
               <div :class="styles.tooltipWrapper">
@@ -62,7 +62,7 @@
                 <span v-if="showTooltip === 'delete' && showTooltipIn === answer._id" :class="styles.tooltip">Delete</span>
               </div>
               <div :class="styles.tooltipWrapper">
-                <BadgeCheck @mouseenter="showTooltipWithDelay('verify',answer._id)" @mouseleave="hideTooltip" v-if="userStore.isAdmin && answer.status !== 'verified'" color="green"  :size="20" :class="styles.userActions" />
+                <BadgeCheck @mouseenter="showTooltipWithDelay('verify',answer._id)" @mouseleave="hideTooltip" v-if="userStore.isAdmin && answer.status !== 'verified'" color="green"  :size="20" :class="styles.userActions" @click="VerifyAnswer(answer._id)" />
                 <span v-if="showTooltip === 'verify' && showTooltipIn === answer._id" :class="styles.tooltip">verify</span>
               </div>
             </div>
@@ -410,12 +410,46 @@ async function likeFunc(type,id){
 
 }
 
+async function VerifyAnswer(answerID) {
+  if (!userStore.isAdmin) {
+    notifyRef.value.showNotification({title: 'Unauthorized', message: 'You do not have permission to verify answers.', type: 'error'});
+    return;
+  }
+
+  try {
+    const response = await secureFetch(
+      `${import.meta.env.VITE_BACKEND_URL}/forum/question/answer/verify`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ questionID: routeId, answerID })
+      }
+    );
+
+    const data = await response.json();
+    if (data.success) {
+      notifyRef.value.showNotification({title: 'Success', message: 'Answer verified successfully.', type: 'success'});
+      if (data.question) {
+        question.value.answers = data.question.answers || [];
+      } else {
+        fetchData();
+      }
+    } else {
+      notifyRef.value.showNotification({title: 'Error', message: data.message || 'Failed to verify answer.', type: 'error'});
+    }
+  } catch (error) {
+    console.error('Error verifying answer:', error);
+    notifyRef.value.showNotification({title: 'Error', message: 'An error occurred while verifying the answer.', type: 'error'});
+  }
+}
+
 
 function showTooltipWithDelay(id,inID){
   timer = setTimeout(() => {
     showTooltip.value = id
     showTooltipIn.value = inID
-  }, 500) // 0.5 second delay
+  }, 200) // 0.2 second delay
 }
 
 function hideTooltip(){
