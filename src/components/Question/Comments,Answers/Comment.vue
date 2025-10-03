@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button :class="styles.askButton" @click="showModal = true"><Reply />Post A Comment</button>
+    <button :class="styles.askButton" @click="showModal = true"><MessageSquare />Post A Comment</button>
 
     <Notification ref="notifyRef" />
     <div v-if="showModal" :class="styles.modalOverlay">
@@ -26,7 +26,7 @@
 <script setup>
 import { ref,defineProps } from 'vue';
 import styles from './Common.module.css';
-import { Reply } from 'lucide-vue-next';
+import { MessageSquare } from 'lucide-vue-next';
 import { secureFetch } from '../../../scripts/forumSecureFetch';
 import Notification from "../../Asset-Componets/Notification.vue";
 import {formatTime, reloader} from '../../../scripts/UtilityFunc.js';

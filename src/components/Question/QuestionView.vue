@@ -14,8 +14,9 @@
         </div>
       </div>
       <div :class="styles.meta">
+        <img :src="generateIdenticon(question.user)" :alt="`Avatar of ${question.user}`" :class="styles.userIdenticon" />
         <span>Asked by <strong>{{ question.user }}</strong></span>
-        <span>• {{ formatDate(question.CreatedAt) }}</span>
+        <span> • {{ formatDate(question.CreatedAt) }}</span>
       </div>
       <div :class="styles.tags">
         <span v-for="tag in question.tags" :key="tag" :class="styles.tag">{{ tag }}</span>
@@ -33,9 +34,29 @@
         <h2>Answers</h2>
         <Answer :quesID="routeId" />
       </div>
-      <div :class="styles.emptyState">
+      <div v-if="question.answers.length < 1" :class="styles.emptyState">
         <MessageCircleQuestionMark  /> 
         <span>No answers yet. Be the first to share your knowledge!</span>
+      </div>
+      <div v-else>
+        <div v-for="answer in question.answers" :key="answer._id" :class="styles.answerItems">
+          <div :class="styles.answerHeader">
+            <div :class="styles.answerMeta">
+              <img :src="generateIdenticon(answer.user)" :alt="`Avatar of ${answer.user}`" :class="styles.userIdenticon" />
+              <span>Answered by <strong>{{ answer.user }}</strong></span>
+              <span> • {{ formatDate(answer.CreatedAt) }}</span>
+              <span v-if="answer.status == 'verified'"><CircleCheck color="green" />Verified</span>
+              <span v-else-if="answer.status == 'unverified'"><CircleX color="red" />Unverifed</span>
+            </div>
+            <div :class="styles.answerUserControlBtns" >
+              <Heart :color="answer.Liked ? 'red' : 'grey'" :size="20" :class="styles.userActions" />
+              <SquarePen v-if="answer.user === userStore.user.username" :size="20" :class="styles.userActions" />
+              <Trash2 v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" />
+              <BadgeCheck v-if="userStore.isAdmin && answer.status !== 'verified'" color="green"  :size="20" :class="styles.userActions" />
+            </div>
+          </div>
+          <p :class="styles.answerItem">{{ answer.answer }}</p>
+        </div>
       </div>
     </div>
 
@@ -134,13 +155,14 @@
   import { onMounted, ref, computed } from 'vue';
   import { useRoute } from 'vue-router';
   import { secureFetch, getValidToken } from '../../scripts/forumSecureFetch';
-  import { MessageCircleQuestionMark, MessageSquare, Trash2, SquarePen } from 'lucide-vue-next';
+  import { MessageCircleQuestionMark, MessageSquare, Trash2, SquarePen,CircleCheck,CircleX, Heart ,BadgeCheck } from 'lucide-vue-next';
   import { useUserStore } from '/stores/user.js'
   import styles from './questionView.module.css';
   import Answer from './Comments,Answers/Answer.vue';
   import Comment from './Comments,Answers/Comment.vue';
   import LikeBtn from '../Asset-Componets/LikeBtn.vue';
   import Notification from '../Asset-Componets/Notification.vue';
+  import { generateIdenticon } from "../../scripts/UtilityFunc.js";
 
   const route = useRoute();
   const routeId = route.params.id;
@@ -154,11 +176,6 @@
   const editBody = ref('');
   const editTags = ref('');
   const showEditModal = ref(false);
-
-
-  const  hasUserLiked = computed(() => {
-    return userStore.isLoggedIn && question.value.Likers.includes(userStore.FHiD);
-  });
   
   const question = ref({
     title: '',
@@ -167,7 +184,14 @@
     user: '',
     CreatedAt: '',
     Likes: 0,
+    status: '',
     Likers: [],
+    answers: [],
+    comments: []
+  });
+
+  const  hasUserLiked = computed(() => {
+    return userStore.isLoggedIn && question.value.Likers.includes(userStore.FHiD);
   });
 
   function openCommentModal() {
