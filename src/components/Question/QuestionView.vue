@@ -45,8 +45,8 @@
               <img :src="generateIdenticon(answer.user)" :alt="`Avatar of ${answer.user}`" :class="styles.userIdenticon" />
               <span><strong>{{ answer.user }}</strong></span>
               <span> • {{ formatDate(answer.CreatedAt) }}</span>
-              <span v-if="answer.status == 'verified'" :color="green"> • Verified</span>
-              <span v-else-if="answer.status == 'unverified'" :color="red"> • Unverifed</span>
+              <span v-if="answer.status == 'verified'" style="color: #42d446;"> • Verified</span>
+              <span v-else-if="answer.status == 'unverified'" style="color: #d41c1c;"> • Unverifed</span>
             </div>
             <div :class="styles.answerUserControlBtns" >
               <Heart :color="answer.Liked ? 'red' : 'grey'" :size="20" :class="styles.userActions" />
