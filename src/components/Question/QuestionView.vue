@@ -335,71 +335,93 @@
   showEditModal.value = false
 }
 
-async function likeFunc(type,id){
-  if(!userStore.isLoggedIn){
-    notifyRef.value.showNotification({title: 'Invalid Login', message: 'Please log in to like.', type: 'error'});
+async function likeFunc(type, id) {
+  if (!userStore.isLoggedIn) {
+    notifyRef.value.showNotification({
+      title: 'Invalid Login',
+      message: 'Please log in to like.',
+      type: 'error'
+    });
     return;
   }
-  if(LikingAnswer.value.includes(id)) return; // Prevent multiple clicks
+
+  if (LikingAnswer.value.includes(id)) return;
   LikingAnswer.value.push(id);
 
   let fullType = '';
   let body = {};
-  if(type === 'a'){
+  if (type === 'a') {
     fullType = 'answer';
     body = JSON.stringify({ questionID: routeId, answerID: id });
-  }else if(type === 'c'){
+  } else if (type === 'c') {
     fullType = 'comment';
     body = JSON.stringify({ questionID: routeId, commentID: id });
-  }else{
+  } else {
     console.error('Invalid type for liking:', type);
     return;
   }
 
-  try{
-    const response = await secureFetch( `${import.meta.env.VITE_BACKEND_URL}/forum/question/${fullType}/like`, { 
-      method: 'POST', 
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: body
-    });
+  // 🔹 Optimistic toggle
+  const arr = type === 'a' ? question.value.answers : question.value.comments;
+  const index = arr.findIndex(item => item._id === id);
+  if (index !== -1) {
+    const item = arr[index];
+    const hasLiked = item.Likers.includes(userStore.FHiD);
+
+    arr[index] = {
+      ...item,
+      Likes: hasLiked ? item.Likes - 1 : item.Likes + 1,
+      Likers: hasLiked
+        ? item.Likers.filter(uid => uid !== userStore.FHiD)
+        : [...item.Likers, userStore.FHiD]
+    };
+    if (type === 'a') {
+      question.value.answers = [...arr];
+    } else {
+      question.value.comments = [...arr];
+    }
+  }
+
+  try {
+    const response = await secureFetch(
+      `${import.meta.env.VITE_BACKEND_URL}/forum/question/${fullType}/like`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body
+      }
+    );
 
     const data = await response.json();
     if (data.success) {
-      // Update the specific answer or comment's likes and likers
-      if(type === 'a'){
-        const index = question.value.answers.findIndex(a => a._id === id);
-        if (index !== -1) {
-          // Replace the whole object with a new one
-          question.value.answers[index] = {
-            ...question.value.answers[index],
-            Likes: data.Likes,
-            Likers: data.Likers || []
-          };
-          question.value.answers = [...question.value.answers]; // ensure reactivity
-        }
-      }else if(type === 'c'){
-        const index = question.value.comments.findIndex(c => c._id === id);
-        if (index !== -1) {
-          question.value.comments[index] = {
-            ...question.value.comments[index],
-            Likes: data.Likes,
-            Likers: data.Likers || []
-          };
-          question.value.comments = [...question.value.comments]; // Trigger reactivity
+      // 🔹 Final sync with backend
+      if (index !== -1) {
+        arr[index] = {
+          ...arr[index],
+          Likes: data.Likes,
+          Likers: data.Likers || []
+        };
+        if (type === 'a') {
+          question.value.answers = [...arr];
+        } else {
+          question.value.comments = [...arr];
         }
       }
     } else {
-      notifyRef.value.showNotification({title: 'Error', message: data.error || `Failed to like the ${fullType}.`, type: 'error'});
+      notifyRef.value.showNotification({
+        title: 'Error',
+        message: data.error || `Failed to like the ${fullType}.`,
+        type: 'error'
+      });
     }
-    
-  }catch (error) {
-    console.error('Error liking answer:', error);
-  }finally {
+  } catch (error) {
+    console.error('Error liking:', error);
+  } finally {
     LikingAnswer.value = LikingAnswer.value.filter(aid => aid !== id);
   }
-
 }
+
 
 
 onMounted(async () => {
