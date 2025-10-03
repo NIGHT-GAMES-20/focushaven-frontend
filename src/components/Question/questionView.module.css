@@ -496,3 +496,23 @@
   color: #2b1e17;
   font-size: 1rem;
 }
+
+.likePulse {
+  animation: pulse 2s infinite;
+}
+
+/* Keyframes for the pulsating effect */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);  /* grow */
+    opacity: 0.7;           /* slightly transparent */
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
