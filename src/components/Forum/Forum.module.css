@@ -171,6 +171,9 @@
   font-weight: 600;
   color: #4d3326;
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .questionTitle:hover {

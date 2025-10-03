@@ -18,6 +18,11 @@
   color: #2a1f1a;
 }
 
+.QuesTitle{
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
 .meta {
   display: flex;
   align-items: center;
@@ -47,6 +52,9 @@
   font-size: 0.85rem;
   color: #4d3326;
   transition: background 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tag:hover {
@@ -57,6 +65,10 @@
   margin-top: 20px;
   line-height: 1.6;
   font-size: 1rem;
+}
+.quesBody{
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .actions {
@@ -498,7 +510,7 @@
 }
 
 .likePulse {
-  animation: pulse 0.5s infinite;
+  animation: pulse 1s infinite;
 }
 
 /* Keyframes for the pulsating effect */
@@ -515,4 +527,19 @@
     transform: scale(1);
     opacity: 1;
   }
+}
+
+
+.tooltip {
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: black;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 100;
 }

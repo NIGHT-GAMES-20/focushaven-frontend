@@ -6,7 +6,7 @@
     <!-- Question Header -->
     <div :class="styles.questionHeader">
       <div :class="styles.actions">
-        <h1>{{ question.title }}</h1>
+        <h1 :class="styles.QuesTitle">{{ question.title }}</h1>
         <div :class="styles.userControls">
           <LikeBtn :liked="hasUserLiked" :loading="isLiking" :likesCount="question.Likes" @click="likeQuestion"/>
           <SquarePen v-if="question.user === userStore.user.username" @click="openEditModal" :size="24" :class="styles.userActions" />
@@ -25,7 +25,7 @@
 
     <!-- Question Body -->
     <div :class="styles.questionBody">
-      <p>{{ question.body }}</p>
+      <p :class="styles.quesBody">{{ question.body }}</p>
     </div>
 
     <!-- Answers Section -->
@@ -49,10 +49,19 @@
               <span v-else-if="answer.status == 'unverified'" style="color: #d41c1c;"> • Unverifed</span>
             </div>
             <div :class="styles.answerUserControlBtns" >
-              <Heart :color="answer.Likers.includes(userStore.FHiD) ? 'red' : 'grey'" :fill="answer.Likers.includes(userStore.FHiD) ? 'red' : LikingAnswer.includes(answer._id) ? 'grey' : 'none'" :size="20" :class="[styles.userActions, LikingAnswer.includes(answer._id) ? styles.likePulse : '' ]" @click="likeFunc('a',answer._id)" />
-              <SquarePen v-if="answer.user === userStore.user.username" :size="20" :class="styles.userActions" />
-              <Trash2 v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" />
-              <BadgeCheck v-if="userStore.isAdmin && answer.status !== 'verified'" color="green"  :size="20" :class="styles.userActions" />
+            
+              <Heart @mouseenter="showTooltipWithDelay('heart')" @mouseleave="hideTooltip" :color="answer.Likers.includes(userStore.FHiD) ? 'red' : 'grey'" :fill="answer.Likers.includes(userStore.FHiD) ? 'red' : LikingAnswer.includes(answer._id) ? 'grey' : 'none'" :size="20" :class="[styles.userActions, LikingAnswer.includes(answer._id) ? styles.likePulse : '' ]" @click="likeFunc('a',answer._id)" />
+              <span v-if="showTooltip === 'heart'" :class="styles.tooltip">Like</span>
+              
+              <SquarePen @mouseenter="showTooltipWithDelay('edit')" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username" :size="20" :class="styles.userActions" />
+              <span v-if="showTooltip === 'edit'" :class="styles.tooltip">Edit</span>
+              
+              <Trash2 @mouseenter="showTooltipWithDelay('delete')" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" />
+              <span v-if="showTooltip === 'delete'" :class="styles.tooltip">Delete</span>
+              
+              <BadgeCheck @mouseenter="showTooltipWithDelay('verify')" @mouseleave="hideTooltip" v-if="userStore.isAdmin && answer.status !== 'verified'" color="green"  :size="20" :class="styles.userActions" />
+              <span v-if="showTooltip === 'verify'" :class="styles.tooltip">verify</span>
+            
             </div>
           </div>
           <p :class="styles.answerItem">{{ answer.answer }}</p>
@@ -176,7 +185,10 @@
   const editBody = ref('');
   const editTags = ref('');
   const showEditModal = ref(false);
-  const LikingAnswer = ref([]); 
+  const LikingAnswer = ref([]);
+  const showTooltip = ref(null)
+
+  let timer = null
   
   const question = ref({
     title: '',
@@ -392,6 +404,18 @@ async function likeFunc(type,id){
     LikingAnswer.value = LikingAnswer.value.filter(aid => aid !== id);
   }
 
+}
+
+
+function showTooltipWithDelay(id){
+  timer = setTimeout(() => {
+    showTooltip.value = id
+  }, 1000) // 1 second delay
+}
+
+function hideTooltip(){
+  clearTimeout(timer)
+  showTooltip.value = null
 }
 
 
