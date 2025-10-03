@@ -40,16 +40,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 import styles from './QuestionAsk.module.css';
 import Notification from "../Asset-Componets/Notification.vue";
-import {formatTime, reloader} from '../../scripts/UtilityFunc.js';
+import {formatTime} from '../../scripts/UtilityFunc.js';
 
 const showModal = ref(false);
 const title = ref('');
 const body = ref('');
 const tags = ref('');
 const notifyRef = ref(null);
+const emit = defineEmits(['question-asked']);
 
 async function submitQuestion() {
   const payload = {
@@ -72,7 +73,7 @@ async function submitQuestion() {
       title.value = '';
       body.value = '';
       tags.value = '';
-      reloader(3);
+      emit('question-asked');
     } else {
       const details = data.retryAfter ? {"Retry After ":formatTime(data.retryAfter)} : null
       notifyRef.value.addNotification({ title: 'Error', message: data.message || 'Submission failed', details: details , type: 'info' });

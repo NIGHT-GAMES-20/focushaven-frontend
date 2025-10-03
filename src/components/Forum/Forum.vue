@@ -13,7 +13,7 @@
           <ArrowLeft :class="Styles.arrowIcon"/> Home
         </div></a>
 
-        <QuestionAsk/>
+        <QuestionAsk @question-asked="DataFetcher" />
 
         <div v-if="userStore.isLoggedIn" @click="toggleDropdown" :class="Styles.userIdenticonContainer" ref="dropdownRef">
           <img  alt="user Identicon" :src="userStore.profilePic" :class="Styles.userIdenticon" ref="dropdownRef" /><ChevronDown :class="[Styles.chevronIconDropown, { [Styles.rotated]: isUserDropdownOpen }]" />
@@ -267,7 +267,7 @@
     }
   }
 
-  onMounted(async () => {
+  async function DataFetcher(){
     isLoading.value = true;
     await userStore.fetchUser();
     await getValidToken();
@@ -275,7 +275,10 @@
     fetchQuestions(1);
     document.addEventListener("click", closeDropdown);
     isLoading.value = false;
-  })
+  }
+
+
+  onMounted(DataFetcher);
 
   onBeforeUnmount(() => {
     document.removeEventListener("click", closeDropdown);

@@ -32,7 +32,7 @@
     <div :class="styles.answersSection">
       <div :class="styles.actions">
         <h2>Answers</h2>
-        <Answer :quesID="routeId" />
+        <Answer :quesID="routeId" @answer-submitted="fetchData" />
       </div>
       <div v-if="question.answers.length < 1" :class="styles.emptyState">
         <MessageCircleQuestionMark  /> 
@@ -49,7 +49,7 @@
               <span v-else-if="answer.status == 'unverified'" style="color: #d41c1c;"> • Unverifed</span>
             </div>
             <div :class="styles.answerUserControlBtns" >
-              <Heart :color="answer.Liked ? 'red' : 'grey'" :size="20" :class="styles.userActions" />
+              <Heart :color="answer.Likers.includes(userStore.FHiD) ? 'red' : 'grey'" :size="20" :class="styles.userActions" @click="likeFunc('a',answer._id)" />
               <SquarePen v-if="answer.user === userStore.user.username" :size="20" :class="styles.userActions" />
               <Trash2 v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" />
               <BadgeCheck v-if="userStore.isAdmin && answer.status !== 'verified'" color="green"  :size="20" :class="styles.userActions" />
@@ -64,7 +64,7 @@
     <div :class="[styles.commentsSection, styles.desktopOnly]">
       <div :class="styles.actions">
         <h3>Comments</h3>
-        <Comment :quesID="routeId" />
+        <Comment :quesID="routeId" @comment-submitted="fetchData" />
       </div>
       <div :class="styles.emptyState">
         <MessageSquare />
@@ -98,7 +98,7 @@
           </button>
         </div>
         <div :class="styles.modalContent">
-          <Comment :quesID="routeId" />
+          <Comment :quesID="routeId" @comment-submitted="fetchData" />
           <div :class="styles.emptyState">
             <MessageSquare />
             <span>No comments yet. Start the conversation!</span>
@@ -176,6 +176,7 @@
   const editBody = ref('');
   const editTags = ref('');
   const showEditModal = ref(false);
+  const LikingAnswer = ref([]); 
   
   const question = ref({
     title: '',
@@ -334,10 +335,70 @@
   showEditModal.value = false
 }
 
-  onMounted(async () => {
-    await getValidToken();
-    fetchData();
-  });
+async function likeFunc(type,id){
+  if(!userStore.isLoggedIn){
+    notifyRef.value.showNotification({title: 'Invalid Login', message: 'Please log in to like.', type: 'error'});
+    return;
+  }
+  if(LikingAnswer.value.includes(id)) return; // Prevent multiple clicks
+  LikingAnswer.value.push(id);
+
+  let fullType = '';
+  let body = {};
+  if(type === 'a'){
+    fullType = 'answer';
+    body = JSON.stringify({ questionID: routeId, answerID: id });
+  }else if(type === 'c'){
+    fullType = 'comment';
+    body = JSON.stringify({ questionID: routeId, commentID: id });
+  }else{
+    console.error('Invalid type for liking:', type);
+    return;
+  }
+
+  try{
+    const response = await secureFetch( `${import.meta.env.VITE_BACKEND_URL}/forum/question/${fullType}/like`, { 
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: body
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      // Update the specific answer or comment's likes and likers
+      if(type === 'a'){
+        const answer = question.value.answers.find(a => a._id === id);
+        if (answer) {
+          answer.Likes = data.Likes;
+          answer.Likers = data.Likers || [];
+        }
+        question.value.answers = [...question.value.answers]; // Trigger reactivity
+      }else if(type === 'c'){
+        const comment = question.value.comments.find(c => c._id === id);
+        if (comment) {
+          comment.Likes = data.Likes;
+          comment.Likers = data.Likers || [];
+        }
+        question.value.comments = [...question.value.comments]; // Trigger reactivity
+      }
+    } else {
+      notifyRef.value.showNotification({title: 'Error', message: data.error || `Failed to like the ${fullType}.`, type: 'error'});
+    }
+    
+  }catch (error) {
+    console.error('Error liking answer:', error);
+  }finally {
+    LikingAnswer.value = LikingAnswer.value.filter(aid => aid !== id);
+  }
+
+}
+
+
+onMounted(async () => {
+  await getValidToken();
+  fetchData();
+});
 
 </script>
 

@@ -24,25 +24,28 @@
 </template>
 
 <script setup>
-import { ref,defineProps } from 'vue';
+import { ref,defineProps, defineEmits } from 'vue';
 import styles from './Common.module.css';
 import { MessageCircleQuestionMark } from 'lucide-vue-next';
 import { secureFetch } from '../../../scripts/forumSecureFetch';
 import Notification from "../../Asset-Componets/Notification.vue";
-import {formatTime, reloader} from '../../../scripts/UtilityFunc.js';
+import {formatTime} from '../../../scripts/UtilityFunc.js';
 
 const showModal = ref(false);
 const answer = ref('')
 const notifyRef = ref(null);
+const isSubmitBtnPressed = ref(false);
 const props = defineProps({
   quesID: {
     type: String,
     required: true
   }
 });
+const emit = defineEmits(['answer-submitted']);
 
 async function submitQuestion() {
-
+  if (isSubmitBtnPressed.value) return; // Prevent multiple submissions
+  isSubmitBtnPressed.value = true;
   try {
     const res = await secureFetch(`${import.meta.env.VITE_BACKEND_URL}/forum/question/answer/post`, {
       method: 'POST',
@@ -55,7 +58,7 @@ async function submitQuestion() {
       notifyRef.value.addNotification({ title: 'Success', message: 'Answer submitted successfully', type: 'success' });
       showModal.value = false;
       answer.value = '';
-      reloader(3);
+      emit('answer-submitted');
     } else {
       const details = data.retryAfter ? {"Retry After ":formatTime(data.retryAfter)} : null
       notifyRef.value.addNotification({ title: 'Error', message: data.message || 'Submission failed', details: details , type: 'info' });
@@ -68,5 +71,6 @@ async function submitQuestion() {
     showModal.value = false;
     answer.value = '';
   }
+  isSubmitBtnPressed.value = false;
 }
 </script>
