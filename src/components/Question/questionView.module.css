@@ -498,7 +498,7 @@
 }
 
 .likePulse {
-  animation: pulse 2s infinite;
+  animation: pulse 0.5s infinite;
 }
 
 /* Keyframes for the pulsating effect */
