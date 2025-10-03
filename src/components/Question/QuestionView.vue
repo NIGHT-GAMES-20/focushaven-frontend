@@ -49,7 +49,7 @@
               <span v-else-if="answer.status == 'unverified'" style="color: #d41c1c;"> • Unverifed</span>
             </div>
             <div :class="styles.answerUserControlBtns" >
-              <Heart :color="answer.Likers.includes(userStore.FHiD) ? 'red' : 'grey'" :fill="answer.Likers.includes(userStore.FHiD) ? 'red' : LikingAnswer.includes(userStore.FHiD ? 'grey' : 'none')" :size="20" :class="[styles.userActions, LikingAnswer.includes(userStore.FHiD) ? styles.likePulse : '' ]" @click="likeFunc('a',answer._id)" />
+              <Heart :color="answer.Likers.includes(userStore.FHiD) ? 'red' : 'grey'" :fill="answer.Likers.includes(userStore.FHiD) ? 'red' : LikingAnswer.includes(answer._id) ? 'grey' : 'none'" :size="20" :class="[styles.userActions, LikingAnswer.includes(answer._id) ? styles.likePulse : '' ]" @click="likeFunc('a',answer._id)" />
               <SquarePen v-if="answer.user === userStore.user.username" :size="20" :class="styles.userActions" />
               <Trash2 v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" />
               <BadgeCheck v-if="userStore.isAdmin && answer.status !== 'verified'" color="green"  :size="20" :class="styles.userActions" />
