@@ -529,6 +529,11 @@
   }
 }
 
+.tooltipWrapper {
+  position: relative;
+  display: inline-block; /* keeps tooltip positioned relative to each icon */
+}
+
 
 .tooltip {
   position: absolute;
