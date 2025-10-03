@@ -410,6 +410,7 @@ async function likeFunc(type,id){
 function showTooltipWithDelay(id){
   timer = setTimeout(() => {
     showTooltip.value = id
+    console.log("Tooltip shown:", id)
   }, 1000) // 1 second delay
 }
 
