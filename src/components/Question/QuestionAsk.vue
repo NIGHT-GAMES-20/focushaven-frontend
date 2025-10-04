@@ -68,7 +68,8 @@ async function submitQuestion() {
     });
     const data = await res.json();
     if (data.success) {
-      notifyRef.value.addNotification({ title: 'Success', message: 'Question submitted successfully', type: 'success' });
+      const succType = data.message === "Question held for review due to harmful content" ? 'info' : 'success';
+      notifyRef.value.addNotification({ title: 'Success', message: data.message , type: succType });
       showModal.value = false;
       title.value = '';
       body.value = '';

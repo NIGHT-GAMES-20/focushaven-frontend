@@ -488,6 +488,48 @@ async function saveEditAnsCom(type,id) {
   editingID.value = '';
 }
 
+async function  delFunc(type,id) {
+  let fullType = '';
+  let body = {};
+  if(type === 'a'){
+    fullType = 'answer';
+    const answer = question.value.answers.find(a => a._id === id);
+    if (answer && (answer.user === userStore.user.username || userStore.isAdmin)) {
+    } else {
+      notifyRef.value.addNotification({title: 'Unauthorized', message: 'You do not have permission to delete this answer.', type: 'error'});
+      return;
+    }
+    body = JSON.stringify({ questionID: routeId, answerID: id });
+  }else if(type === 'c'){
+    fullType = 'comment';
+    // Implement comment deletion permission check if needed
+    notifyRef.value.addNotification({title: 'Info', message: 'Comment deletion not implemented yet.', type: 'info'});
+    return;
+  }else{
+    console.error('Invalid type for deletion:', type);
+    return;
+  }
+
+  try{
+    const response = await secureFetch( `${import.meta.env.VITE_BACKEND_URL}/forum/question/${fullType}/delete`, { 
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: body
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      notifyRef.value.addNotification({title: 'Success', message: `${fullType.charAt(0).toUpperCase() + fullType.slice(1)} deleted successfully.`, type: 'success'});
+      fetchData(); // Refresh question data
+    } else {
+      notifyRef.value.addNotification({title: 'Error', message: data.message || `Failed to delete the ${fullType}.`, type: 'error'});
+    }
+    
+  }catch (error) {
+    console.error(`Error deleting ${fullType}:`, error);
+  }
+}
 
 async function VerifyAnswer(answerID) {
   if (!userStore.isAdmin) {
