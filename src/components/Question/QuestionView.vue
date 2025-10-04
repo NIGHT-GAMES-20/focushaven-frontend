@@ -58,7 +58,7 @@
                 <span v-if="showTooltip === 'edit' && showTooltipIn === answer._id" :class="styles.tooltip">Edit</span>
               </div>
               <div :class="styles.tooltipWrapper">
-                <Trash2 @mouseenter="showTooltipWithDelay('delete',answer._id)" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" @click="delFunc('a',answer._id)" />
+                <Trash2 @mouseenter="showTooltipWithDelay('delete',answer._id)" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" @click="confirmDeleteAnsCom(true,'a',answer._id)" />
                 <span v-if="showTooltip === 'delete' && showTooltipIn === answer._id" :class="styles.tooltip">Delete</span>
               </div>
               <div :class="styles.tooltipWrapper">
@@ -160,6 +160,23 @@
       </form>
     </div>
   </div>
+  <!-- Delete Confirmation Modal for Answer/Comment -->
+  <div v-if="deleteModal.show" :class="styles.modalOverlay">
+    <div v-if="!deleteModal.isDoing" :class="styles.modalBox">
+      <h2 :class="styles.modalTitle">Confirm Delete</h2>
+      <p :class="styles.modalMessage">{{ `Are you sure you want to delete this ${deleteModal.id == 'a' ? 'Answer' : 'Comment'}? This action cannot be undone.` }}</p>
+
+      <div :class="styles.modalActions">
+        <button :class="styles.cancelBtn" @click="deleteModal.show = false">Cancel</button>
+        <button :class="styles.DelConfirmBtn" @click="delFunc(deleteModal.type, deleteModal.id)">Yes, Delete</button>
+      </div>
+    </div>
+    <div v-else :class="styles.modalBox">
+      <div :class="styles.questionPage" style="display: flex; justify-content: space-around;">
+        <div style="display: flex; flex-direction: row; margin-top: 20px;"><div :class="styles.spinner" style="margin-left:10px; margin-right: 10px;"></div>Deleting, Please Wait...</div>
+      </div>
+    </div>
+  </div>
   <!-- Answer/Comment Edit Modal -->
   <div v-if="showAnsComEditModal" :class="styles.modalOverlay">
     <div :class="styles.modalBox">
@@ -212,6 +229,7 @@
   const showAnsComEditModal = ref('');
   const editingAnsCom = ref('');
   const editingID = ref('');
+  const deleteModal = ref({show:false,isDoing:false,type:'',id:''});
 
   let timer = null
   
@@ -488,7 +506,14 @@ async function saveEditAnsCom(type,id) {
   editingID.value = '';
 }
 
+async function  confirmDeleteAnsCom(show,type,id) {
+  deleteModal.value = {show:show,isDoing:false,type:type,id:id};
+}
+
+
 async function  delFunc(type,id) {
+  if(deleteModal.value.isDoing) return;
+  deleteModal.value.isDoing = true;
   let fullType = '';
   let body = {};
   if(type === 'a'){
@@ -529,6 +554,7 @@ async function  delFunc(type,id) {
   }catch (error) {
     console.error(`Error deleting ${fullType}:`, error);
   }
+  deleteModal.value = {show:false,isDoing:false,type:'',id:''};
 }
 
 async function VerifyAnswer(answerID) {
