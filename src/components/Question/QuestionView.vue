@@ -3,10 +3,11 @@
     <div style="display: flex; flex-direction: row; margin-top: 20px;"><div :class="styles.spinner" style="margin-left:10px; margin-right: 10px;"></div>Loading, Please Wait...</div>
   </div>
   <div v-else :class="styles.questionPage">
-    <div :class="styles.BackBtn">
-      <div :class="styles.BackBtnContent">
-        <a href="/forum"><CircleArrowLeft :size="18"/> Back to Questions</a>
-      </div>
+    <div :class="styles.backBtn">
+      <a href="/forum" :class="styles.backBtnContent">
+        <CircleArrowLeft :size="18" />
+        <span>Back to Questions</span>
+      </a>
     </div>
     <!-- Question Header -->
     <div :class="styles.questionHeader">
