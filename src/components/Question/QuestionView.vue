@@ -4,7 +4,9 @@
   </div>
   <div v-else :class="styles.questionPage">
     <div :class="styles.BackBtn">
-      <a href="/forum"><CircleArrowLeft :size="18"/> Back to Questions</a>
+      <div :class="styles.BackBtnContent">
+        <a href="/forum"><CircleArrowLeft :size="18"/> Back to Questions</a>
+      </div>
     </div>
     <!-- Question Header -->
     <div :class="styles.questionHeader">

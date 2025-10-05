@@ -1,7 +1,7 @@
 .questionPage {
   max-width: 800px;
   margin: 40px auto;
-  padding: 5px;
+  padding: 0 20px 20px;
   background: #fffdf9;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
@@ -557,13 +557,16 @@
   background-color: #4d3326;
   border-radius: 8px;
   width: fit-content;
+
+}
+.BackBtn:hover{
+  background: #865c41;
+  text-decoration: none;
+}
+.BackBtnContent{
   color: #e6d5c6;
   display: flex;
   align-items: center;
   flex-direction: row;
   gap: 6px;
-}
-.BackBtn:hover{
-  background: #865c41;
-  text-decoration: none;
 }
