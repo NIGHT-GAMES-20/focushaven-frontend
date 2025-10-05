@@ -1,7 +1,7 @@
 .questionPage {
   max-width: 800px;
   margin: 40px auto;
-  padding: 30px;
+  padding: 5px;
   background: #fffdf9;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
@@ -547,4 +547,23 @@
   font-size: 12px;
   white-space: nowrap;
   z-index: 100;
+}
+
+.BackBtn{
+  padding: 5px; 
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #4d3326;
+  border-radius: 8px;
+  width: fit-content;
+  color: #e6d5c6;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 6px;
+}
+.BackBtn:hover{
+  background: #865c41;
+  text-decoration: none;
 }

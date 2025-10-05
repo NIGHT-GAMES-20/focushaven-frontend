@@ -3,6 +3,9 @@
     <div style="display: flex; flex-direction: row; margin-top: 20px;"><div :class="styles.spinner" style="margin-left:10px; margin-right: 10px;"></div>Loading, Please Wait...</div>
   </div>
   <div v-else :class="styles.questionPage">
+    <div :class="styles.BackBtn">
+      <a href="/forum"><CircleArrowLeft :size="18"/> Back to Questions</a>
+    </div>
     <!-- Question Header -->
     <div :class="styles.questionHeader">
       <div :class="styles.actions">
@@ -202,7 +205,7 @@
   import { onMounted, ref, computed } from 'vue';
   import { useRoute } from 'vue-router';
   import { secureFetch, getValidToken } from '../../scripts/forumSecureFetch';
-  import { MessageCircleQuestionMark, MessageSquare, Trash2, SquarePen,CircleCheck,CircleX, Heart ,BadgeCheck } from 'lucide-vue-next';
+  import { MessageCircleQuestionMark, MessageSquare, Trash2, SquarePen, Heart ,BadgeCheck,CircleArrowLeft } from 'lucide-vue-next';
   import { useUserStore } from '/stores/user.js'
   import styles from './questionView.module.css';
   import Answer from './Comments,Answers/Answer.vue';
