@@ -550,6 +550,8 @@
 }
 
 .backBtn {
+  margin-top: 10px ;
+  margin-bottom: -10px;
   display: inline-block;
   background: #4d3326;
   border-radius: 8px;
