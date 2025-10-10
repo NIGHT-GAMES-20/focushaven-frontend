@@ -1,9 +1,9 @@
 {
   "redirects": [
     {
-      "source": "/:path*", 
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "focushaven.me" }],
-      "destination": "https://www.focushaven.me/:path*",
+      "destination": "https://www.focushaven.me/$1",
       "permanent": true
     }
   ],
@@ -13,7 +13,7 @@
     { "source": "/dashboard", "destination": "/dashboard.html" },
     { "source": "/notes", "destination": "/notes.html" },
     { "source": "/forum", "destination": "/forum.html" },
-    { 
+    {
       "source": "/forum/question/:id",
       "has": [{ "type": "header", "key": "accept", "value": "text/html.*" }],
       "destination": "/question.html"
