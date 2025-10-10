@@ -15,8 +15,8 @@
         <h1 :class="styles.QuesTitle">{{ question.title }}</h1>
         <div :class="styles.userControls">
           <LikeBtn :liked="hasUserLiked" :loading="isLiking" :likesCount="question.Likes" @click="likeQuestion"/>
-          <SquarePen v-if="question.user === userStore.user.username" @click="openEditModal" :size="24" :class="styles.userActions" />
-          <Trash2 v-if="question.user === userStore.user.username || userStore.isAdmin" color="red" @click="showDeleteModal = true" :size="24" :class="styles.userActions" />
+          <SquarePen v-if="question.user === userStore.user?.username" @click="openEditModal" :size="24" :class="styles.userActions" />
+          <Trash2 v-if="question.user === userStore.user?.username || userStore.isAdmin" color="red" @click="showDeleteModal = true" :size="24" :class="styles.userActions" />
         </div>
       </div>
       <div :class="styles.meta">
@@ -60,11 +60,11 @@
                 <span v-if="showTooltip === 'heart' && showTooltipIn === answer._id" :class="styles.tooltip">Like</span>
               </div>
               <div :class="styles.tooltipWrapper">
-                <SquarePen @mouseenter="showTooltipWithDelay('edit',answer._id)" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username" :size="20" :class="styles.userActions" @click="editFunc('a',answer._id)" />
+                <SquarePen @mouseenter="showTooltipWithDelay('edit',answer._id)" @mouseleave="hideTooltip" v-if="answer.user === userStore.user?.username" :size="20" :class="styles.userActions" @click="editFunc('a',answer._id)" />
                 <span v-if="showTooltip === 'edit' && showTooltipIn === answer._id" :class="styles.tooltip">Edit</span>
               </div>
               <div :class="styles.tooltipWrapper">
-                <Trash2 @mouseenter="showTooltipWithDelay('delete',answer._id)" @mouseleave="hideTooltip" v-if="answer.user === userStore.user.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" @click="confirmDeleteAnsCom(true,'a',answer._id)" />
+                <Trash2 @mouseenter="showTooltipWithDelay('delete',answer._id)" @mouseleave="hideTooltip" v-if="answer.user === userStore.user?.username || userStore.isAdmin" color="red"  :size="20" :class="styles.userActions" @click="confirmDeleteAnsCom(true,'a',answer._id)" />
                 <span v-if="showTooltip === 'delete' && showTooltipIn === answer._id" :class="styles.tooltip">Delete</span>
               </div>
               <div :class="styles.tooltipWrapper">
@@ -457,7 +457,7 @@ async function likeFunc(type,id){
 function editFunc(type,id){
   if(type === 'a'){
     const answer = question.value.answers.find(a => a._id === id);
-    if (answer && answer.user === userStore.user.username) {
+    if (answer && answer.user === userStore.user?.username) {
     } else {
       notifyRef.value.addNotification({title: 'Unauthorized', message: 'You do not have permission to edit this answer.', type: 'error'});
       return;
@@ -525,7 +525,7 @@ async function  delFunc(type,id) {
   if(type === 'a'){
     fullType = 'answer';
     const answer = question.value.answers.find(a => a._id === id);
-    if (answer && (answer.user === userStore.user.username || userStore.isAdmin)) {
+    if (answer && (answer.user === userStore.user?.username || userStore.isAdmin)) {
     } else {
       notifyRef.value.addNotification({title: 'Unauthorized', message: 'You do not have permission to delete this answer.', type: 'error'});
       return;
