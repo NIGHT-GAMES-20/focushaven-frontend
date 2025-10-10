@@ -1,9 +1,9 @@
 {
   "redirects": [
     {
-      "source": "/(.*)",
+      "source": "/:path*", 
       "has": [{ "type": "host", "value": "focushaven.me" }],
-      "destination": "https://www.focushaven.me/:1",
+      "destination": "https://www.focushaven.me/:path*",
       "permanent": true
     }
   ],
