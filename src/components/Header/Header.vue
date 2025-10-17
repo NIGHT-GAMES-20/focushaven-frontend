@@ -89,8 +89,9 @@ const closeDropdown = (event) => {
           <li><a href="/notes" :class="styles.links">Notes</a></li>
           <li>
             <a
-              href="https://focushaven-testportal.netlify.app/"
+              href="https://testportal.focushaven.me/"
               :class="styles.links"
+              target="_blank" rel="noopener noreferrer"
               >Test Portal</a
             >
           </li>

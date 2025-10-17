@@ -4,7 +4,7 @@ html, body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  background-color: oklch(95.4% 0.038 75.164);  
+  background-color: oklch(91.582% 0.01422 74.305);  
   height: 100vh; /* Full viewport height */ 
 }
   
